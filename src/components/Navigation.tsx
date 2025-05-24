@@ -56,7 +56,7 @@ const Navigation = () => {
               }}
               className="text-2xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              John Doe
+              Yashdeep Tandon
             </Link>
           </div>
 

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import profileImage from "../../public/avatar.jpg";
+import Image from "next/image";
 
 const Hero = () => {
   const [currentRole, setCurrentRole] = useState(0);
@@ -44,7 +46,9 @@ const Hero = () => {
           <div className="text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
               Hi, I&apos;m{" "}
-              <span className="text-blue-600 dark:text-blue-400">John Doe</span>
+              <span className="text-blue-600 dark:text-blue-400">
+                Yashdeep Tandon
+              </span>
             </h1>
 
             <div className="text-xl sm:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-6 h-12">
@@ -82,7 +86,7 @@ const Hero = () => {
             {/* Social Links */}
             <div className="flex justify-center lg:justify-start space-x-6 mt-8">
               <a
-                href="https://github.com/johndoe"
+                href="https://github.com/yashdeeptandon"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -97,7 +101,7 @@ const Hero = () => {
                 </svg>
               </a>
               <a
-                href="https://linkedin.com/in/johndoe"
+                href="https://linkedin.com/in/yashdeep-tandon"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -112,7 +116,7 @@ const Hero = () => {
                 </svg>
               </a>
               <a
-                href="https://twitter.com/johndoe"
+                href="https://twitter.com/YDT007"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -135,9 +139,11 @@ const Hero = () => {
               <div className="w-80 h-80 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 p-2">
                 <div className="w-full h-full rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
                   {/* Placeholder for profile image */}
-                  <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center text-6xl text-gray-600 dark:text-gray-300">
-                    JD
-                  </div>
+                  <Image
+                    src={profileImage}
+                    alt="Yashdeep Tandon"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
               {/* Floating elements for visual interest */}

@@ -14,14 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "John Doe - Software Engineer Portfolio",
+  title: "Yashdeep Tandon - Software Engineer Portfolio",
   description:
     "Professional portfolio showcasing software engineering skills, projects, and experience. Specializing in full-stack development with modern technologies.",
   keywords:
     "software engineer, full-stack developer, React, Next.js, TypeScript, portfolio",
-  authors: [{ name: "John Doe" }],
+  authors: [{ name: "Yashdeep Tandon" }],
   openGraph: {
-    title: "John Doe - Software Engineer Portfolio",
+    title: "Yashdeep Tandon - Software Engineer Portfolio",
     description:
       "Professional portfolio showcasing software engineering skills, projects, and experience.",
     type: "website",

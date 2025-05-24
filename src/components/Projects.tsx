@@ -21,7 +21,7 @@ const Projects = () => {
       ],
       category: "fullstack",
       liveUrl: "https://ecommerce-demo.vercel.app",
-      githubUrl: "https://github.com/johndoe/ecommerce-platform",
+      githubUrl: "https://github.com/yashdeeptandon/ecommerce-platform",
       featured: true,
     },
     {

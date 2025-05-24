@@ -106,9 +106,9 @@ import { render, screen } from '@testing-library/react';
 import UserProfile from './UserProfile';
 
 test('renders user name', () => {
-  const user = { name: 'John Doe' };
+  const user = { name: 'Yashdeep Tandon' };
   render(<UserProfile user={user} />);
-  expect(screen.getByText('John Doe')).toBeInTheDocument();
+  expect(screen.getByText('Yashdeep Tandon')).toBeInTheDocument();
 });
 \`\`\`
 
@@ -124,7 +124,7 @@ Remember, scalability isn't just about handling more users—it's about creating
     `,
     category: "React",
     tags: ["React", "JavaScript", "Architecture", "Best Practices"],
-    author: "John Doe",
+    author: "Yashdeep Tandon",
     publishDate: "2024-01-15",
     readTime: "8 min read",
     featured: true,
@@ -217,7 +217,7 @@ The key is to balance innovation with practicality, adopting new technologies wh
     `,
     category: "Web Development",
     tags: ["Trends", "Web Development", "2024", "AI", "Future"],
-    author: "John Doe",
+    author: "Yashdeep Tandon",
     publishDate: "2024-01-10",
     readTime: "6 min read",
     featured: true,
@@ -259,7 +259,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               href="/"
               className="text-2xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              John Doe
+              Yashdeep Tandon
             </Link>
             <Link
               href="/#blog"

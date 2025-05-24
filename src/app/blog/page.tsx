@@ -1,91 +1,97 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 // This would typically come from a CMS or database
 const blogPosts = [
   {
     id: 1,
-    title: 'Building Scalable React Applications: Best Practices and Patterns',
-    excerpt: 'Learn how to structure React applications for scalability, maintainability, and performance. This comprehensive guide covers component architecture, state management, and optimization techniques.',
-    category: 'React',
-    tags: ['React', 'JavaScript', 'Architecture', 'Best Practices'],
-    author: 'John Doe',
-    publishDate: '2024-01-15',
-    readTime: '8 min read',
+    title: "Building Scalable React Applications: Best Practices and Patterns",
+    excerpt:
+      "Learn how to structure React applications for scalability, maintainability, and performance. This comprehensive guide covers component architecture, state management, and optimization techniques.",
+    category: "React",
+    tags: ["React", "JavaScript", "Architecture", "Best Practices"],
+    author: "Yashdeep Tandon",
+    publishDate: "2024-01-15",
+    readTime: "8 min read",
     featured: true,
-    slug: 'building-scalable-react-applications'
+    slug: "building-scalable-react-applications",
   },
   {
     id: 2,
-    title: 'The Future of Web Development: Trends to Watch in 2024',
-    excerpt: 'Explore the emerging trends shaping web development in 2024, from AI integration to new frameworks and development methodologies.',
-    category: 'Web Development',
-    tags: ['Trends', 'Web Development', '2024', 'AI', 'Future'],
-    author: 'John Doe',
-    publishDate: '2024-01-10',
-    readTime: '6 min read',
+    title: "The Future of Web Development: Trends to Watch in 2024",
+    excerpt:
+      "Explore the emerging trends shaping web development in 2024, from AI integration to new frameworks and development methodologies.",
+    category: "Web Development",
+    tags: ["Trends", "Web Development", "2024", "AI", "Future"],
+    author: "Yashdeep Tandon",
+    publishDate: "2024-01-10",
+    readTime: "6 min read",
     featured: true,
-    slug: 'future-of-web-development-2024'
+    slug: "future-of-web-development-2024",
   },
   {
     id: 3,
-    title: 'Mastering TypeScript: Advanced Types and Patterns',
-    excerpt: 'Dive deep into TypeScript\'s advanced type system and learn how to leverage powerful patterns for better code quality and developer experience.',
-    category: 'TypeScript',
-    tags: ['TypeScript', 'JavaScript', 'Types', 'Advanced'],
-    author: 'John Doe',
-    publishDate: '2024-01-05',
-    readTime: '10 min read',
+    title: "Mastering TypeScript: Advanced Types and Patterns",
+    excerpt:
+      "Dive deep into TypeScript's advanced type system and learn how to leverage powerful patterns for better code quality and developer experience.",
+    category: "TypeScript",
+    tags: ["TypeScript", "JavaScript", "Types", "Advanced"],
+    author: "Yashdeep Tandon",
+    publishDate: "2024-01-05",
+    readTime: "10 min read",
     featured: false,
-    slug: 'mastering-typescript-advanced-types'
+    slug: "mastering-typescript-advanced-types",
   },
   {
     id: 4,
-    title: 'Optimizing Next.js Performance: A Complete Guide',
-    excerpt: 'Learn how to optimize your Next.js applications for maximum performance with code splitting, image optimization, and caching strategies.',
-    category: 'Next.js',
-    tags: ['Next.js', 'Performance', 'Optimization', 'React'],
-    author: 'John Doe',
-    publishDate: '2023-12-28',
-    readTime: '12 min read',
+    title: "Optimizing Next.js Performance: A Complete Guide",
+    excerpt:
+      "Learn how to optimize your Next.js applications for maximum performance with code splitting, image optimization, and caching strategies.",
+    category: "Next.js",
+    tags: ["Next.js", "Performance", "Optimization", "React"],
+    author: "Yashdeep Tandon",
+    publishDate: "2023-12-28",
+    readTime: "12 min read",
     featured: false,
-    slug: 'optimizing-nextjs-performance'
+    slug: "optimizing-nextjs-performance",
   },
   {
     id: 5,
-    title: 'Building RESTful APIs with Node.js and Express',
-    excerpt: 'A comprehensive guide to building robust, scalable RESTful APIs using Node.js, Express, and modern best practices.',
-    category: 'Backend',
-    tags: ['Node.js', 'Express', 'API', 'Backend', 'REST'],
-    author: 'John Doe',
-    publishDate: '2023-12-20',
-    readTime: '15 min read',
+    title: "Building RESTful APIs with Node.js and Express",
+    excerpt:
+      "A comprehensive guide to building robust, scalable RESTful APIs using Node.js, Express, and modern best practices.",
+    category: "Backend",
+    tags: ["Node.js", "Express", "API", "Backend", "REST"],
+    author: "Yashdeep Tandon",
+    publishDate: "2023-12-20",
+    readTime: "15 min read",
     featured: true,
-    slug: 'building-restful-apis-nodejs-express'
+    slug: "building-restful-apis-nodejs-express",
   },
   {
     id: 6,
-    title: 'CSS Grid vs Flexbox: When to Use Which',
-    excerpt: 'Understanding the differences between CSS Grid and Flexbox, and knowing when to use each layout method for optimal results.',
-    category: 'CSS',
-    tags: ['CSS', 'Grid', 'Flexbox', 'Layout', 'Frontend'],
-    author: 'John Doe',
-    publishDate: '2023-12-15',
-    readTime: '7 min read',
+    title: "CSS Grid vs Flexbox: When to Use Which",
+    excerpt:
+      "Understanding the differences between CSS Grid and Flexbox, and knowing when to use each layout method for optimal results.",
+    category: "CSS",
+    tags: ["CSS", "Grid", "Flexbox", "Layout", "Frontend"],
+    author: "Yashdeep Tandon",
+    publishDate: "2023-12-15",
+    readTime: "7 min read",
     featured: false,
-    slug: 'css-grid-vs-flexbox-when-to-use'
-  }
+    slug: "css-grid-vs-flexbox-when-to-use",
+  },
 ];
 
 export default function BlogPage() {
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
-  const featuredPosts = blogPosts.filter(post => post.featured);
+  const featuredPosts = blogPosts.filter((post) => post.featured);
   const recentPosts = blogPosts.slice(0, 6);
 
   return (
@@ -98,7 +104,7 @@ export default function BlogPage() {
               href="/"
               className="text-2xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              John Doe
+              Yashdeep Tandon
             </Link>
             <div className="flex space-x-6">
               <Link
@@ -132,7 +138,8 @@ export default function BlogPage() {
               Blog & Articles
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Insights, tutorials, and thoughts on web development, technology trends, and software engineering
+              Insights, tutorials, and thoughts on web development, technology
+              trends, and software engineering
             </p>
           </div>
         </div>
@@ -161,7 +168,7 @@ export default function BlogPage() {
                     {post.readTime}
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-3">
                     <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-sm font-medium">
@@ -171,15 +178,15 @@ export default function BlogPage() {
                       {formatDate(post.publishDate)}
                     </span>
                   </div>
-                  
+
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">
                     {post.title}
                   </h3>
-                  
+
                   <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-3">
                     {post.excerpt}
                   </p>
-                  
+
                   <div className="flex flex-wrap gap-2 mb-4">
                     {post.tags.slice(0, 3).map((tag) => (
                       <span
@@ -190,14 +197,24 @@ export default function BlogPage() {
                       </span>
                     ))}
                   </div>
-                  
+
                   <Link
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm"
                   >
                     Read More
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-4 h-4 ml-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </Link>
                 </div>
@@ -227,7 +244,7 @@ export default function BlogPage() {
                     {post.readTime}
                   </div>
                 </div>
-                
+
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-3">
                     <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-xs font-medium">
@@ -237,15 +254,15 @@ export default function BlogPage() {
                       {formatDate(post.publishDate)}
                     </span>
                   </div>
-                  
+
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
                     {post.title}
                   </h3>
-                  
+
                   <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm line-clamp-2">
                     {post.excerpt}
                   </p>
-                  
+
                   <div className="flex flex-wrap gap-1 mb-3">
                     {post.tags.slice(0, 2).map((tag) => (
                       <span
@@ -256,14 +273,24 @@ export default function BlogPage() {
                       </span>
                     ))}
                   </div>
-                  
+
                   <Link
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm"
                   >
                     Read More
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-4 h-4 ml-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </Link>
                 </div>
@@ -281,7 +308,8 @@ export default function BlogPage() {
               Stay Updated
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-              Subscribe to my newsletter to get the latest articles, tutorials, and insights delivered directly to your inbox.
+              Subscribe to my newsletter to get the latest articles, tutorials,
+              and insights delivered directly to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
               <input
@@ -300,7 +328,7 @@ export default function BlogPage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>&copy; 2024 John Doe. All rights reserved.</p>
+          <p>&copy; 2024 Yashdeep Tandon. All rights reserved.</p>
         </div>
       </footer>
     </div>
