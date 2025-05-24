@@ -1,12 +1,13 @@
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import { notFound } from "next/navigation";
+import Link from "next/link";
 
 // This would typically come from a CMS or database
 const blogPosts = [
   {
     id: 1,
-    title: 'Building Scalable React Applications: Best Practices and Patterns',
-    excerpt: 'Learn how to structure React applications for scalability, maintainability, and performance. This comprehensive guide covers component architecture, state management, and optimization techniques.',
+    title: "Building Scalable React Applications: Best Practices and Patterns",
+    excerpt:
+      "Learn how to structure React applications for scalability, maintainability, and performance. This comprehensive guide covers component architecture, state management, and optimization techniques.",
     content: `
 # Building Scalable React Applications: Best Practices and Patterns
 
@@ -121,19 +122,20 @@ Building scalable React applications requires careful planning and adherence to 
 
 Remember, scalability isn't just about handling more users—it's about creating code that can evolve with your requirements while maintaining quality and performance.
     `,
-    category: 'React',
-    tags: ['React', 'JavaScript', 'Architecture', 'Best Practices'],
-    author: 'John Doe',
-    publishDate: '2024-01-15',
-    readTime: '8 min read',
+    category: "React",
+    tags: ["React", "JavaScript", "Architecture", "Best Practices"],
+    author: "John Doe",
+    publishDate: "2024-01-15",
+    readTime: "8 min read",
     featured: true,
-    image: '/blog-react-patterns.jpg',
-    slug: 'building-scalable-react-applications'
+    image: "/blog-react-patterns.jpg",
+    slug: "building-scalable-react-applications",
   },
   {
     id: 2,
-    title: 'The Future of Web Development: Trends to Watch in 2024',
-    excerpt: 'Explore the emerging trends shaping web development in 2024, from AI integration to new frameworks and development methodologies.',
+    title: "The Future of Web Development: Trends to Watch in 2024",
+    excerpt:
+      "Explore the emerging trends shaping web development in 2024, from AI integration to new frameworks and development methodologies.",
     content: `
 # The Future of Web Development: Trends to Watch in 2024
 
@@ -213,36 +215,37 @@ The future of web development is exciting and full of possibilities. By staying 
 
 The key is to balance innovation with practicality, adopting new technologies when they provide real value while maintaining focus on user experience and performance.
     `,
-    category: 'Web Development',
-    tags: ['Trends', 'Web Development', '2024', 'AI', 'Future'],
-    author: 'John Doe',
-    publishDate: '2024-01-10',
-    readTime: '6 min read',
+    category: "Web Development",
+    tags: ["Trends", "Web Development", "2024", "AI", "Future"],
+    author: "John Doe",
+    publishDate: "2024-01-10",
+    readTime: "6 min read",
     featured: true,
-    image: '/blog-web-trends.jpg',
-    slug: 'future-of-web-development-2024'
-  }
+    image: "/blog-web-trends.jpg",
+    slug: "future-of-web-development-2024",
+  },
   // Add more blog posts as needed
 ];
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = blogPosts.find(p => p.slug === params.slug);
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  const post = blogPosts.find((p) => p.slug === slug);
 
   if (!post) {
     notFound();
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -282,15 +285,15 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   {formatDate(post.publishDate)} • {post.readTime}
                 </span>
               </div>
-              
+
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
                 {post.title}
               </h1>
-              
+
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
                 {post.excerpt}
               </p>
-              
+
               <div className="flex flex-wrap justify-center gap-2">
                 {post.tags.map((tag) => (
                   <span
@@ -308,7 +311,11 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Article Body */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="prose prose-lg dark:prose-invert max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />') }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: post.content.replace(/\n/g, "<br />"),
+              }}
+            />
           </div>
         </div>
 
@@ -327,7 +334,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   Full-Stack Developer & Software Engineer
                 </p>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                  Passionate about building scalable web applications and sharing knowledge with the developer community.
+                  Passionate about building scalable web applications and
+                  sharing knowledge with the developer community.
                 </p>
               </div>
             </div>
@@ -342,7 +350,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {blogPosts
-                .filter(p => p.id !== post.id)
+                .filter((p) => p.id !== post.id)
                 .slice(0, 2)
                 .map((relatedPost) => (
                   <Link

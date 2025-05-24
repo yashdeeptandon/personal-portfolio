@@ -7,7 +7,8 @@ const About = () => {
             About Me
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Passionate software engineer with a love for creating innovative solutions
+            Passionate software engineer with a love for creating innovative
+            solutions
           </p>
         </div>
 
@@ -17,26 +18,30 @@ const About = () => {
             <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
               My Journey in Software Engineering
             </h3>
-            
+
             <div className="space-y-4 text-gray-600 dark:text-gray-300">
               <p>
-                With over 5 years of experience in software development, I've had the privilege 
-                of working on diverse projects ranging from small startups to enterprise-level 
-                applications. My journey began with a curiosity about how things work, which 
-                led me to pursue computer science and eventually specialize in full-stack development.
+                With over 5 years of experience in software development,
+                I&apos;ve had the privilege of working on diverse projects
+                ranging from small startups to enterprise-level applications. My
+                journey began with a curiosity about how things work, which led
+                me to pursue computer science and eventually specialize in
+                full-stack development.
               </p>
-              
+
               <p>
-                I'm passionate about writing clean, efficient code and staying up-to-date with 
-                the latest technologies. My approach to development focuses on creating scalable, 
-                maintainable solutions that not only meet current requirements but also adapt 
-                to future needs.
+                I&apos;m passionate about writing clean, efficient code and
+                staying up-to-date with the latest technologies. My approach to
+                development focuses on creating scalable, maintainable solutions
+                that not only meet current requirements but also adapt to future
+                needs.
               </p>
-              
+
               <p>
-                When I'm not coding, you can find me contributing to open-source projects, 
-                mentoring junior developers, or exploring new technologies. I believe in 
-                continuous learning and sharing knowledge with the developer community.
+                When I&apos;m not coding, you can find me contributing to
+                open-source projects, mentoring junior developers, or exploring
+                new technologies. I believe in continuous learning and sharing
+                knowledge with the developer community.
               </p>
             </div>
 
@@ -47,32 +52,72 @@ const About = () => {
               </h4>
               <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                 <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5 text-green-500 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Strong problem-solving and analytical thinking skills
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5 text-green-500 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Experience with agile development methodologies
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5 text-green-500 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Excellent communication and teamwork abilities
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5 text-green-500 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Passion for learning and adapting to new technologies
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5 text-green-500 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Focus on user experience and accessibility
                 </li>
@@ -86,7 +131,7 @@ const About = () => {
               <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
                 Professional Highlights
               </h4>
-              
+
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
@@ -96,7 +141,7 @@ const About = () => {
                     Years Experience
                   </div>
                 </div>
-                
+
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                     50+
@@ -105,7 +150,7 @@ const About = () => {
                     Projects Completed
                   </div>
                 </div>
-                
+
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                     15+
@@ -114,7 +159,7 @@ const About = () => {
                     Technologies Mastered
                   </div>
                 </div>
-                
+
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                     100%
@@ -129,16 +174,16 @@ const About = () => {
             {/* Personal Interests */}
             <div className="mt-8">
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                When I'm Not Coding:
+                When I&apos;m Not Coding:
               </h4>
               <div className="flex flex-wrap gap-3">
                 {[
-                  '🎸 Playing Guitar',
-                  '📚 Reading Tech Blogs',
-                  '🏃‍♂️ Running',
-                  '🎮 Gaming',
-                  '📷 Photography',
-                  '🌱 Gardening'
+                  "🎸 Playing Guitar",
+                  "📚 Reading Tech Blogs",
+                  "🏃‍♂️ Running",
+                  "🎮 Gaming",
+                  "📷 Photography",
+                  "🌱 Gardening",
                 ].map((interest, index) => (
                   <span
                     key={index}
@@ -157,8 +202,18 @@ const About = () => {
                 download
                 className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
                 </svg>
                 Download Resume
               </a>
