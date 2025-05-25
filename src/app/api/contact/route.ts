@@ -22,6 +22,7 @@ import {
   parseUserAgent,
 } from "@/lib/utils/response";
 import { API_MESSAGES, ANALYTICS_EVENTS } from "@/lib/utils/constants";
+import { emailService } from "@/services/email";
 
 // GET /api/contact - Get all contact messages (admin only)
 export const GET = withErrorHandling(async (request: NextRequest | Request) => {
@@ -153,8 +154,66 @@ export const POST = withErrorHandling(
         console.error("Analytics error:", analyticsError);
       }
 
-      // TODO: Send email notification to admin
-      // TODO: Send confirmation email to user
+      // Send email notifications
+      try {
+        // Get admin email from environment or use default
+        const adminEmail = process.env.ADMIN_EMAIL || process.env.FROM_EMAIL;
+
+        if (adminEmail) {
+          // Send notification to admin
+          const adminNotificationResult =
+            await emailService.sendContactNotification({
+              to: adminEmail,
+              contactData: {
+                name: contact.name,
+                email: contact.email,
+                subject: contact.subject,
+                message: contact.message,
+                phone: contact.phone,
+                company: contact.company,
+              },
+              submissionId: contact._id.toString(),
+              submissionDate: contact.createdAt,
+              ipAddress,
+              userAgent,
+            });
+
+          if (!adminNotificationResult.success) {
+            console.error(
+              "Failed to send admin notification:",
+              adminNotificationResult.error
+            );
+          }
+
+          // Send confirmation to user
+          const userConfirmationResult =
+            await emailService.sendContactConfirmation({
+              to: contact.email,
+              contactData: {
+                name: contact.name,
+                email: contact.email,
+                subject: contact.subject,
+                message: contact.message,
+                phone: contact.phone,
+                company: contact.company,
+              },
+              submissionId: contact._id.toString(),
+              expectedResponseTime: "24-48 hours",
+            });
+
+          if (!userConfirmationResult.success) {
+            console.error(
+              "Failed to send user confirmation:",
+              userConfirmationResult.error
+            );
+          }
+        } else {
+          console.warn("No admin email configured for contact notifications");
+        }
+      } catch (emailError) {
+        // Don't fail the request if email fails
+        console.error("Email notification error:", emailError);
+      }
 
       return createdResponse(API_MESSAGES.CONTACT_CREATED, {
         id: contact._id,

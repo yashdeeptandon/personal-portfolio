@@ -11,6 +11,7 @@ const AnalyticsSchema = new Schema<IAnalytics>(
         "blog_view",
         "project_view",
         "contact_form",
+        "newsletter_subscription",
         "download",
         "click",
       ],
