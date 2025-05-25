@@ -20,10 +20,7 @@ export default function GoogleAnalytics({ gaId }: GoogleAnalyticsProps) {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${gaId}', {
-            page_title: document.title,
-            page_location: window.location.href,
-          });
+          gtag('config', '${gaId}');
         `}
       </Script>
     </>
