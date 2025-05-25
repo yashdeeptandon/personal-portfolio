@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 
 // User Types
 export interface IUser extends Document {
@@ -6,7 +6,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   name: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   isActive: boolean;
   lastLogin?: Date;
   createdAt: Date;
@@ -23,7 +23,7 @@ export interface IBlog extends Document {
   featuredImage?: string;
   tags: string[];
   category: string;
-  status: 'draft' | 'published' | 'archived';
+  status: "draft" | "published" | "archived";
   publishedAt?: Date;
   author: string;
   readTime: number;
@@ -49,7 +49,7 @@ export interface IProject extends Document {
   images: string[];
   technologies: string[];
   category: string;
-  status: 'planning' | 'in-progress' | 'completed' | 'archived';
+  status: "planning" | "in-progress" | "completed" | "archived";
   githubUrl?: string;
   liveUrl?: string;
   demoUrl?: string;
@@ -76,7 +76,7 @@ export interface ITestimonial extends Document {
   avatar?: string;
   content: string;
   rating: number;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
   featured: boolean;
   order: number;
   projectId?: string;
@@ -94,9 +94,9 @@ export interface IContact extends Document {
   message: string;
   phone?: string;
   company?: string;
-  status: 'new' | 'read' | 'replied' | 'archived';
-  priority: 'low' | 'medium' | 'high';
-  source: 'website' | 'linkedin' | 'email' | 'referral' | 'other';
+  status: "new" | "read" | "replied" | "archived";
+  priority: "low" | "medium" | "high";
+  source: "website" | "linkedin" | "email" | "referral" | "other";
   ipAddress?: string;
   userAgent?: string;
   createdAt: Date;
@@ -108,8 +108,8 @@ export interface INewsletter extends Document {
   _id: string;
   email: string;
   name?: string;
-  status: 'active' | 'unsubscribed' | 'bounced';
-  source: 'website' | 'blog' | 'social' | 'referral';
+  status: "active" | "unsubscribed" | "bounced";
+  source: "website" | "blog" | "social" | "referral";
   preferences: {
     blogUpdates: boolean;
     projectUpdates: boolean;
@@ -124,7 +124,13 @@ export interface INewsletter extends Document {
 // Analytics Types
 export interface IAnalytics extends Document {
   _id: string;
-  type: 'page_view' | 'blog_view' | 'project_view' | 'contact_form' | 'download' | 'click';
+  type:
+    | "page_view"
+    | "blog_view"
+    | "project_view"
+    | "contact_form"
+    | "download"
+    | "click";
   path: string;
   referrer?: string;
   userAgent?: string;
@@ -160,7 +166,7 @@ export interface PaginationQuery {
   page?: number;
   limit?: number;
   sort?: string;
-  order?: 'asc' | 'desc';
+  order?: "asc" | "desc";
   search?: string;
   filter?: Record<string, any>;
 }
@@ -204,6 +210,81 @@ export interface CacheOptions {
   ttl?: number; // Time to live in seconds
   key: string;
   tags?: string[];
+}
+
+// Settings Types
+export interface ISettings extends Document {
+  _id: string;
+  // Site Information
+  siteName: string;
+  siteDescription: string;
+  siteUrl: string;
+  siteLogo?: string;
+  favicon?: string;
+
+  // Contact Information
+  contactEmail: string;
+  contactPhone?: string;
+  contactAddress?: string;
+
+  // Social Media Links
+  socialMedia: {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    instagram?: string;
+    youtube?: string;
+    website?: string;
+  };
+
+  // SEO Settings
+  seo: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+    ogImage?: string;
+  };
+
+  // Analytics
+  analytics: {
+    googleAnalyticsId?: string;
+    googleTagManagerId?: string;
+    facebookPixelId?: string;
+  };
+
+  // Email Settings
+  email: {
+    fromName?: string;
+    fromEmail?: string;
+    replyToEmail?: string;
+  };
+
+  // Feature Flags
+  features: {
+    blogEnabled: boolean;
+    projectsEnabled: boolean;
+    testimonialsEnabled: boolean;
+    contactFormEnabled: boolean;
+    newsletterEnabled: boolean;
+    commentsEnabled: boolean;
+  };
+
+  // Maintenance Mode
+  maintenance: {
+    enabled: boolean;
+    message: string;
+    allowedIPs: string[];
+  };
+
+  // Theme Settings
+  theme: {
+    primaryColor: string;
+    secondaryColor: string;
+    darkMode: boolean;
+  };
+
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Rate Limiting Types
