@@ -1,104 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useContactForm } from "@/hooks/useContactForm";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const validateForm = () => {
-    const errors: string[] = [];
-
-    if (formData.name.length < 2) {
-      errors.push("Name must be at least 2 characters long");
-    }
-    if (formData.subject.length < 5) {
-      errors.push("Subject must be at least 5 characters long");
-    }
-    if (formData.message.length < 20) {
-      errors.push("Message must be at least 20 characters long");
-    }
-
-    return errors;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
-    setErrorMessage("");
-
-    // Client-side validation
-    const validationErrors = validateForm();
-    if (validationErrors.length > 0) {
-      setSubmitStatus("error");
-      setErrorMessage(validationErrors[0]);
-      setIsSubmitting(false);
-      setTimeout(() => {
-        setSubmitStatus("idle");
-        setErrorMessage("");
-      }, 5000);
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Handle specific error cases
-        if (response.status === 429) {
-          throw new Error("Too many requests. Please try again later.");
-        } else if (response.status === 422) {
-          throw new Error(
-            data.error || "Please check your input and try again."
-          );
-        } else {
-          throw new Error(data.message || "Failed to send message");
-        }
-      }
-
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
-      console.error("Contact form error:", error);
-      setSubmitStatus("error");
-      setErrorMessage(
-        error instanceof Error ? error.message : "An unexpected error occurred"
-      );
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => {
-        setSubmitStatus("idle");
-        setErrorMessage("");
-      }, 5000);
-    }
-  };
+  const {
+    formData,
+    isSubmitting,
+    submitStatus,
+    errorMessage,
+    handleChange,
+    handleSubmit,
+  } = useContactForm();
 
   const contactInfo = [
     {

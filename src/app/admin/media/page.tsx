@@ -10,6 +10,7 @@ import {
   ClipboardDocumentIcon,
   FolderIcon,
 } from "@heroicons/react/24/outline";
+import { validateFiles, formatFileSize } from "@/lib/utils/fileValidation";
 
 interface MediaFile {
   url: string;
@@ -75,11 +76,27 @@ export default function MediaPage() {
   const handleFileUpload = async (files: FileList) => {
     if (!files.length) return;
 
+    // Client-side validation using utility function
+    const validation = validateFiles(files, {
+      maxFiles: 10, // Allow up to 10 files at once
+      allowMultiple: true,
+    });
+
+    if (validation.errors.length > 0) {
+      setError(`Validation failed:\n${validation.errors.join("\n")}`);
+      return;
+    }
+
+    if (validation.valid.length === 0) {
+      setError("No valid files to upload");
+      return;
+    }
+
     setUploading(true);
     setError(null);
 
     try {
-      for (const file of Array.from(files)) {
+      const uploadPromises = validation.valid.map(async (file) => {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("folder", "uploads");
@@ -91,11 +108,25 @@ export default function MediaPage() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to upload file");
+          throw new Error(
+            `${file.name}: ${errorData.message || "Failed to upload"}`
+          );
         }
-      }
 
+        return response.json();
+      });
+
+      await Promise.all(uploadPromises);
       await fetchMedia();
+
+      // Show success message with upload summary
+      if (validation.valid.length > 1) {
+        console.log(
+          `Successfully uploaded ${
+            validation.valid.length
+          } files (${formatFileSize(validation.totalSize)} total)`
+        );
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to upload files");
     } finally {
@@ -153,14 +184,6 @@ export default function MediaPage() {
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
     // You could add a toast notification here
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const getFileIcon = (file: MediaFile) => {
@@ -255,9 +278,21 @@ export default function MediaPage() {
         onDrop={(e) => {
           e.preventDefault();
           const files = e.dataTransfer.files;
-          if (files) handleFileUpload(files);
+          if (files) {
+            // Show immediate feedback for drag and drop
+            const validation = validateFiles(files, {
+              maxFiles: 10,
+              allowMultiple: true,
+            });
+            if (validation.errors.length > 0) {
+              setError(`Validation failed:\n${validation.errors.join("\n")}`);
+              return;
+            }
+            handleFileUpload(files);
+          }
         }}
         onDragOver={(e) => e.preventDefault()}
+        onDragEnter={(e) => e.preventDefault()}
       >
         <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
         <div className="mt-2">
@@ -268,7 +303,10 @@ export default function MediaPage() {
             or drag and drop
           </p>
           <p className="text-xs text-gray-500">
-            PNG, JPG, GIF, PDF, DOC up to 10MB
+            PNG, JPG, GIF, PDF, DOC up to 10MB each
+          </p>
+          <p className="text-xs text-gray-400 mt-1">
+            Files are validated before upload to save time
           </p>
         </div>
       </div>
