@@ -5,6 +5,7 @@ import {
   logSuccess,
   logWarning,
 } from "@/lib/utils/logger";
+import { validateDatabaseConfig } from "@/lib/utils/env-validation";
 
 interface ConnectionObject {
   isConnected?: number;
@@ -14,6 +15,21 @@ const connection: ConnectionObject = {};
 
 async function dbConnect(): Promise<void> {
   const startTime = Date.now();
+
+  // Validate database configuration before attempting connection
+  const dbValidation = validateDatabaseConfig();
+  if (!dbValidation.isValid) {
+    const error = new Error(
+      `Database configuration error: ${dbValidation.error}`
+    );
+    logError(error, {
+      operation: "database_validation",
+      error: dbValidation.error,
+      uri: process.env.MONGODB_URI ? "configured" : "missing",
+      database: process.env.DATABASE_NAME ? "configured" : "missing",
+    });
+    throw error;
+  }
 
   // Check if we have a connection to the database or if it's currently connecting
   if (connection.isConnected) {
@@ -31,13 +47,13 @@ async function dbConnect(): Promise<void> {
 
   try {
     logDatabaseOperation("connection_attempt", "mongodb", undefined, {
-      uri: process.env.MONGODB_URI ? "configured" : "missing",
-      database: process.env.DATABASE_NAME || "portfolio",
+      uri: "configured", // We know it's configured due to validation above
+      database: process.env.DATABASE_NAME!,
     });
 
     // Attempt to connect to the database
-    const db = await mongoose.connect(process.env.MONGODB_URI || "", {
-      dbName: process.env.DATABASE_NAME || "portfolio",
+    const db = await mongoose.connect(process.env.MONGODB_URI!, {
+      dbName: process.env.DATABASE_NAME!,
     });
 
     connection.isConnected = db.connections[0].readyState;
@@ -46,7 +62,7 @@ async function dbConnect(): Promise<void> {
     logSuccess("MongoDB connection established", {
       duration,
       readyState: connection.isConnected,
-      database: process.env.DATABASE_NAME || "portfolio",
+      database: process.env.DATABASE_NAME!,
       host: db.connections[0].host,
       port: db.connections[0].port,
     });
@@ -74,11 +90,11 @@ async function dbConnect(): Promise<void> {
     logError(error, {
       operation: "database_connection",
       duration,
-      uri: process.env.MONGODB_URI ? "configured" : "missing",
+      database: process.env.DATABASE_NAME!,
     });
 
-    // Graceful exit in case of a connection error
-    process.exit(1);
+    // Re-throw the error instead of process.exit to allow proper error handling
+    throw error;
   }
 }
 

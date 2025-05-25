@@ -9,6 +9,36 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 require("dotenv").config({ path: ".env.local" });
 
+// Environment validation function
+function validateEnvironment() {
+  const required = [
+    "MONGODB_URI",
+    "DATABASE_NAME",
+    "ADMIN_EMAIL",
+    "ADMIN_PASSWORD",
+  ];
+  const missing = required.filter((key) => !process.env[key]);
+
+  if (missing.length > 0) {
+    console.error("❌ Missing required environment variables:");
+    missing.forEach((key) => console.error(`  • ${key}`));
+    console.error("\n💡 Please check your .env.local file");
+    process.exit(1);
+  }
+
+  // Validate MongoDB URI format
+  const mongoUri = process.env.MONGODB_URI;
+  if (
+    !mongoUri.startsWith("mongodb://") &&
+    !mongoUri.startsWith("mongodb+srv://")
+  ) {
+    console.error("❌ Invalid MONGODB_URI format");
+    process.exit(1);
+  }
+
+  console.log("✅ Environment validation passed");
+}
+
 // User Schema (simplified version for this script)
 const UserSchema = new mongoose.Schema(
   {
@@ -74,30 +104,22 @@ const User = mongoose.model("User", UserSchema);
 
 async function createAdminUser() {
   try {
+    // Validate environment variables first
+    validateEnvironment();
+
     console.log("🔌 Connecting to MongoDB...");
 
     // Connect to MongoDB
     await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: process.env.DATABASE_NAME || "portfolio",
+      dbName: process.env.DATABASE_NAME,
     });
 
     console.log("✅ Connected to MongoDB successfully");
 
-    // Get admin credentials from environment variables
+    // Get admin credentials from environment variables (already validated)
     const adminEmail = process.env.ADMIN_EMAIL;
     const adminPassword = process.env.ADMIN_PASSWORD;
     const adminName = process.env.ADMIN_NAME || "Admin User";
-
-    if (!adminEmail || !adminPassword) {
-      console.log("❌ Admin credentials not found in environment variables!");
-      console.log(
-        "💡 Please set ADMIN_EMAIL and ADMIN_PASSWORD in your .env.local file"
-      );
-      console.log(
-        "💡 Optionally set ADMIN_NAME for the admin user display name"
-      );
-      return;
-    }
 
     // Admin user details
     const adminData = {
