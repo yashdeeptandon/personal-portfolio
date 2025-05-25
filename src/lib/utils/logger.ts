@@ -192,7 +192,12 @@ export const logAuthEvent = (
     | "login_failure"
     | "logout"
     | "token_refresh"
-    | "unauthorized_access",
+    | "unauthorized_access"
+    | "forbidden_access"
+    | "inactive_account_access"
+    | "admin_access"
+    | "contact_deleted"
+    | "contact_updated",
   userId?: string,
   email?: string,
   context?: Record<string, any>
@@ -206,6 +211,11 @@ export const logAuthEvent = (
     logout: "👋",
     token_refresh: "🔄",
     unauthorized_access: "🚫",
+    contact_deleted: "🗑️",
+    contact_updated: "✏️",
+    forbidden_access: "⛔️",
+    inactive_account_access: "👻",
+    admin_access: "👑",
   };
 
   const logLevel =

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import SessionProvider from "@/components/SessionProvider";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -42,7 +43,7 @@ export default function RootLayout({
         {/* Google Analytics */}
         <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID || ""} />
         <Analytics />
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

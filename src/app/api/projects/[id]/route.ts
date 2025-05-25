@@ -18,9 +18,9 @@ import {
 import { API_MESSAGES, ANALYTICS_EVENTS } from "@/lib/utils/constants";
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // GET /api/projects/[id] - Get single project
@@ -29,7 +29,7 @@ export const GET = withErrorHandling(
     const nextRequest = request as NextRequest;
     await dbConnect();
 
-    const { id } = params;
+    const { id } = await params;
     const session = await getServerSession(authOptions);
 
     try {
@@ -94,7 +94,7 @@ export const PUT = withErrorHandling(
 
     await dbConnect();
 
-    const { id } = params;
+    const { id } = await params;
 
     try {
       const body = await nextRequest.json();
@@ -144,7 +144,7 @@ export const DELETE = withErrorHandling(
 
     await dbConnect();
 
-    const { id } = params;
+    const { id } = await params;
 
     try {
       const project = await Project.findByIdAndDelete(id);
