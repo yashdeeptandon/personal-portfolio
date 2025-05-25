@@ -1,44 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useContactForm } from "@/hooks/useContactForm";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch {
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    }
-  };
+  const {
+    formData,
+    isSubmitting,
+    submitStatus,
+    errorMessage,
+    handleChange,
+    handleSubmit,
+  } = useContactForm();
 
   const contactInfo = [
     {
@@ -247,7 +219,10 @@ const Contact = () => {
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Name *
+                      Name *{" "}
+                      <span className="text-xs text-gray-500">
+                        (min 2 characters)
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -256,6 +231,8 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      minLength={2}
+                      maxLength={100}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white transition-colors"
                       placeholder="Your Name"
                     />
@@ -285,7 +262,10 @@ const Contact = () => {
                     htmlFor="subject"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
-                    Subject *
+                    Subject *{" "}
+                    <span className="text-xs text-gray-500">
+                      (min 5 characters)
+                    </span>
                   </label>
                   <input
                     type="text"
@@ -294,9 +274,14 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
+                    minLength={5}
+                    maxLength={200}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white transition-colors"
                     placeholder="What's this about?"
                   />
+                  <div className="text-xs text-gray-500 mt-1">
+                    {formData.subject.length}/200 characters
+                  </div>
                 </div>
 
                 <div>
@@ -304,7 +289,10 @@ const Contact = () => {
                     htmlFor="message"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
-                    Message *
+                    Message *{" "}
+                    <span className="text-xs text-gray-500">
+                      (min 20 characters)
+                    </span>
                   </label>
                   <textarea
                     id="message"
@@ -312,10 +300,15 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
+                    minLength={20}
+                    maxLength={2000}
                     rows={6}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white transition-colors resize-none"
                     placeholder="Tell me about your project or just say hello!"
                   />
+                  <div className="text-xs text-gray-500 mt-1">
+                    {formData.message.length}/2000 characters
+                  </div>
                 </div>
 
                 <button
@@ -364,8 +357,9 @@ const Contact = () => {
                 {submitStatus === "error" && (
                   <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                     <p className="text-red-800 dark:text-red-200 text-sm">
-                      ❌ Something went wrong. Please try again or contact me
-                      directly.
+                      ❌{" "}
+                      {errorMessage ||
+                        "Something went wrong. Please try again or contact me directly."}
                     </p>
                   </div>
                 )}
