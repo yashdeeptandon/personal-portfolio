@@ -220,7 +220,7 @@ export const contactCreateSchema = Joi.object({
 });
 
 // Newsletter Validation Schemas
-export const newsletterSubscribeSchema = Joi.object({
+export const newsletterCreateSchema = Joi.object({
   email: Joi.string().email().required().messages({
     "string.email": "Please provide a valid email address",
     "any.required": "Email is required",
@@ -234,6 +234,18 @@ export const newsletterSubscribeSchema = Joi.object({
     projectUpdates: Joi.boolean().default(true),
     newsletter: Joi.boolean().default(true),
   }).default({}),
+});
+
+export const newsletterSubscribeSchema = newsletterCreateSchema;
+
+export const newsletterUpdateSchema = Joi.object({
+  name: Joi.string().min(2).max(100).allow(""),
+  preferences: Joi.object({
+    blogUpdates: Joi.boolean(),
+    projectUpdates: Joi.boolean(),
+    newsletter: Joi.boolean(),
+  }),
+  status: Joi.string().valid("active", "unsubscribed", "bounced"),
 });
 
 // Query Validation Schemas

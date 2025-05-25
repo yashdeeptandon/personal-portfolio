@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Newsletter from "@/components/Newsletter";
 
 // This would typically come from a CMS or database
 const blogPosts = [
@@ -384,6 +385,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </div>
         </div>
+
+        {/* Newsletter Signup */}
+        <Newsletter />
       </article>
     </div>
   );
