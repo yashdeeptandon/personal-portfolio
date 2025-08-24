@@ -2,72 +2,65 @@ const Experience = () => {
   const experiences = [
     {
       id: 1,
-      title: 'Senior Full-Stack Developer',
-      company: 'TechCorp Solutions',
-      location: 'San Francisco, CA',
-      period: '2022 - Present',
-      type: 'Full-time',
-      description: 'Leading development of enterprise-level web applications using React, Node.js, and cloud technologies. Mentoring junior developers and architecting scalable solutions.',
+      title: "Senior Software Developer",
+      company: "GoTrust",
+      location: "Noida, Uttar Pradesh, IN",
+      period: `Aug, 2025 - Present`,
+      type: "Full-time",
+      description:
+        "Leading development of two key modules (Cookie Management and Consent Management) in GoTrust using React, Node.js, and cloud technologies. Mentoring junior developers and architecting scalable solutions.",
       achievements: [
-        'Led a team of 5 developers in building a customer portal that increased user engagement by 40%',
-        'Implemented microservices architecture reducing system downtime by 60%',
-        'Optimized application performance resulting in 50% faster load times',
-        'Established code review processes and development best practices'
+        "Led a team of 3 developers in optimising the product that increased the product by 40%",
+        "Implemented microservices architecture reducing system downtime by 60%",
+        "Optimized application performance resulting in 50% faster load times",
+        "Established code review processes and development best practices",
       ],
-      technologies: ['React', 'Node.js', 'TypeScript', 'AWS', 'PostgreSQL', 'Docker'],
-      current: true
+      technologies: [
+        "React",
+        "TypeScript",
+        "Redux Toolkit",
+        "TailwindCSS",
+        "Shadcn",
+        "Node.js",
+        "AWS",
+        "PostgreSQL",
+        "Docker",
+        "Keycloak",
+      ],
+      current: true,
     },
     {
       id: 2,
-      title: 'Full-Stack Developer',
-      company: 'StartupXYZ',
-      location: 'Austin, TX',
-      period: '2020 - 2022',
-      type: 'Full-time',
-      description: 'Developed and maintained multiple web applications for a fast-growing startup. Worked closely with product team to deliver features that drove business growth.',
+      title: "Software Developer",
+      company: "GoTrust",
+      location: "Noida, Uttar Pradesh, IN",
+      period: `Jan, 2024 - July, 2025`,
+      type: "Full-time",
+      description:
+        "One of the founding developers at GoTrust, contributing to building the platform from scratch in a fast-paced startup environment with weekly feature deployments. Worked across frontend architecture, collaborating with backend and DevOps teams to deliver high-performance solutions.",
       achievements: [
-        'Built the company\'s main product from MVP to production serving 10,000+ users',
-        'Reduced API response times by 70% through database optimization',
-        'Implemented automated testing increasing code coverage to 90%',
-        'Collaborated with design team to create responsive, accessible user interfaces'
+        "Module owner for Cookie Consent Management and Universal Consent Management built using React, TypeScript, Redux Toolkit, and TailwindCSS",
+        "Increased Web Vitals performance score from 38 to 77 through image lazy loading, React.memo, and rendering optimizations",
+        "Contributed to CRM, ROPA, Policy Management, and Consent Management modules with scalable and performant frontend solutions",
+        "Developed analytics dashboards with real-time metrics, logging, and error handling mechanisms",
+        "Led and mentored a team of 3 junior developers, setting up project structure, performing code reviews, and enforcing best practices",
+        "Implemented JWT and OTP-based authentication, integrated Keycloak for SSO, and advanced role-based routing logic",
+        "Actively participated in product strategy discussions, POCs, demos, and issue resolution cycles with product and sales teams",
       ],
-      technologies: ['React', 'Express.js', 'MongoDB', 'Redis', 'Jest', 'Tailwind CSS'],
-      current: false
+      technologies: [
+        "React",
+        "TypeScript",
+        "Redux Toolkit",
+        "TailwindCSS",
+        "Shadcn",
+        "Node.js",
+        "AWS",
+        "PostgreSQL",
+        "Docker",
+        "Keycloak",
+      ],
+      current: false,
     },
-    {
-      id: 3,
-      title: 'Frontend Developer',
-      company: 'Digital Agency Pro',
-      location: 'Remote',
-      period: '2019 - 2020',
-      type: 'Contract',
-      description: 'Specialized in creating responsive, interactive websites for various clients. Focused on modern frontend technologies and user experience optimization.',
-      achievements: [
-        'Delivered 15+ client projects with 100% on-time completion rate',
-        'Improved client website performance scores by average of 35%',
-        'Developed reusable component library used across multiple projects',
-        'Mentored 2 junior developers in modern frontend practices'
-      ],
-      technologies: ['React', 'Vue.js', 'JavaScript', 'Sass', 'Webpack', 'Figma'],
-      current: false
-    },
-    {
-      id: 4,
-      title: 'Junior Web Developer',
-      company: 'WebDev Studio',
-      location: 'Chicago, IL',
-      period: '2018 - 2019',
-      type: 'Full-time',
-      description: 'Started my professional journey building websites and learning modern development practices. Gained experience in both frontend and backend technologies.',
-      achievements: [
-        'Contributed to 20+ website projects for small to medium businesses',
-        'Learned and applied modern JavaScript frameworks and libraries',
-        'Participated in code reviews and agile development processes',
-        'Completed professional development courses in React and Node.js'
-      ],
-      technologies: ['HTML5', 'CSS3', 'JavaScript', 'PHP', 'MySQL', 'WordPress'],
-      current: false
-    }
   ];
 
   return (
@@ -78,7 +71,8 @@ const Experience = () => {
             Professional Experience
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            My journey through various roles and companies, building expertise and delivering impactful solutions
+            My journey through various roles and companies, building expertise
+            and delivering impactful solutions
           </p>
         </div>
 
@@ -92,7 +86,7 @@ const Experience = () => {
               <div
                 key={exp.id}
                 className={`relative flex items-center ${
-                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
               >
                 {/* Timeline dot */}
@@ -103,7 +97,11 @@ const Experience = () => {
                 </div>
 
                 {/* Content */}
-                <div className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'} ml-16 md:ml-0`}>
+                <div
+                  className={`w-full md:w-1/2 ${
+                    index % 2 === 0 ? "md:pr-12" : "md:pl-12"
+                  } ml-16 md:ml-0`}
+                >
                   <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
                     {/* Header */}
                     <div className="flex flex-wrap items-start justify-between mb-4">
@@ -112,30 +110,67 @@ const Experience = () => {
                           {exp.title}
                         </h3>
                         <div className="flex items-center text-blue-600 dark:text-blue-400 font-medium mb-2">
-                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          <svg
+                            className="w-4 h-4 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                            />
                           </svg>
                           {exp.company}
                         </div>
                         <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-300">
                           <span className="flex items-center">
-                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
                             </svg>
                             {exp.location}
                           </span>
                           <span className="flex items-center">
-                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
                             </svg>
                             {exp.period}
                           </span>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            exp.type === 'Full-time' 
-                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                              : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                          }`}>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              exp.type === "Full-time"
+                                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                                : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                            }`}
+                          >
                             {exp.type}
                           </span>
                           {exp.current && (
@@ -159,9 +194,20 @@ const Experience = () => {
                       </h4>
                       <ul className="space-y-1">
                         {exp.achievements.map((achievement, idx) => (
-                          <li key={idx} className="flex items-start text-sm text-gray-600 dark:text-gray-300">
-                            <svg className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          <li
+                            key={idx}
+                            className="flex items-start text-sm text-gray-600 dark:text-gray-300"
+                          >
+                            <svg
+                              className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
                             </svg>
                             {achievement}
                           </li>
