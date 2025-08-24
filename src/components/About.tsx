@@ -21,27 +21,26 @@ const About = () => {
 
             <div className="space-y-4 text-gray-600 dark:text-gray-300">
               <p>
-                With over 5 years of experience in software development,
-                I&apos;ve had the privilege of working on diverse projects
-                ranging from small startups to enterprise-level applications. My
+                With over 2 years of experience in software development,
+                I&apos;ve had the privilege of working on diverse projects. My
                 journey began with a curiosity about how things work, which led
                 me to pursue computer science and eventually specialize in
                 full-stack development.
               </p>
 
               <p>
-                I&apos;m passionate about writing clean, efficient code and
-                staying up-to-date with the latest technologies. My approach to
-                development focuses on creating scalable, maintainable solutions
-                that not only meet current requirements but also adapt to future
-                needs.
+                I&apos;m passionate about solving complex problems, writing
+                clean, efficient code and staying up-to-date with the latest
+                technologies. My approach to development focuses on creating
+                scalable, maintainable solutions that not only meet current
+                requirements but also adapt to future needs.
               </p>
 
               <p>
-                When I&apos;m not coding, you can find me contributing to
-                open-source projects, mentoring junior developers, or exploring
-                new technologies. I believe in continuous learning and sharing
-                knowledge with the developer community.
+                When I&apos;m not coding, you can usually find me at the gym,
+                playing badminton, traveling to explore new places, or reading
+                books. I enjoy continuous learning and believe in sharing
+                knowledge and experiences with the community around me.
               </p>
             </div>
 
@@ -135,7 +134,7 @@ const About = () => {
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                    5+
+                    2+
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-300">
                     Years Experience
@@ -144,7 +143,7 @@ const About = () => {
 
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                    50+
+                    5+
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-300">
                     Projects Completed
@@ -178,12 +177,13 @@ const About = () => {
               </h4>
               <div className="flex flex-wrap gap-3">
                 {[
-                  "🎸 Playing Guitar",
-                  "📚 Reading Tech Blogs",
+                  "🏋️‍♂️ Gym & Fitness",
                   "🏃‍♂️ Running",
-                  "🎮 Gaming",
+                  "🏸 Playing Badminton",
+                  "🌍 Traveling & Exploring New Places",
+                  "📖 Reading Books",
                   "📷 Photography",
-                  "🌱 Gardening",
+                  "🎮 Gaming",
                 ].map((interest, index) => (
                   <span
                     key={index}

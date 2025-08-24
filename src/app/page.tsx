@@ -18,12 +18,12 @@ export default function Home() {
         <Hero />
         <About />
         <Skills />
-        <Projects />
+        {/* <Projects /> */}
         <Experience />
-        <Education />
-        <Blog />
-        <Newsletter />
-        <Testimonials />
+        {/* <Education /> */}
+        {/* <Blog /> */}
+        {/* <Newsletter /> */}
+        {/* <Testimonials /> */}
         <Contact />
       </main>
     </div>
