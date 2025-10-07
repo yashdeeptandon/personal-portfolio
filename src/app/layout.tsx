@@ -4,6 +4,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import SessionProvider from "@/components/SessionProvider";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,11 +38,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Google Analytics */}
+        <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID || "JY83MF1718"} />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter" />
+        <Script src="https://api.ipify.org?format=json" strategy="afterInteractive" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Google Analytics */}
-        <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID || ""} />
+
         <Analytics />
         <SessionProvider>{children}</SessionProvider>
       </body>

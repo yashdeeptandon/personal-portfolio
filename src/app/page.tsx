@@ -9,10 +9,12 @@ import Blog from "@/components/Blog";
 import Newsletter from "@/components/Newsletter";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
+import TestCookies from "@/components/TestCookies";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
+      <TestCookies />
       <Navigation />
       <main>
         <Hero />
