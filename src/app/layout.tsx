@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* 🔒 Load the GoTrust banner bundle BEFORE any tracking/vendor scripts */}
         <Script
           id="gotrust-bundle"
-          src="https://d1axzsitviir9s.cloudfront.net/gotrust-dev/cookie-banner.bundle.js"
+          src="https://ydt-aws-bucket.s3.ap-south-1.amazonaws.com/cookie-banner-uat.bundle.js"
           strategy="beforeInteractive"
           data-safe="true"
         />
