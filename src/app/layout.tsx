@@ -32,10 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* 🔒 Load the GoTrust banner bundle BEFORE any tracking/vendor scripts */}
         <Script
-          id="gotrust-bundle"
-          src="https://ydt-aws-bucket.s3.ap-south-1.amazonaws.com/cookie-banner-uat.bundle.js"
-          strategy="beforeInteractive"
-          data-safe="true"
+          id="cookieyes"
+          src="https://cdn-cookieyes.com/client_data/4fb48af9d65ba19436213236/script.js"
+          type="text/javascript"
         />
 
         {/* ⚠️ OPTIONAL (for blocking tests only). Leave these in if you want to
