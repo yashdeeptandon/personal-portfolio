@@ -246,7 +246,7 @@ const Experience = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                5+
+                2+
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-300">
                 Years Experience
@@ -254,7 +254,7 @@ const Experience = () => {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                4
+                1
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-300">
                 Companies

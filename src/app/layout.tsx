@@ -29,68 +29,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        {/* 🔒 Load the GoTrust banner bundle BEFORE any tracking/vendor scripts */}
-        <Script
-          id="cookieyes"
-          src="https://cdn-cookieyes.com/client_data/4fb48af9d65ba19436213236/script.js"
-          type="text/javascript"
-        />
-
-        {/* ⚠️ OPTIONAL (for blocking tests only). Leave these in if you want to
-            verify the baseline blocker stops them pre-consent; otherwise remove. */}
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter" />
-        <Script src="https://api.ipify.org?format=json" strategy="afterInteractive" />
-      </head>
-
+      <head></head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* 🍪 Banner mount point (must exist in DOM) */}
-        <div id="gotrust-cookie-banner" data-consent-banner="gotrust" />
-
-        {/* 🔧 Initialize AFTER DOM is ready, retry briefly, respect DNT */}
-        <Script id="gotrust-init" strategy="afterInteractive">
-          {`
-            (function () {
-              var selector = '#gotrust-cookie-banner';
-              var props = {
-                domainUrl: 'https://www.yashdeeptandon.me/',
-                environment: 'https://dev.gotrust.tech',
-                domain_id: '242',
-                respectDNT: (navigator.doNotTrack === '1' || navigator.doNotTrack === 'yes')
-              };
-
-              // avoid double init for this selector
-              window.__GOTRUST_BANNER_INITED__ = window.__GOTRUST_BANNER_INITED__ || {};
-
-              function tryInit(){
-                if (!window.CookieBanner || typeof window.CookieBanner.init !== 'function') return false;
-                if (window.__GOTRUST_BANNER_INITED__[selector]) return true;
-                window.__GOTRUST_BANNER_INITED__[selector] = true;
-                window.CookieBanner.init(selector, props);
-                return true;
-              }
-
-              function ready(fn){
-                if (document.readyState !== 'loading') fn();
-                else document.addEventListener('DOMContentLoaded', fn);
-              }
-
-              ready(function(){
-                if (tryInit()) return;
-                var onReady = function(){
-                  if (tryInit()) window.removeEventListener('CookieBannerReady', onReady);
-                };
-                window.addEventListener('CookieBannerReady', onReady);
-
-                var attempts = 0;
-                var t = setInterval(function(){
-                  attempts++;
-                  if (tryInit() || attempts > 20) clearInterval(t);
-                }, 100);
-              });
-            })();
-          `}
-        </Script>
 
         {/* 🧠 Your app */}
         <SessionProvider>{children}</SessionProvider>
