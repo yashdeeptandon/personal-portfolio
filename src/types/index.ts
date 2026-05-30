@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 
 // User Types
-export interface IUser extends Document {
+export interface IUser extends Omit<Document, '_id'> {
   _id: string;
   email: string;
   password: string;
@@ -14,7 +14,7 @@ export interface IUser extends Document {
 }
 
 // Blog Types
-export interface IBlog extends Document {
+export interface IBlog extends Omit<Document, '_id'> {
   _id: string;
   title: string;
   slug: string;
@@ -39,7 +39,7 @@ export interface IBlog extends Document {
 }
 
 // Project Types
-export interface IProject extends Document {
+export interface IProject extends Omit<Document, '_id'> {
   _id: string;
   title: string;
   slug: string;
@@ -67,7 +67,7 @@ export interface IProject extends Document {
 }
 
 // Testimonial Types
-export interface ITestimonial extends Document {
+export interface ITestimonial extends Omit<Document, '_id'> {
   _id: string;
   name: string;
   email: string;
@@ -86,7 +86,7 @@ export interface ITestimonial extends Document {
 }
 
 // Contact Types
-export interface IContact extends Document {
+export interface IContact extends Omit<Document, '_id'> {
   _id: string;
   name: string;
   email: string;
@@ -104,7 +104,7 @@ export interface IContact extends Document {
 }
 
 // Newsletter Types
-export interface INewsletter extends Document {
+export interface INewsletter extends Omit<Document, '_id'> {
   _id: string;
   email: string;
   name?: string;
@@ -122,7 +122,7 @@ export interface INewsletter extends Document {
 }
 
 // Analytics Types
-export interface IAnalytics extends Document {
+export interface IAnalytics extends Omit<Document, '_id'> {
   _id: string;
   type:
     | "page_view"
@@ -213,7 +213,7 @@ export interface CacheOptions {
 }
 
 // Settings Types
-export interface ISettings extends Document {
+export interface ISettings extends Omit<Document, '_id'> {
   _id: string;
   // Site Information
   siteName: string;

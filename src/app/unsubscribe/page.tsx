@@ -170,10 +170,10 @@ function UnsubscribeContent() {
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 Having trouble? Contact me at{" "}
                 <a
-                  href="mailto:yashdeep@yashdeeptandon.me"
+                  href="mailto:yashdeeptandon007@gmail.com"
                   className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  yashdeep@yashdeeptandon.me
+                  yashdeeptandon007@gmail.com
                 </a>
               </p>
             </div>
