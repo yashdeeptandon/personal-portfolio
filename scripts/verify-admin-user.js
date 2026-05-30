@@ -5,6 +5,9 @@
  * Usage: node scripts/verify-admin-user.js
  */
 
+// @ts-nocheck
+
+
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 require("dotenv").config({ path: ".env.local" });

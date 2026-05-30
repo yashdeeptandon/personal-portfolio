@@ -7,8 +7,8 @@ import AnimatedSection from "./ui/AnimatedSection";
 const contactInfo = [
   {
     title: "Email",
-    value: "yashdeep@yashdeeptandon.me",
-    link: "mailto:yashdeep@yashdeeptandon.me",
+    value: "yashdeeptandon007@gmail.com",
+    link: "mailto:yashdeeptandon007@gmail.com",
     iconPath: "M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
   },
   {
