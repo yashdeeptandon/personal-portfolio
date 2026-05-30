@@ -332,7 +332,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   {post.author}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Full-Stack Developer & Software Engineer
+                  Full-Stack Developer & Sr. Software Engineer
                 </p>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                   Passionate about building scalable web applications and

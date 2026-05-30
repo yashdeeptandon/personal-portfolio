@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export default function NewsletterPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow">
+      <header className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
@@ -41,7 +41,7 @@ export default function NewsletterPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900">
+      <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             Join My Newsletter
@@ -102,7 +102,7 @@ export default function NewsletterPage() {
       <Newsletter />
 
       {/* What You'll Get */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-16 bg-white/15 dark:bg-gray-800/15 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             What You&apos;ll Get
@@ -187,7 +187,7 @@ export default function NewsletterPage() {
       </section>
 
       {/* Recent Posts Preview */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+      <section className="py-16 bg-gray-50/15 dark:bg-gray-900/15 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             Recent Blog Posts
@@ -258,7 +258,7 @@ export default function NewsletterPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
+      <footer className="bg-gray-900/80 backdrop-blur-md text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p>&copy; 2024 Yashdeep Tandon. All rights reserved.</p>
         </div>

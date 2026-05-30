@@ -96,9 +96,9 @@ export default function BlogPage() {
   const recentPosts = blogPosts.slice(0, 6);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-lg">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <Link
@@ -138,11 +138,11 @@ export default function BlogPage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 pt-20 pb-16">
+      <div className="relative pt-20 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              Blog & Articles
+              Blog &amp; Articles
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Insights, tutorials, and thoughts on web development, technology
@@ -153,7 +153,7 @@ export default function BlogPage() {
       </div>
 
       {/* Featured Posts */}
-      <section className="py-16">
+      <section className="py-16 bg-white/15 dark:bg-gray-900/15 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             Featured Articles
@@ -232,7 +232,7 @@ export default function BlogPage() {
       </section>
 
       {/* All Posts */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-800">
+      <section className="py-16 bg-gray-50/15 dark:bg-gray-800/15 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             All Articles
@@ -311,7 +311,7 @@ export default function BlogPage() {
       <Newsletter />
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
+      <footer className="bg-gray-900/80 backdrop-blur-md text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p>&copy; 2024 Yashdeep Tandon. All rights reserved.</p>
         </div>
