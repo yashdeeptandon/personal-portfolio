@@ -18,13 +18,13 @@ interface ThemeCtx {
 const Ctx = createContext<ThemeCtx>({ theme: "light", toggle: () => {} });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem("theme") as Theme | null;
-    const resolved = saved ?? "light";
+    const resolved = saved ?? "dark";
     setTheme(resolved);
     document.documentElement.classList.toggle("dark", resolved === "dark");
   }, []);
@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <Ctx.Provider value={{ theme: mounted ? theme : "light", toggle }}>
+    <Ctx.Provider value={{ theme: mounted ? theme : "dark", toggle }}>
       {children}
     </Ctx.Provider>
   );
