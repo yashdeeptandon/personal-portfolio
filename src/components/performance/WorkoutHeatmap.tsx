@@ -6,6 +6,7 @@ import type { WorkoutCalendarDay } from "@/types/health";
 
 interface Props {
   data: WorkoutCalendarDay[];
+  year: number;
 }
 
 const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -18,71 +19,93 @@ function getColor(count: number) {
   return "#22c55e";
 }
 
-export default function WorkoutHeatmap({ data }: Props) {
-  const { grid, monthLabels } = useMemo(() => {
-    if (!data.length) return { grid: [], monthLabels: [] };
+export default function WorkoutHeatmap({ data, year }: Props) {
+  const { grid, monthLabels, totalWorkouts, activeDays } = useMemo(() => {
+    if (!data.length) return { grid: [], monthLabels: [], totalWorkouts: 0, activeDays: 0 };
 
-    // Last 52 weeks
-    const last = new Date(data[data.length - 1].date + "T00:00:00Z");
-    const cutoff = new Date(last);
-    cutoff.setUTCDate(cutoff.getUTCDate() - 52 * 7);
+    // Filter to selected year
+    const yearData = data.filter((d) => d.year === year);
+    const byDate = new Map(yearData.map((d) => [d.date, d.count]));
 
-    const recent = data.filter((d) => new Date(d.date + "T00:00:00Z") >= cutoff);
-    const byDate = new Map(recent.map((d) => [d.date, d.count]));
+    // Build grid from Jan 1 to Dec 31 of the year (or today for current year)
+    const now = new Date();
+    const isCurrentYear = year === now.getUTCFullYear();
+    const endDate = isCurrentYear ? now : new Date(`${year}-12-31T00:00:00Z`);
 
-    // Build 7×52 grid (row = day of week Mon-Sun, col = week)
-    const startDate = new Date(cutoff);
-    // Align to Monday
-    const startDay = startDate.getUTCDay();
-    const offsetToMon = startDay === 0 ? 6 : startDay - 1;
-    startDate.setUTCDate(startDate.getUTCDate() - offsetToMon);
+    // Find Monday of the week containing Jan 1
+    const jan1 = new Date(`${year}-01-01T00:00:00Z`);
+    const jan1Day = jan1.getUTCDay();
+    const offsetToMon = jan1Day === 0 ? 6 : jan1Day - 1;
+    const startDate = new Date(jan1);
+    startDate.setUTCDate(jan1.getUTCDate() - offsetToMon);
 
     const weeks: { date: string; count: number }[][] = [];
-    let current = new Date(startDate);
+    const current = new Date(startDate);
 
-    for (let w = 0; w < 53; w++) {
+    while (current <= endDate) {
       const week: { date: string; count: number }[] = [];
       for (let d = 0; d < 7; d++) {
         const iso = current.toISOString().slice(0, 10);
         week.push({ date: iso, count: byDate.get(iso) ?? 0 });
         current.setUTCDate(current.getUTCDate() + 1);
+        if (current > endDate && d < 6) {
+          // Pad remaining days
+          for (let p = d + 1; p < 7; p++) {
+            week.push({ date: "", count: -1 }); // -1 = outside range
+          }
+          break;
+        }
       }
-      weeks.push(week);
+      if (week.length === 7) weeks.push(week);
+      if (current > endDate) break;
     }
 
-    // Month label positions
+    // Month labels
     const labels: { label: string; col: number }[] = [];
     weeks.forEach((week, col) => {
-      const monthDay = new Date(week[0].date + "T00:00:00Z");
+      const firstValid = week.find((c) => c.date && c.count >= 0);
+      if (!firstValid) return;
+      const monthDay = new Date(firstValid.date + "T00:00:00Z");
       if (monthDay.getUTCDate() <= 7) {
         labels.push({ label: MONTHS[monthDay.getUTCMonth()], col });
       }
     });
 
-    return { grid: weeks, monthLabels: labels };
-  }, [data]);
+    const totalWorkouts = yearData.reduce((s, d) => s + d.count, 0);
+    const activeDays = yearData.filter((d) => d.count > 0).length;
+
+    return { grid: weeks, monthLabels: labels, totalWorkouts, activeDays };
+  }, [data, year]);
 
   const CELL = 12;
   const GAP = 2;
 
   return (
-    <ChartCard title="Workout Calendar" subtitle="GitHub-style heatmap — each cell = one day">
+    <ChartCard
+      title="Workout Calendar"
+      subtitle={`${year} · ${totalWorkouts} workouts · ${activeDays} active days`}
+    >
       <div className="overflow-x-auto">
-        <div className="flex gap-1 items-end mb-1">
-          {monthLabels.map((m) => (
-            <div
-              key={`${m.label}-${m.col}`}
-              style={{ marginLeft: m.col === 0 ? 0 : (m.col - (monthLabels.find((x) => x.label === m.label)?.col ?? 0)) * (CELL + GAP) }}
-              className="text-[10px] text-gray-500 shrink-0"
-            >
-              {m.label}
-            </div>
-          ))}
+        {/* Month labels */}
+        <div className="flex ml-8" style={{ gap: GAP }}>
+          {monthLabels.map((m, i) => {
+            const prevCol = i > 0 ? monthLabels[i - 1].col : 0;
+            const gap = i === 0 ? m.col : m.col - prevCol;
+            return (
+              <div
+                key={`${m.label}-${m.col}`}
+                style={{ marginLeft: i === 0 ? m.col * (CELL + GAP) : (gap - 1) * (CELL + GAP) }}
+                className="text-[10px] text-gray-500 shrink-0"
+              >
+                {m.label}
+              </div>
+            );
+          })}
         </div>
 
-        <div className="flex gap-0.5">
+        <div className="flex mt-0.5" style={{ gap: GAP }}>
           {/* Day labels */}
-          <div className="flex flex-col gap-0.5 mr-1">
+          <div className="flex flex-col shrink-0 mr-1" style={{ gap: GAP }}>
             {DAY_LABELS.map((d, i) => (
               <div key={d} style={{ height: CELL }} className="text-[10px] text-gray-600 leading-none flex items-center">
                 {i % 2 === 0 ? d : ""}
@@ -92,12 +115,18 @@ export default function WorkoutHeatmap({ data }: Props) {
 
           {/* Grid */}
           {grid.map((week, wi) => (
-            <div key={wi} className="flex flex-col gap-0.5">
-              {week.map((cell) => (
+            <div key={wi} className="flex flex-col shrink-0" style={{ gap: GAP }}>
+              {week.map((cell, di) => (
                 <div
-                  key={cell.date}
-                  style={{ width: CELL, height: CELL, backgroundColor: getColor(cell.count), borderRadius: 2 }}
-                  title={`${cell.date}: ${cell.count} workout${cell.count !== 1 ? "s" : ""}`}
+                  key={`${cell.date}-${di}`}
+                  style={{
+                    width: CELL,
+                    height: CELL,
+                    backgroundColor: cell.count < 0 ? "transparent" : getColor(cell.count),
+                    borderRadius: 2,
+                    opacity: cell.count < 0 ? 0 : 1,
+                  }}
+                  title={cell.date && cell.count >= 0 ? `${cell.date}: ${cell.count} workout${cell.count !== 1 ? "s" : ""}` : undefined}
                 />
               ))}
             </div>
@@ -111,6 +140,9 @@ export default function WorkoutHeatmap({ data }: Props) {
             <div key={v} style={{ width: 10, height: 10, backgroundColor: getColor(v), borderRadius: 2 }} />
           ))}
           <span className="text-[10px] text-gray-500">More</span>
+          <span className="text-[10px] text-gray-500 ml-3">
+            Use "Heatmap year" filter above to switch year
+          </span>
         </div>
       </div>
     </ChartCard>

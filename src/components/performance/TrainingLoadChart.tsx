@@ -2,7 +2,7 @@
 
 import {
   ComposedChart, Bar, Line, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  CartesianGrid, Legend, ReferenceLine,
+  CartesianGrid, Legend,
 } from "recharts";
 import ChartCard from "@/components/ui/ChartCard";
 import type { TrainingLoadWeek } from "@/types/health";
@@ -18,16 +18,16 @@ function fmtDate(s: string) {
 }
 
 export default function TrainingLoadChart({ data }: Props) {
-  const recent = data.slice(-52);
-  const spikeCount = recent.filter((w) => w.spike).length;
+  const spikeCount = data.filter((w) => w.spike).length;
+  const xInterval = Math.max(0, Math.floor(data.length / 8) - 1);
 
   return (
     <ChartCard
       title="Weekly Training Load"
-      subtitle={`4-week rolling avg · ${spikeCount} spike week${spikeCount !== 1 ? "s" : ""} detected (>20% jump)`}
+      subtitle={`${data.length} weeks · 4-week rolling avg · ${spikeCount} spike week${spikeCount !== 1 ? "s" : ""} (>20% jump)`}
     >
       <ResponsiveContainer width="100%" height={280}>
-        <ComposedChart data={recent} margin={{ top: 6, right: 8, left: 0, bottom: 0 }}>
+        <ComposedChart data={data} margin={{ top: 6, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid stroke={CHART.GRID_STROKE} strokeOpacity={CHART.GRID_OPACITY} vertical={false} />
           <XAxis
             dataKey="week"
@@ -35,7 +35,7 @@ export default function TrainingLoadChart({ data }: Props) {
             tick={{ fill: CHART.TICK_FILL, fontSize: 11 }}
             axisLine={{ stroke: CHART.AXIS_STROKE }}
             tickLine={false}
-            interval={Math.floor(recent.length / 7)}
+            interval={xInterval}
           />
           <YAxis
             tick={{ fill: CHART.TICK_FILL, fontSize: 11 }}
@@ -59,7 +59,7 @@ export default function TrainingLoadChart({ data }: Props) {
           />
           <Legend wrapperStyle={{ fontSize: 12, color: CHART.TICK_FILL }} />
           <Bar dataKey="load" name="load" radius={[2, 2, 0, 0]} maxBarSize={12}>
-            {recent.map((entry, i) => (
+            {data.map((entry, i) => (
               <Cell key={i} fill={entry.spike ? CHART.ACCENT_RED : CHART.ACCENT_INDIGO} opacity={entry.spike ? 1 : 0.75} />
             ))}
           </Bar>
@@ -67,7 +67,6 @@ export default function TrainingLoadChart({ data }: Props) {
         </ComposedChart>
       </ResponsiveContainer>
 
-      {/* Spike legend */}
       <div className="flex items-center gap-3 mt-1 px-1">
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: CHART.ACCENT_RED }} />

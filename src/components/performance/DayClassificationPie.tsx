@@ -7,21 +7,22 @@ import { CHART } from "@/lib/chartTheme";
 
 interface Props {
   data: DailyActivity[];
+  stepThreshold?: number;
 }
 
-export default function DayClassificationPie({ data }: Props) {
-  const active = data.filter((d) => d.active).length;
-  const sedentary = data.filter((d) => d.sedentary).length;
+export default function DayClassificationPie({ data, stepThreshold = 7500 }: Props) {
+  const active = data.filter((d) => (d.steps ?? 0) >= stepThreshold).length;
+  const sedentary = data.filter((d) => (d.steps ?? 0) < 5000).length;
   const moderate = data.length - active - sedentary;
 
   const slices = [
-    { name: "Active (≥7,500)", value: active, color: CHART.ACCENT_GREEN },
-    { name: "Moderate", value: moderate, color: CHART.ACCENT_AMBER },
+    { name: `Active (≥${stepThreshold.toLocaleString()})`, value: active, color: CHART.ACCENT_GREEN },
+    { name: "Moderate (5k–goal)", value: moderate, color: CHART.ACCENT_AMBER },
     { name: "Sedentary (<5,000)", value: sedentary, color: "#6b7280" },
   ].filter((s) => s.value > 0);
 
   return (
-    <ChartCard title="Day Classification" subtitle="Based on daily step counts">
+    <ChartCard title="Day Classification" subtitle={`${data.length} days · step goal ${stepThreshold.toLocaleString()}`}>
       <ResponsiveContainer width="100%" height={240}>
         <PieChart>
           <Pie

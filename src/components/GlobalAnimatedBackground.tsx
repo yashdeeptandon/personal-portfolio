@@ -40,7 +40,7 @@ export default function GlobalAnimatedBackground() {
   }
 
   return (
-    <div className="fixed inset-0 z-[-1] pointer-events-none bg-[#030712]" style={{ willChange: "transform" }} aria-hidden="true">
+    <div className="fixed inset-0 z-[-1] pointer-events-none" style={{ background: "var(--background)", willChange: "transform" }} aria-hidden="true">
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 0, 6], fov: 60 }}

@@ -1,8 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHealthData } from "@/hooks/useHealthData";
+import {
+  DEFAULT_FILTERS,
+  computeDateRange,
+  computeAutoGranularity,
+  applyDateFilter,
+  aggregateActivity,
+  toWeeklyRings,
+  toMonthlyRings,
+  type FilterState,
+} from "@/lib/filterUtils";
+import FilterBar from "./FilterBar";
 
 // Overview tab components
 import KPIRow from "./KPIRow";
@@ -37,6 +48,13 @@ import RoutesTab from "./RoutesTab";
 import ECGTab from "./ECGTab";
 
 // ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+const TABS = ["Overview", "Activity", "Heart", "Performance", "Routes", "ECG"] as const;
+export type Tab = typeof TABS[number];
+
+// ---------------------------------------------------------------------------
 // Skeleton
 // ---------------------------------------------------------------------------
 
@@ -60,13 +78,6 @@ function SkeletonLayout() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Tab definitions
-// ---------------------------------------------------------------------------
-
-const TABS = ["Overview", "Activity", "Heart", "Performance", "Routes", "ECG"] as const;
-type Tab = typeof TABS[number];
-
 const TAB_ICONS: Record<Tab, string> = {
   Overview: "◉",
   Activity: "🏃",
@@ -75,10 +86,6 @@ const TAB_ICONS: Record<Tab, string> = {
   Routes: "🗺",
   ECG: "〰",
 };
-
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
 
 const itemVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -91,6 +98,10 @@ const tabContent = {
   exit: { opacity: 0, y: -8, transition: { duration: 0.15 } },
 };
 
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
 export default function PerformancePage() {
   const {
     kpis, weeklyTrends, monthlySummary, hrZones, workoutTypes,
@@ -100,6 +111,130 @@ export default function PerformancePage() {
   } = useHealthData();
 
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
+  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+
+  // ── Compute effective date range ─────────────────────────────────────────
+  const { from: effectiveFrom, to: effectiveTo } = useMemo(
+    () =>
+      computeDateRange(
+        filters.timeWindow,
+        meta?.data_to ?? new Date().toISOString().slice(0, 10),
+        filters.customFrom,
+        filters.customTo
+      ),
+    [filters.timeWindow, filters.customFrom, filters.customTo, meta]
+  );
+
+  // ── Compute effective granularity ────────────────────────────────────────
+  const effectiveGranularity = useMemo<"daily" | "weekly" | "monthly">(() => {
+    if (filters.granularity !== "auto") return filters.granularity as "daily" | "weekly" | "monthly";
+    return computeAutoGranularity(effectiveFrom, effectiveTo);
+  }, [filters.granularity, effectiveFrom, effectiveTo]);
+
+  // ── Date filter helper ───────────────────────────────────────────────────
+  const filterDate = useCallback(
+    <T extends { date: string }>(arr: T[]) => applyDateFilter(arr, effectiveFrom, effectiveTo),
+    [effectiveFrom, effectiveTo]
+  );
+
+  // ── Filtered slices ──────────────────────────────────────────────────────
+  const filteredDailyActivity = useMemo(
+    () => filterDate(dailyActivity),
+    [dailyActivity, filterDate]
+  );
+
+  const filteredDailyHeart = useMemo(
+    () => filterDate(dailyHeart),
+    [dailyHeart, filterDate]
+  );
+
+  const filteredActivityRings = useMemo(
+    () => filterDate(activityRings),
+    [activityRings, filterDate]
+  );
+
+  const filteredWeeklyTrends = useMemo(
+    () =>
+      weeklyTrends.filter(
+        (w) =>
+          (!effectiveFrom || w.week_start >= effectiveFrom) &&
+          (!effectiveTo || w.week_start <= effectiveTo)
+      ),
+    [weeklyTrends, effectiveFrom, effectiveTo]
+  );
+
+  const filteredTrainingLoad = useMemo(
+    () =>
+      trainingLoad.filter(
+        (w) =>
+          (!effectiveFrom || w.week >= effectiveFrom) &&
+          (!effectiveTo || w.week <= effectiveTo)
+      ),
+    [trainingLoad, effectiveFrom, effectiveTo]
+  );
+
+  // ── Aggregated activity data (for step/cal/exercise charts) ─────────────
+  const aggregatedActivity = useMemo(
+    () => aggregateActivity(filteredDailyActivity, effectiveGranularity),
+    [filteredDailyActivity, effectiveGranularity]
+  );
+
+  // ── Aggregated rings ─────────────────────────────────────────────────────
+  const aggregatedRings = useMemo(() => {
+    if (effectiveGranularity === "monthly") return toMonthlyRings(filteredActivityRings);
+    return toWeeklyRings(filteredActivityRings);
+  }, [filteredActivityRings, effectiveGranularity]);
+
+  // ── Route filters ────────────────────────────────────────────────────────
+  const filteredRoutes = useMemo(() => {
+    let r = routes;
+    if (filters.routeYear !== null)
+      r = r.filter((x) => x.date.startsWith(String(filters.routeYear)));
+    r = r.filter(
+      (x) =>
+        (x.distance_km ?? 0) >= filters.routeMinKm &&
+        (x.distance_km ?? 0) <= filters.routeMaxKm
+    );
+    return r;
+  }, [routes, filters.routeYear, filters.routeMinKm, filters.routeMaxKm]);
+
+  // ── ECG filter ───────────────────────────────────────────────────────────
+  const filteredECG = useMemo(() => {
+    if (filters.ecgClassifications.length === 0) return ecgRecordings;
+    return ecgRecordings.filter((e) =>
+      filters.ecgClassifications.includes(e.classification)
+    );
+  }, [ecgRecordings, filters.ecgClassifications]);
+
+  // ── Derived metadata for FilterBar ──────────────────────────────────────
+  const routeYears = useMemo(
+    () =>
+      [...new Set(routes.map((r) => Number(r.date.slice(0, 4))))].sort(
+        (a, b) => b - a
+      ),
+    [routes]
+  );
+
+  const ecgClasses = useMemo(
+    () => [...new Set(ecgRecordings.map((e) => e.classification))].sort(),
+    [ecgRecordings]
+  );
+
+  const heatmapYears = useMemo(
+    () =>
+      [...new Set(workoutCalendar.map((d) => d.year))].sort((a, b) => b - a),
+    [workoutCalendar]
+  );
+
+  const recordCount = useMemo(() => {
+    if (activeTab === "Activity" || activeTab === "Overview")
+      return filteredDailyActivity.length;
+    if (activeTab === "Heart") return filteredDailyHeart.length;
+    if (activeTab === "Performance") return filteredTrainingLoad.length;
+    if (activeTab === "Routes") return filteredRoutes.length;
+    if (activeTab === "ECG") return filteredECG.length;
+    return filteredDailyActivity.length;
+  }, [activeTab, filteredDailyActivity, filteredDailyHeart, filteredTrainingLoad, filteredRoutes, filteredECG]);
 
   return (
     <main className="relative min-h-screen pt-24 pb-20">
@@ -151,7 +286,7 @@ export default function PerformancePage() {
             </motion.div>
 
             {/* Tab bar */}
-            <div className="flex gap-1 overflow-x-auto pb-1 mb-6 border-b border-white/10">
+            <div className="flex gap-1 overflow-x-auto pb-1 mb-4 border-b border-white/10">
               {TABS.map((tab) => (
                 <button
                   key={tab}
@@ -165,14 +300,40 @@ export default function PerformancePage() {
                   <span>{TAB_ICONS[tab]}</span>
                   {tab}
                   {tab === "Routes" && routes.length > 0 && (
-                    <span className="ml-1 text-xs bg-indigo-500/20 text-indigo-400 rounded-full px-1.5 py-0.5">{routes.length}</span>
+                    <span className="ml-1 text-xs bg-indigo-500/20 text-indigo-400 rounded-full px-1.5 py-0.5">{filteredRoutes.length}</span>
                   )}
                   {tab === "ECG" && ecgRecordings.length > 0 && (
-                    <span className="ml-1 text-xs bg-red-500/20 text-red-400 rounded-full px-1.5 py-0.5">{ecgRecordings.length}</span>
+                    <span className="ml-1 text-xs bg-red-500/20 text-red-400 rounded-full px-1.5 py-0.5">{filteredECG.length}</span>
                   )}
                 </button>
               ))}
             </div>
+
+            {/* Filter bar */}
+            <FilterBar
+              filters={filters}
+              setFilters={setFilters}
+              activeTab={activeTab}
+              dataTo={meta?.data_to ?? ""}
+              recordCount={recordCount}
+              workoutTypes={workoutTypes}
+              routeYears={routeYears}
+              ecgClasses={ecgClasses}
+              heatmapYears={heatmapYears}
+            />
+
+            {/* Active filter summary */}
+            {(effectiveFrom || effectiveTo) && (
+              <p className="text-xs text-indigo-400 mb-3">
+                Showing{" "}
+                {effectiveFrom && effectiveTo
+                  ? `${effectiveFrom} → ${effectiveTo}`
+                  : effectiveFrom
+                  ? `from ${effectiveFrom}`
+                  : `up to ${effectiveTo}`}
+                {" "}· {effectiveGranularity} granularity
+              </p>
+            )}
 
             {/* Tab content */}
             <AnimatePresence mode="wait">
@@ -185,14 +346,14 @@ export default function PerformancePage() {
               >
                 {activeTab === "Overview" && (
                   <div className="space-y-4">
-                    <ActivityTrendsChart data={weeklyTrends} />
+                    <ActivityTrendsChart data={filteredWeeklyTrends} />
                     <div className="grid md:grid-cols-2 gap-4">
                       <WorkoutConsistencyChart data={monthlySummary} />
                       <HRZoneChart data={hrZones} />
                     </div>
-                    <HeartMetricsChart data={weeklyTrends} />
+                    <HeartMetricsChart data={filteredWeeklyTrends} />
                     <div className="grid md:grid-cols-2 gap-4">
-                      <RecoveryScoreChart data={weeklyTrends} />
+                      <RecoveryScoreChart data={filteredWeeklyTrends} />
                       <WorkoutTypesChart data={workoutTypes} />
                     </div>
                     <InsightsPanel kpis={kpis} />
@@ -201,26 +362,48 @@ export default function PerformancePage() {
 
                 {activeTab === "Activity" && (
                   <div className="space-y-4">
-                    <DailyStepsChart data={dailyActivity} />
+                    <DailyStepsChart
+                      data={aggregatedActivity}
+                      granularity={effectiveGranularity}
+                      stepThreshold={filters.stepThreshold}
+                    />
                     <div className="grid md:grid-cols-2 gap-4">
-                      <StackedCaloriesChart data={dailyActivity} />
-                      <ExerciseTimeChart data={dailyActivity} />
+                      <StackedCaloriesChart
+                        data={aggregatedActivity}
+                        granularity={effectiveGranularity}
+                      />
+                      <ExerciseTimeChart
+                        data={aggregatedActivity}
+                        granularity={effectiveGranularity}
+                      />
                     </div>
-                    <WorkoutHeatmap data={workoutCalendar} />
+                    <WorkoutHeatmap
+                      data={workoutCalendar}
+                      year={filters.heatmapYear}
+                    />
                     <div className="grid md:grid-cols-2 gap-4">
-                      <DayClassificationPie data={dailyActivity} />
-                      <ActivityRingsChart data={activityRings} />
+                      <DayClassificationPie
+                        data={filteredDailyActivity}
+                        stepThreshold={filters.stepThreshold}
+                      />
+                      <ActivityRingsChart data={aggregatedRings} granularity={effectiveGranularity} />
                     </div>
                   </div>
                 )}
 
                 {activeTab === "Heart" && (
                   <div className="space-y-4">
-                    <FullHRChart data={dailyHeart} />
-                    <SpO2Chart data={dailyHeart} />
-                    <HeartMetricsChart data={weeklyTrends} />
+                    <FullHRChart
+                      data={filteredDailyHeart}
+                      granularity={effectiveGranularity}
+                      metrics={filters.heartMetrics}
+                    />
+                    {filters.heartMetrics.spo2 && (
+                      <SpO2Chart data={filteredDailyHeart} granularity={effectiveGranularity} />
+                    )}
+                    <HeartMetricsChart data={filteredWeeklyTrends} />
                     <div className="grid md:grid-cols-2 gap-4">
-                      <RecoveryScoreChart data={weeklyTrends} />
+                      <RecoveryScoreChart data={filteredWeeklyTrends} />
                       <HRZoneChart data={hrZones} />
                     </div>
                   </div>
@@ -229,7 +412,7 @@ export default function PerformancePage() {
                 {activeTab === "Performance" && (
                   <div className="space-y-4">
                     <VO2MaxChart data={vo2max} />
-                    <TrainingLoadChart data={trainingLoad} />
+                    <TrainingLoadChart data={filteredTrainingLoad} />
                     <div className="grid md:grid-cols-2 gap-4">
                       <WorkoutTypesChart data={workoutTypes} />
                       <PersonalBestsTable data={workoutsDetail} />
@@ -239,23 +422,31 @@ export default function PerformancePage() {
                 )}
 
                 {activeTab === "Routes" && (
-                  routes.length > 0
-                    ? <RoutesTab routes={routes} />
+                  filteredRoutes.length > 0
+                    ? <RoutesTab routes={filteredRoutes} />
                     : (
                       <div className="rounded-xl border border-white/10 bg-white/5 p-12 text-center">
-                        <p className="text-gray-400 text-sm">No route data available</p>
-                        <p className="text-gray-500 text-xs mt-1">Run parse_routes.py to generate route Parquet files.</p>
+                        <p className="text-gray-400 text-sm">No routes match current filters</p>
+                        <p className="text-gray-500 text-xs mt-1">
+                          {routes.length > 0
+                            ? "Adjust distance or year filters above."
+                            : "Run parse_routes.py to generate route Parquet files."}
+                        </p>
                       </div>
                     )
                 )}
 
                 {activeTab === "ECG" && (
-                  ecgRecordings.length > 0
-                    ? <ECGTab recordings={ecgRecordings} />
+                  filteredECG.length > 0
+                    ? <ECGTab recordings={filteredECG} />
                     : (
                       <div className="rounded-xl border border-white/10 bg-white/5 p-12 text-center">
-                        <p className="text-gray-400 text-sm">No ECG data available</p>
-                        <p className="text-gray-500 text-xs mt-1">Run parse_ecg.py to generate ECG Parquet files.</p>
+                        <p className="text-gray-400 text-sm">No ECG recordings match current filters</p>
+                        <p className="text-gray-500 text-xs mt-1">
+                          {ecgRecordings.length > 0
+                            ? "Adjust classification filter above."
+                            : "Run parse_ecg.py to generate ECG Parquet files."}
+                        </p>
                       </div>
                     )
                 )}

@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import SessionProvider from "@/components/SessionProvider";
 import RouteAwareBackground from "@/components/RouteAwareBackground";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 // ❗ Remove your GoogleAnalytics component for now; GTM/GA should be loaded
@@ -29,14 +30,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head></head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <RouteAwareBackground />
-        <SessionProvider>{children}</SessionProvider>
-
-        {/* 📈 Vercel Analytics is fine; it won’t inject third-party cookies by itself.
-            If you prefer, you can move it behind consent as well. */}
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Anti-flash: apply saved theme before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem(‘theme’);if(t===’dark’)document.documentElement.classList.add(‘dark’);}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+        <ThemeProvider>
+          <RouteAwareBackground />
+          <SessionProvider>{children}</SessionProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

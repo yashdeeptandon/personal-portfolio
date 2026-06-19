@@ -2,34 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Light mode (default) ───────────────────────────────────────────────── */
 :root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --border: #e2e8f0;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --radius: 0.5rem;
+
+  /* Chart colours — vibrant, work on both themes */
+  --chart-1: #6366f1;
+  --chart-2: #0891b2;
+  --chart-3: #d97706;
+  --chart-4: #16a34a;
+  --chart-5: #dc2626;
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────────────── */
+.dark {
   --background: #030712;
   --foreground: #ededed;
 
-  /* Shadcn chart colour palette — vibrant on dark backgrounds */
-  --chart-1: #6366f1; /* indigo-500  */
-  --chart-2: #22d3ee; /* cyan-400    */
-  --chart-3: #f59e0b; /* amber-400   */
-  --chart-4: #22c55e; /* green-500   */
-  --chart-5: #ef4444; /* red-500     */
-
-  /* Shadcn UI tokens used by chart.tsx */
-  --border: #1f2937;            /* gray-800  */
-  --muted: #111827;             /* gray-900  */
-  --muted-foreground: #9ca3af;  /* gray-400  */
+  --border: #1f2937;
+  --muted: #111827;
+  --muted-foreground: #9ca3af;
   --card: #0d1117;
   --popover: #0d1117;
   --popover-foreground: #ededed;
-  --radius: 0.5rem;
+
+  --chart-1: #6366f1;
+  --chart-2: #22d3ee;
+  --chart-3: #f59e0b;
+  --chart-4: #22c55e;
+  --chart-5: #ef4444;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ── Reset ──────────────────────────────────────────────────────────────── */
 * {
   margin: 0;
   padding: 0;
@@ -47,51 +60,30 @@ body {
   line-height: 1.6;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
+.dark ::-webkit-scrollbar-track { background: #1e293b; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-/* Dark mode scrollbar */
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-track {
-    background: #2d2d2d;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #555;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #777;
-  }
-}
-
-/* Focus styles for accessibility */
+/* ── Focus ──────────────────────────────────────────────────────────────── */
 .focus-visible:focus {
   outline: 2px solid #6366f1;
   outline-offset: 2px;
 }
 
-/* Smooth transitions for theme switching — exclude transform/opacity so Framer Motion owns those */
-* {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+/* ── Theme transitions (skip transform/opacity — Framer Motion owns those) */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* Respect reduced-motion preference — Framer Motion also checks this internally */
+/* ── Reduced-motion ─────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
