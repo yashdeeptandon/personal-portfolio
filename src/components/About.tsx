@@ -85,9 +85,16 @@ const About = () => {
                 requirements but also adapt to future needs.
               </p>
               <p>
-                When I&apos;m not coding, you can usually find me at the gym, playing badminton,
-                traveling to explore new places, or reading books. I enjoy continuous learning and
-                believe in sharing knowledge with the community.
+                When I&apos;m not coding, I&apos;m chasing PRs — personal records. I log every
+                run, workout, and recovery metric through Apple Watch, and I&apos;ve built a custom
+                Python pipeline to surface the patterns. You can explore that data in the{" "}
+                <a
+                  href="/performance"
+                  className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2 transition-colors"
+                >
+                  Performance dashboard
+                </a>
+                .
               </p>
             </div>
 

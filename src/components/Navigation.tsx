@@ -2,14 +2,33 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navItems = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#experience", label: "Experience" },
-  { href: "#contact", label: "Contact" },
+type NavItem =
+  | { href: string; label: string; type: "anchor" }
+  | { href: string; label: string; type: "route"; icon?: React.ReactNode };
+
+const ActivityRingIcon = () => (
+  <svg
+    viewBox="0 0 16 16"
+    fill="none"
+    className="w-4 h-4 inline-block mr-1 -mt-0.5"
+    aria-hidden="true"
+  >
+    <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.35" />
+    <circle cx="8" cy="8" r="4" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.6" />
+    <circle cx="8" cy="8" r="1.5" fill="currentColor" fillOpacity="0.8" />
+  </svg>
+);
+
+const navItems: NavItem[] = [
+  { href: "#home", label: "Home", type: "anchor" },
+  { href: "#about", label: "About", type: "anchor" },
+  { href: "#skills", label: "Skills", type: "anchor" },
+  { href: "#experience", label: "Experience", type: "anchor" },
+  { href: "#contact", label: "Contact", type: "anchor" },
+  { href: "/performance", label: "Performance", type: "route", icon: <ActivityRingIcon /> },
 ];
 
 const cubicEase: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
@@ -33,6 +52,7 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,22 +98,53 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-                className="relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
-              >
-                {item.label}
-                <motion.span
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full origin-left"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.2 }}
-                />
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive =
+                item.type === "route"
+                  ? pathname === item.href
+                  : activeSection === item.href.replace("#", "");
+
+              if (item.type === "route") {
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`relative px-4 py-2 text-sm font-medium transition-colors group ${
+                      isActive
+                        ? "text-indigo-500 dark:text-indigo-400"
+                        : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                    }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                    <motion.span
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full origin-left"
+                      initial={{ scaleX: isActive ? 1 : 0 }}
+                      animate={{ scaleX: isActive ? 1 : 0 }}
+                      whileHover={{ scaleX: 1 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </Link>
+                );
+              }
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
+                  className="relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+                >
+                  {item.label}
+                  <motion.span
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile menu button */}
@@ -152,13 +203,28 @@ const Navigation = () => {
             <div className="px-4 py-3 space-y-1">
               {navItems.map((item) => (
                 <motion.div key={item.href} variants={mobileItemVariants}>
-                  <Link
-                    href={item.href}
-                    onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-                    className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
-                  >
-                    {item.label}
-                  </Link>
+                  {item.type === "route" ? (
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`flex items-center px-3 py-2.5 rounded-lg text-base font-medium transition-all ${
+                        pathname === item.href
+                          ? "text-indigo-500 bg-indigo-50 dark:bg-indigo-900/20"
+                          : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                      }`}
+                    >
+                      {item.icon}
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
+                      className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </div>

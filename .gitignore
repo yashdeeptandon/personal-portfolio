@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Apple Health raw export (large files — process locally, commit only public/health-data JSON)
+apple_health_export/

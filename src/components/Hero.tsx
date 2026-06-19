@@ -24,6 +24,7 @@ const roles = [
   "Sr. Software Engineer",
   "React Specialist",
   "Problem Solver",
+  "Endurance Athlete",
 ];
 
 const Hero = () => {

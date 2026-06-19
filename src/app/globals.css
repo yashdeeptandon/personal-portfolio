@@ -5,6 +5,22 @@
 :root {
   --background: #030712;
   --foreground: #ededed;
+
+  /* Shadcn chart colour palette — vibrant on dark backgrounds */
+  --chart-1: #6366f1; /* indigo-500  */
+  --chart-2: #22d3ee; /* cyan-400    */
+  --chart-3: #f59e0b; /* amber-400   */
+  --chart-4: #22c55e; /* green-500   */
+  --chart-5: #ef4444; /* red-500     */
+
+  /* Shadcn UI tokens used by chart.tsx */
+  --border: #1f2937;            /* gray-800  */
+  --muted: #111827;             /* gray-900  */
+  --muted-foreground: #9ca3af;  /* gray-400  */
+  --card: #0d1117;
+  --popover: #0d1117;
+  --popover-foreground: #ededed;
+  --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,0 +1,180 @@
+{
+  "recordings": [
+    {
+      "id": "ecg_2024-09-10",
+      "date": "2024-09-10",
+      "classification": "High Heart Rate",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-11-18",
+      "date": "2023-11-18",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-08-19",
+      "date": "2023-08-19",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-07-02",
+      "date": "2023-07-02",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-05-09",
+      "date": "2023-05-09",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-03-28",
+      "date": "2023-03-28",
+      "classification": "Poor Recording",
+      "device": "Watch6,7",
+      "duration_sec": 26.9,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 13776,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-03-19_4",
+      "date": "2023-03-19",
+      "classification": "Poor Recording",
+      "device": "Watch6,7",
+      "duration_sec": 26.9,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 13792,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-03-19_3",
+      "date": "2023-03-19",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-03-19_2",
+      "date": "2023-03-19",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-03-19_1",
+      "date": "2023-03-19",
+      "classification": "Poor Recording",
+      "device": "Watch6,7",
+      "duration_sec": 25.8,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 13200,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-03-19",
+      "date": "2023-03-19",
+      "classification": "High Heart Rate",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-03-18",
+      "date": "2023-03-18",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-02-11",
+      "date": "2023-02-11",
+      "classification": "High Heart Rate",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2023-01-30",
+      "date": "2023-01-30",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2022-12-18",
+      "date": "2022-12-18",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    },
+    {
+      "id": "ecg_2022-12-06",
+      "date": "2022-12-05",
+      "classification": "Sinus Rhythm",
+      "device": "Watch6,7",
+      "duration_sec": 30.0,
+      "symptoms": null,
+      "sample_rate_hz": 512,
+      "n_samples": 15360,
+      "has_waveform": true
+    }
+  ]
+}

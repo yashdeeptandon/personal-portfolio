@@ -8,9 +8,10 @@ interface Props {
   suffix?: string;
   prefix?: string;
   duration?: number;
+  decimals?: number;
 }
 
-export default function CountUp({ target, suffix = "", prefix = "", duration = 1.5 }: Props) {
+export default function CountUp({ target, suffix = "", prefix = "", duration = 1.5, decimals = 0 }: Props) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
@@ -28,7 +29,7 @@ export default function CountUp({ target, suffix = "", prefix = "", duration = 1
         setCount(target);
         clearInterval(timer);
       } else {
-        setCount(Math.floor(start));
+        setCount(parseFloat(start.toFixed(decimals)));
       }
     }, interval);
 
@@ -37,7 +38,7 @@ export default function CountUp({ target, suffix = "", prefix = "", duration = 1
 
   return (
     <span ref={ref}>
-      {prefix}{count}{suffix}
+      {prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}
     </span>
   );
 }
