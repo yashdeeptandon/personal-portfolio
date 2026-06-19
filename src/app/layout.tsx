@@ -1,7 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import SessionProvider from "@/components/SessionProvider";
 import RouteAwareBackground from "@/components/RouteAwareBackground";
 import { ThemeProvider } from "@/components/ThemeProvider";

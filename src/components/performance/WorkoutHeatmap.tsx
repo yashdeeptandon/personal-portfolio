@@ -141,7 +141,7 @@ export default function WorkoutHeatmap({ data, year }: Props) {
           ))}
           <span className="text-[10px] text-gray-500">More</span>
           <span className="text-[10px] text-gray-500 ml-3">
-            Use "Heatmap year" filter above to switch year
+            Use &ldquo;Heatmap year&rdquo; filter above to switch year
           </span>
         </div>
       </div>
