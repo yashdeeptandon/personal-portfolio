@@ -7,29 +7,31 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/ThemeProvider";
 
 type NavItem =
-  | { href: string; label: string; type: "anchor" }
+  | { href: string; label: string; type: "anchor"; icon?: React.ReactNode }
   | { href: string; label: string; type: "route"; icon?: React.ReactNode };
 
-const ActivityRingIcon = () => (
-  <svg
-    viewBox="0 0 16 16"
-    fill="none"
-    className="w-4 h-4 inline-block mr-1 -mt-0.5"
-    aria-hidden="true"
-  >
-    <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.35" />
-    <circle cx="8" cy="8" r="4" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.6" />
-    <circle cx="8" cy="8" r="1.5" fill="currentColor" fillOpacity="0.8" />
+const NavIcon = ({ d, viewBox = "0 0 24 24" }: { d: string; viewBox?: string }) => (
+  <svg viewBox={viewBox} fill="none" className="w-4 h-4 inline-block mr-1 -mt-0.5" aria-hidden="true" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
   </svg>
 );
 
 const navItems: NavItem[] = [
-  { href: "#home", label: "Home", type: "anchor" },
-  { href: "#about", label: "About", type: "anchor" },
-  { href: "#skills", label: "Skills", type: "anchor" },
-  { href: "#experience", label: "Experience", type: "anchor" },
-  { href: "#contact", label: "Contact", type: "anchor" },
-  { href: "/performance", label: "Performance", type: "route", icon: <ActivityRingIcon /> },
+  { href: "#home", label: "Home", type: "anchor", icon: <NavIcon d="M3 12L12 3l9 9M4 10.5V21h6v-6h4v6h6V10.5" /> },
+  { href: "#about", label: "About", type: "anchor", icon: <NavIcon d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /> },
+  { href: "#skills", label: "Skills", type: "anchor", icon: <NavIcon d="M16 18l6-6-6-6M8 6l-6 6 6 6" /> },
+  { href: "#experience", label: "Experience", type: "anchor", icon: <NavIcon d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /> },
+  { href: "#contact", label: "Contact", type: "anchor", icon: <NavIcon d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6" /> },
+  {
+    href: "/performance", label: "Performance", type: "route",
+    icon: (
+      <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 inline-block mr-1 -mt-0.5" aria-hidden="true">
+        <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.35" />
+        <circle cx="8" cy="8" r="4" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.6" />
+        <circle cx="8" cy="8" r="1.5" fill="currentColor" fillOpacity="0.8" />
+      </svg>
+    ),
+  },
 ];
 
 const cubicEase: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
@@ -161,6 +163,7 @@ const Navigation = () => {
                   onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
                   className="relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
                 >
+                  {item.icon}
                   {item.label}
                   <motion.span
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full origin-left"
@@ -249,8 +252,9 @@ const Navigation = () => {
                     <Link
                       href={item.href}
                       onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-                      className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                      className="flex items-center px-3 py-2.5 rounded-lg text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
                     >
+                      {item.icon}
                       {item.label}
                     </Link>
                   )}

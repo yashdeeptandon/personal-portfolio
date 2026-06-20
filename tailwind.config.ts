@@ -9,6 +9,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-jetbrains-mono)", "monospace"],
+        mono: ["var(--font-jetbrains-mono)", "monospace"],
+        display: ["var(--font-space-grotesk)", "sans-serif"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

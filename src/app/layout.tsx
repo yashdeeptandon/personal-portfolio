@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import SessionProvider from "@/components/SessionProvider";
 import RouteAwareBackground from "@/components/RouteAwareBackground";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -9,8 +9,20 @@ import "./globals.css";
 // ❗ Remove your GoogleAnalytics component for now; GTM/GA should be loaded
 //     by your consent managers only AFTER consent.
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const jetbrainsMono = localFont({
+  src: [
+    { path: "../../public/fonts/jetbrains-mono-normal.woff2", style: "normal" },
+    { path: "../../public/fonts/jetbrains-mono-italic.woff2", style: "italic" },
+  ],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+const spaceGrotesk = localFont({
+  src: [{ path: "../../public/fonts/space-grotesk-normal.woff2", style: "normal" }],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Yashdeep Tandon - Sr. Software Engineer Portfolio",
@@ -38,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${jetbrainsMono.variable} ${spaceGrotesk.variable} antialiased`} suppressHydrationWarning>
         <ThemeProvider>
           <RouteAwareBackground />
           <SessionProvider>{children}</SessionProvider>

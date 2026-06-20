@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHealthData } from "@/hooks/useHealthData";
 import {
@@ -240,6 +241,15 @@ export default function PerformancePage() {
     <main className="relative min-h-screen pt-24 pb-20">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors mb-6 group"
+        >
+          <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
+          Back to portfolio
+        </Link>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
           <div>
             <p className="text-xs font-semibold tracking-widest uppercase text-indigo-400 mb-2">
@@ -249,8 +259,8 @@ export default function PerformancePage() {
               Performance Dashboard
             </h1>
             <p className="mt-2 text-gray-400 text-sm max-w-xl">
-              Real Apple Health data — steps, heart rate, VO₂ Max, GPS routes, training load,
-              and recovery metrics processed through a custom Python pipeline.
+              Apple Health data — steps, heart rate, VO₂ Max, GPS routes, training load,
+              and recovery metrics.
             </p>
           </div>
           {meta && (
