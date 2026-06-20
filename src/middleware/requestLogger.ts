@@ -21,19 +21,10 @@ export function withRequestLogging<T extends any[]>(
     const url = request.url;
     const pathname = new URL(url).pathname;
 
-    // Add request ID to headers for tracing
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("x-request-id", requestId);
-
     // Get client information
     const ipAddress = getClientIP(request);
     const userAgent = getUserAgent(request);
     const deviceInfo = parseUserAgent(userAgent);
-
-    // Create enhanced request object
-    const enhancedRequest = new NextRequest(request, {
-      headers: requestHeaders,
-    });
 
     // Log incoming request
     const requestContext = {
@@ -47,7 +38,7 @@ export function withRequestLogging<T extends any[]>(
 
     try {
       // Execute the handler
-      const response = await handler(enhancedRequest, ...args);
+      const response = await handler(request, ...args);
 
       const duration = Date.now() - startTime;
       const statusCode = response.status;

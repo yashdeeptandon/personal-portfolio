@@ -204,6 +204,62 @@ export interface ECGWaveform {
   voltage_uv: number[];
 }
 
+// Running Analytics
+export interface RunEntry {
+  date: string;
+  distance_km: number | null;
+  duration_min: number | null;
+  pace_min_per_km: number | null;
+  speed_kmh: number | null;
+  calories: number | null;
+  hr_avg: number | null;
+  hr_max: number | null;
+  is_outdoor: boolean;
+  route_id: string | null;
+}
+
+export interface RunningTotals {
+  total_runs: number;
+  outdoor_runs: number;
+  indoor_runs: number;
+  total_km: number | null;
+  total_duration_h: number | null;
+  avg_pace_min_per_km: number | null;
+  best_pace_min_per_km: number | null;
+  avg_distance_km: number | null;
+}
+
+export interface RunWeekly {
+  week: string;
+  runs: number;
+  distance_km: number;
+  duration_min: number;
+  avg_hr: number | null;
+}
+
+export interface RunMonthly {
+  month: string;
+  runs: number;
+  distance_km: number;
+  avg_hr: number | null;
+  avg_pace: number | null;
+}
+
+export interface RunByYear {
+  year: number;
+  runs: number;
+  distance_km: number;
+  duration_h: number;
+}
+
+export interface RunningAnalytics {
+  all_runs: RunEntry[];
+  totals: RunningTotals;
+  weekly: RunWeekly[];
+  monthly: RunMonthly[];
+  by_year: RunByYear[];
+}
+
 // Main hook return
 export interface HealthData {
   meta: HealthMeta | null;
@@ -221,6 +277,7 @@ export interface HealthData {
   activityRings: ActivityRingDay[];
   routes: RouteSummary[];
   ecgRecordings: ECGRecording[];
+  runningAnalytics: RunningAnalytics | null;
   isLoading: boolean;
   error: string | null;
 }

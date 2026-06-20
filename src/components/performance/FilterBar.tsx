@@ -4,7 +4,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import type { FilterState, TimeWindow, Granularity } from "@/lib/filterUtils";
 import type { WorkoutType } from "@/types/health";
 
-type Tab = "Overview" | "Activity" | "Heart" | "Performance" | "Routes" | "ECG";
+type Tab = "Overview" | "Activity" | "Heart" | "Performance" | "Running" | "ECG";
 
 interface Props {
   filters: FilterState;
@@ -228,8 +228,8 @@ export default function FilterBar({
         </div>
       )}
 
-      {/* ── Routes tab filters ────────────────────────────────────── */}
-      {activeTab === "Routes" && (
+      {/* ── Running tab filters ────────────────────────────────────── */}
+      {activeTab === "Running" && (
         <div className="flex flex-wrap gap-2 items-center border-t border-white/5 pt-2">
           <span className="text-xs text-gray-500 shrink-0">Distance:</span>
           <input

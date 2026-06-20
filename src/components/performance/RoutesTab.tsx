@@ -42,7 +42,7 @@ export default function RoutesTab({ routes }: Props) {
     if (!selectedId) return;
     setLoadingTrack(true);
     setTrackData(null);
-    fetch(`/health-data/route_tracks/${selectedId}.json`)
+    fetch(`/api/health/route-tracks/${selectedId}`)
       .then<{ id: string; points: RouteTrackPoint[] }>((r) => r.json())
       .then((d) => setTrackData(d.points))
       .catch(() => setTrackData([]))

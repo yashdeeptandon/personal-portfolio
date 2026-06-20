@@ -14,6 +14,7 @@ import {
   ChartBarIcon,
   PhotoIcon,
   Cog6ToothIcon,
+  HeartIcon,
   ArrowRightStartOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
@@ -32,6 +33,7 @@ const navigation = [
   { name: "Testimonials", href: "/admin/testimonials", icon: UsersIcon },
   { name: "Analytics", href: "/admin/analytics", icon: ChartBarIcon },
   { name: "Media", href: "/admin/media", icon: PhotoIcon },
+  { name: "Health Data", href: "/admin/health", icon: HeartIcon },
   { name: "Settings", href: "/admin/settings", icon: Cog6ToothIcon },
 ];
 

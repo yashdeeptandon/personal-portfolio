@@ -87,17 +87,7 @@ export function withAdminAuth(
         method,
         role: session.user.role,
       });
-      // Add user info to request headers for downstream handlers
-      const requestHeaders = new Headers(nextRequest.headers);
-      requestHeaders.set("x-admin-user-id", session.user.id);
-      requestHeaders.set("x-admin-user-email", session.user.email || "");
-      requestHeaders.set("x-admin-user-name", session.user.name || "");
-
-      const enhancedRequest = new NextRequest(nextRequest, {
-        headers: requestHeaders,
-      });
-
-      return handler(enhancedRequest, context);
+      return handler(nextRequest, context);
     }
   );
 }

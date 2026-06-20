@@ -41,7 +41,7 @@ export default function ECGTab({ recordings }: Props) {
     setLoadingWave(true);
     setWaveform(null);
     setZoomStart(0);
-    fetch(`/health-data/ecg_waveforms/${selectedId}.json`)
+    fetch(`/api/health/ecg-waveforms/${selectedId}`)
       .then<ECGWaveform>((r) => r.json())
       .then((d) => setWaveform(d))
       .catch(() => setWaveform(null))
@@ -124,8 +124,8 @@ export default function ECGTab({ recordings }: Props) {
             onChange={(e) => setSelectedId(e.target.value)}
             className="flex-1 bg-gray-900 border border-white/20 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           >
-            {recordings.map((r) => (
-              <option key={r.id} value={r.id}>
+            {recordings.map((r, i) => (
+              <option key={`${r.id}_${i}`} value={r.id}>
                 {r.date} — {r.classification}{r.has_waveform ? "" : " (no waveform)"}
               </option>
             ))}
@@ -217,9 +217,9 @@ export default function ECGTab({ recordings }: Props) {
               </tr>
             </thead>
             <tbody>
-              {recordings.map((r) => (
+              {recordings.map((r, i) => (
                 <tr
-                  key={r.id}
+                  key={`${r.id}_${i}`}
                   className={`border-b border-white/5 cursor-pointer transition-colors ${r.id === selectedId ? "bg-indigo-500/10" : "hover:bg-white/5"}`}
                   onClick={() => setSelectedId(r.id)}
                 >

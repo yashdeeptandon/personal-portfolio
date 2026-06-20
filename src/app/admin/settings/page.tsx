@@ -26,7 +26,7 @@ export default function SettingsPage() {
       if (!response.ok) throw new Error("Failed to fetch settings");
 
       const data = await response.json();
-      setSettings(data.settings);
+      setSettings(data.data.settings);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -58,7 +58,7 @@ export default function SettingsPage() {
       }
 
       const data = await response.json();
-      setSettings(data.settings);
+      setSettings(data.data.settings);
       setSuccess("Settings saved successfully!");
       
       // Clear success message after 3 seconds

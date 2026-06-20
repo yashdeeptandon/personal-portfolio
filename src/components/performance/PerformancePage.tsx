@@ -43,15 +43,15 @@ import WorkoutTypesChart from "./WorkoutTypesChart";
 import PersonalBestsTable from "./PersonalBestsTable";
 import MonthlyWorkoutTable from "./MonthlyWorkoutTable";
 
-// Routes + ECG tabs
-import RoutesTab from "./RoutesTab";
+// Running + ECG tabs
+import RunningTab from "./RunningTab";
 import ECGTab from "./ECGTab";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-const TABS = ["Overview", "Activity", "Heart", "Performance", "Routes", "ECG"] as const;
+const TABS = ["Overview", "Activity", "Heart", "Performance", "Running", "ECG"] as const;
 export type Tab = typeof TABS[number];
 
 // ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ const TAB_ICONS: Record<Tab, string> = {
   Activity: "🏃",
   Heart: "♡",
   Performance: "📈",
-  Routes: "🗺",
+  Running: "🏃",
   ECG: "〰",
 };
 
@@ -106,7 +106,7 @@ export default function PerformancePage() {
   const {
     kpis, weeklyTrends, monthlySummary, hrZones, workoutTypes,
     dailyActivity, dailyHeart, vo2max, trainingLoad, workoutsDetail,
-    workoutCalendar, activityRings, routes, ecgRecordings,
+    workoutCalendar, activityRings, routes, ecgRecordings, runningAnalytics,
     isLoading, error, meta,
   } = useHealthData();
 
@@ -231,10 +231,10 @@ export default function PerformancePage() {
       return filteredDailyActivity.length;
     if (activeTab === "Heart") return filteredDailyHeart.length;
     if (activeTab === "Performance") return filteredTrainingLoad.length;
-    if (activeTab === "Routes") return filteredRoutes.length;
+    if (activeTab === "Running") return runningAnalytics?.totals?.total_runs ?? filteredRoutes.length;
     if (activeTab === "ECG") return filteredECG.length;
     return filteredDailyActivity.length;
-  }, [activeTab, filteredDailyActivity, filteredDailyHeart, filteredTrainingLoad, filteredRoutes, filteredECG]);
+  }, [activeTab, filteredDailyActivity, filteredDailyHeart, filteredTrainingLoad, filteredRoutes, filteredECG, runningAnalytics]);
 
   return (
     <main className="relative min-h-screen pt-24 pb-20">
@@ -299,8 +299,8 @@ export default function PerformancePage() {
                 >
                   <span>{TAB_ICONS[tab]}</span>
                   {tab}
-                  {tab === "Routes" && routes.length > 0 && (
-                    <span className="ml-1 text-xs bg-indigo-500/20 text-indigo-400 rounded-full px-1.5 py-0.5">{filteredRoutes.length}</span>
+                  {tab === "Running" && (runningAnalytics?.totals?.total_runs ?? 0) > 0 && (
+                    <span className="ml-1 text-xs bg-indigo-500/20 text-indigo-400 rounded-full px-1.5 py-0.5">{runningAnalytics?.totals?.total_runs ?? filteredRoutes.length}</span>
                   )}
                   {tab === "ECG" && ecgRecordings.length > 0 && (
                     <span className="ml-1 text-xs bg-red-500/20 text-red-400 rounded-full px-1.5 py-0.5">{filteredECG.length}</span>
@@ -421,19 +421,8 @@ export default function PerformancePage() {
                   </div>
                 )}
 
-                {activeTab === "Routes" && (
-                  filteredRoutes.length > 0
-                    ? <RoutesTab routes={filteredRoutes} />
-                    : (
-                      <div className="rounded-xl border border-white/10 bg-white/5 p-12 text-center">
-                        <p className="text-gray-400 text-sm">No routes match current filters</p>
-                        <p className="text-gray-500 text-xs mt-1">
-                          {routes.length > 0
-                            ? "Adjust distance or year filters above."
-                            : "Run parse_routes.py to generate route Parquet files."}
-                        </p>
-                      </div>
-                    )
+                {activeTab === "Running" && (
+                  <RunningTab analytics={runningAnalytics} routes={routes} />
                 )}
 
                 {activeTab === "ECG" && (
