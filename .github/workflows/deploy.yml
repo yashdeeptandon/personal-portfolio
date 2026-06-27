@@ -95,7 +95,7 @@ jobs:
 
             docker exec nginx-proxy nginx -s reload 2>/dev/null || echo "⚠️  nginx-proxy not running — start manually after first deploy"
 
-            sleep 8
+            sleep 20
             curl -sf http://localhost:3000 > /dev/null && echo "✅ Deploy OK" || {
               echo "❌ Health check failed"
               exit 1
