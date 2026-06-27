@@ -1,0 +1,14 @@
+# Local testing — mirrors production. Uses .env.local for secrets.
+# Usage: docker compose up --build
+services:
+  app:
+    build:
+      context: .
+      target: runner
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
