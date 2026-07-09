@@ -23,7 +23,7 @@ export default function FeaturedRepos({
       fullWidth
     >
       {repos.length === 0 ? (
-        <p className="text-sm text-gray-500 text-center py-8">
+        <p className="text-sm text-muted-foreground text-center py-8">
           No repositories to show yet.
         </p>
       ) : (

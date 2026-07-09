@@ -28,7 +28,7 @@ export default function StatCard({
     <motion.div
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.2 }}
-      className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-4 flex flex-col gap-2"
+      className="relative overflow-hidden rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-sm p-4 flex flex-col gap-2"
     >
       {accent && (
         <div
@@ -38,19 +38,19 @@ export default function StatCard({
       )}
 
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium tracking-wide text-gray-400 uppercase">
+        <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
         </span>
         {icon && (
-          <span className="text-gray-500" style={{ color: accent }}>
+          <span className="text-muted-foreground" style={{ color: accent }}>
             {icon}
           </span>
         )}
       </div>
 
-      <div className="text-2xl font-bold text-white tabular-nums">
+      <div className="text-2xl font-bold text-foreground tabular-nums">
         {value === null ? (
-          <span className="text-gray-600">—</span>
+          <span className="text-muted-foreground/60">—</span>
         ) : (
           <CountUp
             target={value}
@@ -61,7 +61,7 @@ export default function StatCard({
         )}
       </div>
 
-      {sub && <p className="text-xs text-gray-500">{sub}</p>}
+      {sub && <p className="text-xs text-muted-foreground">{sub}</p>}
     </motion.div>
   );
 }

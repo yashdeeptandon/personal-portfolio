@@ -11,7 +11,7 @@ const CATEGORY_COLOR: Record<string, string> = {
   fix: CHART.ACCENT_RED,
   docs: CHART.ACCENT_CYAN,
   chore: CHART.ACCENT_AMBER,
-  other: "#4b5563",
+  other: "var(--muted-foreground)",
 };
 
 export default function EngineeringSignals({ data }: { data: SignalsSectionData }) {
@@ -38,7 +38,7 @@ export default function EngineeringSignals({ data }: { data: SignalsSectionData 
         }
       >
         {totalCommitsClassified === 0 ? (
-          <p className="text-sm text-gray-500 text-center py-4">Nothing to show yet.</p>
+          <p className="text-sm text-muted-foreground text-center py-4">Nothing to show yet.</p>
         ) : (
           <div className="space-y-2">
             <div className="flex h-2 rounded-full overflow-hidden">
@@ -55,7 +55,7 @@ export default function EngineeringSignals({ data }: { data: SignalsSectionData 
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-1">
               {(Object.keys(commitBreakdown) as Array<keyof typeof commitBreakdown>).map((key) => (
-                <div key={key} className="flex items-center gap-1.5 text-xs text-gray-400">
+                <div key={key} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span className="w-2 h-2 rounded-full" style={{ background: CATEGORY_COLOR[key] }} />
                   {key} · {commitBreakdown[key]}
                 </div>
@@ -67,27 +67,27 @@ export default function EngineeringSignals({ data }: { data: SignalsSectionData 
 
       <ChartCard title="Highlights" subtitle="Manually curated engineering milestones">
         {highlights.length === 0 ? (
-          <p className="text-sm text-gray-500 text-center py-6">No highlights added yet.</p>
+          <p className="text-sm text-muted-foreground text-center py-6">No highlights added yet.</p>
         ) : (
           <div className="space-y-2">
             {highlights.map((h) => (
               <div
                 key={`${h.title}-${h.timestamp}`}
-                className="flex gap-3 items-start rounded-lg border-l-2 border-indigo-500/60 bg-white/[0.03] px-3 py-2.5"
+                className="flex gap-3 items-start rounded-lg border-l-2 border-indigo-500/60 bg-foreground/[0.03] px-3 py-2.5"
               >
-                <div className="mt-1.5 w-2 h-2 rounded-full shrink-0 bg-indigo-400" />
+                <div className="mt-1.5 w-2 h-2 rounded-full shrink-0 bg-indigo-500 dark:bg-indigo-400" />
                 <div className="min-w-0">
-                  <p className="text-sm text-gray-200">
+                  <p className="text-sm text-foreground">
                     {h.url ? (
-                      <a href={h.url} target="_blank" rel="noopener noreferrer" className="hover:text-white underline decoration-white/20">
+                      <a href={h.url} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 dark:hover:text-indigo-400 underline decoration-foreground/20">
                         {h.title}
                       </a>
                     ) : (
                       h.title
                     )}
                   </p>
-                  {h.description && <p className="text-xs text-gray-500 mt-0.5">{h.description}</p>}
-                  <p className="text-xs text-gray-600 mt-0.5">{timeAgo(h.timestamp)}</p>
+                  {h.description && <p className="text-xs text-muted-foreground mt-0.5">{h.description}</p>}
+                  <p className="text-xs text-muted-foreground mt-0.5">{timeAgo(h.timestamp)}</p>
                 </div>
               </div>
             ))}

@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHealthData } from "@/hooks/useHealthData";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import {
   DEFAULT_FILTERS,
   computeDateRange,
@@ -60,7 +61,7 @@ export type Tab = typeof TABS[number];
 // ---------------------------------------------------------------------------
 
 function SkeletonCard({ className = "" }: { className?: string }) {
-  return <div className={`rounded-xl border border-white/10 bg-white/5 animate-pulse ${className}`} />;
+  return <div className={`rounded-xl border border-foreground/10 bg-foreground/5 animate-pulse ${className}`} />;
 }
 
 function SkeletonLayout() {
@@ -241,32 +242,35 @@ export default function PerformancePage() {
     <main className="relative min-h-screen pt-24 pb-20">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors mb-6 group"
-        >
-          <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M19 12H5M12 5l-7 7 7 7" />
-          </svg>
-          Back to portfolio
-        </Link>
+        <div className="flex items-center justify-between mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+          >
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            Back to portfolio
+          </Link>
+          <ThemeToggle />
+        </div>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold tracking-widest uppercase text-indigo-400 mb-2">
+            <p className="text-xs font-semibold tracking-widest uppercase text-indigo-600 dark:text-indigo-400 mb-2">
               Personal Analytics
             </p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight">
               Performance Dashboard
             </h1>
-            <p className="mt-2 text-gray-400 text-sm max-w-xl">
+            <p className="mt-2 text-muted-foreground text-sm max-w-xl">
               Apple Health data — steps, heart rate, VO₂ Max, GPS routes, training load,
               and recovery metrics.
             </p>
           </div>
           {meta && (
             <div className="flex items-center gap-2 shrink-0">
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-xs text-gray-500">
+              <div className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse" />
+              <span className="text-xs text-muted-foreground">
                 Updated{" "}
                 {new Date(meta.generated_at).toLocaleDateString("en-US", {
                   month: "long",
@@ -283,8 +287,8 @@ export default function PerformancePage() {
 
         {error && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-center">
-            <p className="text-red-400 text-sm">Health data unavailable — {error}</p>
-            <p className="text-gray-500 text-xs mt-1">Run the Python export script to generate JSON data.</p>
+            <p className="text-red-600 dark:text-red-400 text-sm">Health data unavailable — {error}</p>
+            <p className="text-muted-foreground text-xs mt-1">Run the Python export script to generate JSON data.</p>
           </div>
         )}
 
@@ -296,24 +300,24 @@ export default function PerformancePage() {
             </motion.div>
 
             {/* Tab bar */}
-            <div className="flex gap-1 overflow-x-auto pb-1 mb-4 border-b border-white/10">
+            <div className="flex gap-1 overflow-x-auto pb-1 mb-4 border-b border-foreground/10">
               {TABS.map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`flex items-center gap-1.5 px-4 py-2.5 rounded-t-lg text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                     activeTab === tab
-                      ? "text-white border-b-2 border-indigo-500 -mb-px bg-indigo-500/10"
-                      : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
+                      ? "text-foreground border-b-2 border-indigo-500 -mb-px bg-indigo-500/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                   }`}
                 >
                   <span>{TAB_ICONS[tab]}</span>
                   {tab}
                   {tab === "Running" && (runningAnalytics?.totals?.total_runs ?? 0) > 0 && (
-                    <span className="ml-1 text-xs bg-indigo-500/20 text-indigo-400 rounded-full px-1.5 py-0.5">{runningAnalytics?.totals?.total_runs ?? filteredRoutes.length}</span>
+                    <span className="ml-1 text-xs bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-full px-1.5 py-0.5">{runningAnalytics?.totals?.total_runs ?? filteredRoutes.length}</span>
                   )}
                   {tab === "ECG" && ecgRecordings.length > 0 && (
-                    <span className="ml-1 text-xs bg-red-500/20 text-red-400 rounded-full px-1.5 py-0.5">{filteredECG.length}</span>
+                    <span className="ml-1 text-xs bg-red-500/20 text-red-600 dark:text-red-400 rounded-full px-1.5 py-0.5">{filteredECG.length}</span>
                   )}
                 </button>
               ))}
@@ -334,7 +338,7 @@ export default function PerformancePage() {
 
             {/* Active filter summary */}
             {(effectiveFrom || effectiveTo) && (
-              <p className="text-xs text-indigo-400 mb-3">
+              <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-3">
                 Showing{" "}
                 {effectiveFrom && effectiveTo
                   ? `${effectiveFrom} → ${effectiveTo}`
@@ -439,9 +443,9 @@ export default function PerformancePage() {
                   filteredECG.length > 0
                     ? <ECGTab recordings={filteredECG} />
                     : (
-                      <div className="rounded-xl border border-white/10 bg-white/5 p-12 text-center">
-                        <p className="text-gray-400 text-sm">No ECG recordings match current filters</p>
-                        <p className="text-gray-500 text-xs mt-1">
+                      <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-12 text-center">
+                        <p className="text-muted-foreground text-sm">No ECG recordings match current filters</p>
+                        <p className="text-muted-foreground text-xs mt-1">
                           {ecgRecordings.length > 0
                             ? "Adjust classification filter above."
                             : "Run parse_ecg.py to generate ECG Parquet files."}

@@ -24,21 +24,21 @@ export default function GoalCard({
   const complete = goal.pct >= 100;
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4 space-y-2">
+    <div className="rounded-lg border border-foreground/10 bg-foreground/[0.03] p-4 space-y-2">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-sm font-medium text-gray-200">{goal.label}</p>
-          <p className="text-xs text-gray-500">{PERIOD_LABEL[goal.period] ?? goal.period}</p>
+          <p className="text-sm font-medium text-foreground">{goal.label}</p>
+          <p className="text-xs text-muted-foreground">{PERIOD_LABEL[goal.period] ?? goal.period}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-xs tabular-nums text-gray-400">
+          <span className="text-xs tabular-nums text-muted-foreground">
             {goal.current}/{goal.target} {goal.unit}
           </span>
           {isAdmin && onDelete && (
             <button
               onClick={onDelete}
               aria-label={`Delete goal ${goal.label}`}
-              className="text-gray-600 hover:text-red-400 transition-colors text-xs"
+              className="text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-colors text-xs"
             >
               ✕
             </button>
@@ -48,11 +48,11 @@ export default function GoalCard({
       <ProgressBar
         value={goal.pct}
         height={6}
-        trackClassName="bg-white/5"
+        trackClassName="bg-foreground/5"
         fillColor={complete ? CHART.ACCENT_GREEN : CHART.ACCENT_INDIGO}
       />
       {goal.description && (
-        <p className="text-xs text-gray-500">{goal.description}</p>
+        <p className="text-xs text-muted-foreground">{goal.description}</p>
       )}
     </div>
   );

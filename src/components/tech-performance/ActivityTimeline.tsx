@@ -61,17 +61,17 @@ export default function ActivityTimeline() {
       {isLoading && (
         <div className="space-y-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-10 rounded-md bg-white/5 animate-pulse" />
+            <div key={i} className="h-10 rounded-md bg-foreground/5 animate-pulse" />
           ))}
         </div>
       )}
 
       {!isLoading && error && (
-        <p className="text-sm text-red-400 text-center py-6">{error}</p>
+        <p className="text-sm text-red-600 dark:text-red-400 text-center py-6">{error}</p>
       )}
 
       {!isLoading && !error && events.length === 0 && (
-        <p className="text-sm text-gray-500 text-center py-6">No activity recorded yet.</p>
+        <p className="text-sm text-muted-foreground text-center py-6">No activity recorded yet.</p>
       )}
 
       {!isLoading && !error && events.length > 0 && (
@@ -85,7 +85,7 @@ export default function ActivityTimeline() {
             <button
               onClick={loadMore}
               disabled={isLoadingMore}
-              className="w-full mt-3 py-2 rounded-md text-xs font-medium text-gray-400 bg-white/5 hover:bg-white/10 hover:text-gray-200 transition-colors disabled:opacity-50"
+              className="w-full mt-3 py-2 rounded-md text-xs font-medium text-muted-foreground bg-foreground/5 hover:bg-foreground/10 hover:text-foreground transition-colors disabled:opacity-50"
             >
               {isLoadingMore ? "Loading…" : "Load more"}
             </button>

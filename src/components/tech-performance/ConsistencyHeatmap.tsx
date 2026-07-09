@@ -4,44 +4,51 @@ import { useMemo, useState } from "react";
 import Heatmap from "@/components/ui/Heatmap";
 import SourceToggle from "./SourceToggle";
 import DataSourceBadge from "./DataSourceBadge";
+import { useTheme } from "@/components/ThemeProvider";
 import type { ConsistencySectionData } from "@/types/techPerformance";
 
 type Source = "combined" | "github" | "wakatime";
 
-function githubColor(count: number): string {
-  if (count <= 0) return "#1f2937";
-  if (count <= 2) return "#3730a3";
-  if (count <= 5) return "#4338ca";
-  if (count <= 9) return "#4f46e5";
-  return "#6366f1";
+// Each ramp is [empty, low, mid, high, max]. Dark values are the original
+// (and only) colors this heatmap shipped with; light values are new,
+// desaturated-but-legible equivalents on a white/near-white background —
+// same hue family per source, just re-tuned for the opposite background.
+const RAMPS = {
+  github: {
+    dark: ["#1f2937", "#3730a3", "#4338ca", "#4f46e5", "#6366f1"],
+    light: ["#e2e8f0", "#c7d2fe", "#a5b4fc", "#818cf8", "#6366f1"],
+  },
+  wakatime: {
+    dark: ["#1f2937", "#155e75", "#0e7490", "#0891b2", "#22d3ee"],
+    light: ["#e2e8f0", "#a5f3fc", "#67e8f9", "#22d3ee", "#0891b2"],
+  },
+  combined: {
+    dark: ["#1f2937", "#166534", "#15803d", "#16a34a", "#22c55e"],
+    light: ["#e2e8f0", "#bbf7d0", "#86efac", "#4ade80", "#16a34a"],
+  },
+} as const;
+
+function makeColorScale(ramp: readonly string[], thresholds: readonly number[]) {
+  return (value: number): string => {
+    if (value <= 0) return ramp[0];
+    for (let i = 0; i < thresholds.length; i++) {
+      if (value <= thresholds[i]) return ramp[i + 1];
+    }
+    return ramp[ramp.length - 1];
+  };
 }
 
-function wakatimeColor(minutes: number): string {
-  if (minutes <= 0) return "#1f2937";
-  if (minutes < 60) return "#155e75";
-  if (minutes < 120) return "#0e7490";
-  if (minutes < 240) return "#0891b2";
-  return "#22d3ee";
-}
-
-function combinedColor(score: number): string {
-  if (score <= 0) return "#1f2937";
-  if (score <= 25) return "#166534";
-  if (score <= 50) return "#15803d";
-  if (score <= 75) return "#16a34a";
-  return "#22c55e";
-}
-
-const SOURCE_CONFIG: Record<
+const SOURCE_META: Record<
   Source,
-  { label: string; colorScale: (v: number) => string; legendSteps: number[]; unit: (v: number) => string }
+  { label: string; thresholds: number[]; legendSteps: number[] }
 > = {
-  combined: { label: "Combined", colorScale: combinedColor, legendSteps: [0, 20, 40, 70, 90], unit: (v) => `score ${v}` },
-  github: { label: "GitHub", colorScale: githubColor, legendSteps: [0, 1, 3, 6, 10], unit: (v) => `${v} contribution${v !== 1 ? "s" : ""}` },
-  wakatime: { label: "WakaTime", colorScale: wakatimeColor, legendSteps: [0, 30, 90, 180, 300], unit: (v) => `${Math.round(v / 60)}h ${v % 60}m` },
+  combined: { label: "Combined", thresholds: [25, 50, 75], legendSteps: [0, 20, 40, 70, 90] },
+  github: { label: "GitHub", thresholds: [2, 5, 9], legendSteps: [0, 1, 3, 6, 10] },
+  wakatime: { label: "WakaTime", thresholds: [59, 119, 239], legendSteps: [0, 30, 90, 180, 300] },
 };
 
 export default function ConsistencyHeatmap({ data }: { data: ConsistencySectionData }) {
+  const { theme } = useTheme();
   const [activeSource, setActiveSource] = useState<Source>("combined");
 
   const series = data[activeSource];
@@ -51,7 +58,11 @@ export default function ConsistencyHeatmap({ data }: { data: ConsistencySectionD
   );
   const [year, setYear] = useState(() => years[0] ?? new Date().getFullYear());
 
-  const config = SOURCE_CONFIG[activeSource];
+  const meta = SOURCE_META[activeSource];
+  const colorScale = useMemo(
+    () => makeColorScale(RAMPS[activeSource][theme], meta.thresholds),
+    [activeSource, theme, meta.thresholds]
+  );
   const activeDays = series.filter((d) => d.value > 0).length;
 
   return (
@@ -80,11 +91,11 @@ export default function ConsistencyHeatmap({ data }: { data: ConsistencySectionD
 
       <Heatmap
         title="Coding Consistency"
-        subtitle={`${config.label} · ${year} · ${activeDays} active days`}
+        subtitle={`${meta.label} · ${year} · ${activeDays} active days`}
         data={series}
         year={year}
-        colorScale={config.colorScale}
-        legend={{ steps: config.legendSteps }}
+        colorScale={colorScale}
+        legend={{ steps: meta.legendSteps }}
       />
     </div>
   );

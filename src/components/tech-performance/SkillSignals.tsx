@@ -24,19 +24,19 @@ export default function SkillSignals({ data }: { data: SkillsSectionData }) {
         action={<DataSourceBadge info={data.dataSources.wakatime} />}
       >
         {topByTime.length === 0 ? (
-          <p className="text-sm text-gray-500 text-center py-6">No WakaTime data yet.</p>
+          <p className="text-sm text-muted-foreground text-center py-6">No WakaTime data yet.</p>
         ) : (
           <ul className="space-y-3">
             {topByTime.map((lang) => (
               <li key={lang.name} className="space-y-1">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-200">{lang.name}</span>
-                  <span className="text-gray-500 text-xs tabular-nums">
+                  <span className="text-foreground">{lang.name}</span>
+                  <span className="text-muted-foreground text-xs tabular-nums">
                     {formatHours(lang.totalSeconds)} · {lang.pct.toFixed(0)}%
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                  <div className="flex-1 h-1.5 rounded-full bg-foreground/5 overflow-hidden">
                     <div
                       className="h-full rounded-full"
                       style={{ width: `${Math.min(lang.pct, 100)}%`, background: CHART.ACCENT_INDIGO }}
@@ -60,16 +60,16 @@ export default function SkillSignals({ data }: { data: SkillsSectionData }) {
         action={<DataSourceBadge info={data.dataSources.github} />}
       >
         {topByRepos.length === 0 ? (
-          <p className="text-sm text-gray-500 text-center py-6">No GitHub data yet.</p>
+          <p className="text-sm text-muted-foreground text-center py-6">No GitHub data yet.</p>
         ) : (
           <ul className="space-y-3">
             {topByRepos.map((lang) => (
               <li key={lang.name} className="space-y-1">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-200">{lang.name}</span>
-                  <span className="text-gray-500 text-xs tabular-nums">{lang.pct.toFixed(0)}%</span>
+                  <span className="text-foreground">{lang.name}</span>
+                  <span className="text-muted-foreground text-xs tabular-nums">{lang.pct.toFixed(0)}%</span>
                 </div>
-                <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+                <div className="h-1.5 rounded-full bg-foreground/5 overflow-hidden">
                   <div
                     className="h-full rounded-full"
                     style={{ width: `${Math.min(lang.pct, 100)}%`, background: CHART.ACCENT_GREEN }}

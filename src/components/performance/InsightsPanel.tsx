@@ -82,14 +82,14 @@ function buildInsights(kpis: HealthKPIs): Insight[] {
 
 const borderColor: Record<Insight["color"], string> = {
   green: "border-green-500",
-  amber: "border-amber-400",
+  amber: "border-amber-500 dark:border-amber-400",
   red: "border-red-500",
   indigo: "border-indigo-500",
 };
 
 const dotColor: Record<Insight["color"], string> = {
   green: "bg-green-500",
-  amber: "bg-amber-400",
+  amber: "bg-amber-500 dark:bg-amber-400",
   red: "bg-red-500",
   indigo: "bg-indigo-500",
 };
@@ -102,18 +102,18 @@ export default function InsightsPanel({ kpis }: Props) {
   const insights = buildInsights(kpis);
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
-      <h3 className="text-sm font-semibold text-white tracking-wide mb-4">
+    <div className="rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-sm p-5">
+      <h3 className="text-sm font-semibold text-foreground tracking-wide mb-4">
         Automated Insights
       </h3>
       <div className="grid sm:grid-cols-2 gap-3">
         {insights.map((ins, i) => (
           <div
             key={i}
-            className={`flex gap-3 items-start rounded-lg border-l-2 ${borderColor[ins.color]} bg-white/3 px-3 py-2.5`}
+            className={`flex gap-3 items-start rounded-lg border-l-2 ${borderColor[ins.color]} bg-foreground/[0.03] px-3 py-2.5`}
           >
             <div className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${dotColor[ins.color]}`} />
-            <p className="text-sm text-gray-300 leading-snug">{ins.text}</p>
+            <p className="text-sm text-foreground/80 leading-snug">{ins.text}</p>
           </div>
         ))}
       </div>

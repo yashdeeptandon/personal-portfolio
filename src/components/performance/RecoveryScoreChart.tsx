@@ -37,7 +37,7 @@ export default function RecoveryScoreChart({ data }: Props) {
   if (!last26.length) {
     return (
       <ChartCard title="Recovery Score" subtitle="Insufficient HRV + RHR data">
-        <p className="text-sm text-gray-500 text-center py-8">No recovery data available</p>
+        <p className="text-sm text-muted-foreground text-center py-8">No recovery data available</p>
       </ChartCard>
     );
   }

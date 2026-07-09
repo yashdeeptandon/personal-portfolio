@@ -21,7 +21,7 @@ export default function VO2MaxChart({ data }: Props) {
   if (!data || !data.readings.length) {
     return (
       <ChartCard title="VO₂ Max" subtitle="No VO₂ Max readings available">
-        <div className="h-64 flex items-center justify-center text-gray-500 text-sm">No VO₂ Max data recorded</div>
+        <div className="h-64 flex items-center justify-center text-muted-foreground text-sm">No VO₂ Max data recorded</div>
       </ChartCard>
     );
   }
@@ -98,8 +98,8 @@ export default function VO2MaxChart({ data }: Props) {
           />
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            labelStyle={{ color: "#e5e7eb", fontSize: 12 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            labelStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             labelFormatter={(l: unknown) => fmtDate(l as string)}
             formatter={(v: unknown, name: unknown) => [
               `${Number(v).toFixed(1)} mL/kg/min`,

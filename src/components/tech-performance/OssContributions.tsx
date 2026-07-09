@@ -16,7 +16,7 @@ export default function OssContributions({
       subtitle="Pull requests to repositories outside my own"
     >
       {repos.length === 0 ? (
-        <p className="text-sm text-gray-500 text-center py-6">
+        <p className="text-sm text-muted-foreground text-center py-6">
           No external pull requests found yet.
         </p>
       ) : (
@@ -27,17 +27,17 @@ export default function OssContributions({
             .map((repo) => (
               <li
                 key={repo.nameWithOwner}
-                className="flex items-center justify-between text-sm border-b border-white/5 pb-2 last:border-0 last:pb-0"
+                className="flex items-center justify-between text-sm border-b border-foreground/5 pb-2 last:border-0 last:pb-0"
               >
                 <a
                   href={repo.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-foreground/80 hover:text-foreground transition-colors"
                 >
                   {repo.nameWithOwner}
                 </a>
-                <span className="text-xs text-gray-500 tabular-nums">
+                <span className="text-xs text-muted-foreground tabular-nums">
                   {repo.prCount} PR{repo.prCount !== 1 ? "s" : ""}
                 </span>
               </li>

@@ -50,8 +50,8 @@ export default function StackedCaloriesChart({ data, granularity }: Props) {
           />
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            labelStyle={{ color: "#e5e7eb", fontSize: 12 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            labelStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             labelFormatter={(l: unknown) => fmtDate(l as string, granularity)}
             formatter={(v: unknown) => [Number(v).toLocaleString() + " kcal"]}
           />

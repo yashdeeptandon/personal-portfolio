@@ -39,7 +39,7 @@ export default function SpO2Chart({ data, granularity }: Props) {
   if (!display.length) {
     return (
       <ChartCard title="Blood Oxygen (SpO₂)" subtitle="No SpO₂ data available">
-        <div className="h-48 flex items-center justify-center text-gray-500 text-sm">No SpO₂ readings in selected range</div>
+        <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">No SpO₂ readings in selected range</div>
       </ChartCard>
     );
   }
@@ -81,8 +81,8 @@ export default function SpO2Chart({ data, granularity }: Props) {
           <ReferenceLine y={95} stroke={CHART.ACCENT_AMBER} strokeDasharray="4 3" strokeWidth={1.5} label={{ value: "95%", position: "right", fill: CHART.ACCENT_AMBER, fontSize: 10 }} />
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            labelStyle={{ color: "#e5e7eb", fontSize: 12 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            labelStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             labelFormatter={(l: unknown) => fmtDate(l as string, granularity)}
             formatter={(v: unknown) => [`${Number(v)}%`, "SpO₂"]}
           />

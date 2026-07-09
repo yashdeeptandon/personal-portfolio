@@ -72,7 +72,7 @@ function AddGoalForm({ onCreated }: { onCreated: () => void }) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+        className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
       >
         + Add goal
       </button>
@@ -80,18 +80,18 @@ function AddGoalForm({ onCreated }: { onCreated: () => void }) {
   }
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3 space-y-2">
+    <div className="rounded-lg border border-foreground/10 bg-foreground/[0.03] p-3 space-y-2">
       <input
         value={label}
         onChange={(e) => setLabel(e.target.value)}
         placeholder="Goal label, e.g. Weekly coding hours"
-        className="w-full bg-white/5 border border-white/10 rounded-md px-2 py-1.5 text-sm text-gray-200 placeholder:text-gray-600 focus:outline-none focus:border-indigo-500"
+        className="w-full bg-foreground/5 border border-foreground/10 rounded-md px-2 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-indigo-500"
       />
       <div className="flex flex-wrap gap-2">
         <select
           value={metric}
           onChange={(e) => setMetric(e.target.value as typeof metric)}
-          className="bg-white/5 border border-white/10 rounded-md px-2 py-1.5 text-xs text-gray-300"
+          className="bg-foreground/5 border border-foreground/10 rounded-md px-2 py-1.5 text-xs text-foreground/80"
         >
           {METRIC_OPTIONS.map((m) => (
             <option key={m.value} value={m.value}>{m.label}</option>
@@ -100,7 +100,7 @@ function AddGoalForm({ onCreated }: { onCreated: () => void }) {
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value as typeof period)}
-          className="bg-white/5 border border-white/10 rounded-md px-2 py-1.5 text-xs text-gray-300"
+          className="bg-foreground/5 border border-foreground/10 rounded-md px-2 py-1.5 text-xs text-foreground/80"
         >
           {PERIOD_OPTIONS.map((p) => (
             <option key={p.value} value={p.value}>{p.label}</option>
@@ -111,10 +111,10 @@ function AddGoalForm({ onCreated }: { onCreated: () => void }) {
           min={0}
           value={target}
           onChange={(e) => setTarget(Number(e.target.value))}
-          className="w-20 bg-white/5 border border-white/10 rounded-md px-2 py-1.5 text-xs text-gray-300"
+          className="w-20 bg-foreground/5 border border-foreground/10 rounded-md px-2 py-1.5 text-xs text-foreground/80"
         />
       </div>
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
       <div className="flex items-center gap-2">
         <button
           onClick={submit}
@@ -123,7 +123,7 @@ function AddGoalForm({ onCreated }: { onCreated: () => void }) {
         >
           {submitting ? "Creating…" : "Create"}
         </button>
-        <button onClick={() => setOpen(false)} className="text-xs text-gray-500 hover:text-gray-300">
+        <button onClick={() => setOpen(false)} className="text-xs text-muted-foreground hover:text-foreground">
           Cancel
         </button>
       </div>
@@ -169,15 +169,15 @@ export default function GoalsSection({ isAdmin }: { isAdmin: boolean }) {
       {isLoading && (
         <div className="grid sm:grid-cols-2 gap-3">
           {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="h-20 rounded-lg bg-white/5 animate-pulse" />
+            <div key={i} className="h-20 rounded-lg bg-foreground/5 animate-pulse" />
           ))}
         </div>
       )}
 
-      {!isLoading && error && <p className="text-sm text-red-400 text-center py-6">{error}</p>}
+      {!isLoading && error && <p className="text-sm text-red-600 dark:text-red-400 text-center py-6">{error}</p>}
 
       {!isLoading && !error && goals.length === 0 && (
-        <p className="text-sm text-gray-500 text-center py-6">
+        <p className="text-sm text-muted-foreground text-center py-6">
           {isAdmin ? "No goals configured yet — add one above." : "No goals configured yet."}
         </p>
       )}

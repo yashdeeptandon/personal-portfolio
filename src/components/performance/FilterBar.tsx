@@ -50,7 +50,7 @@ function PillBtn({
       className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
         active
           ? "bg-indigo-500 text-white"
-          : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-200"
+          : "bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
       }`}
     >
       {children}
@@ -83,10 +83,10 @@ export default function FilterBar({
   const showGranularity = activeTab === "Activity" || activeTab === "Heart";
 
   return (
-    <div className="mb-4 rounded-xl border border-white/10 bg-white/5 p-3 space-y-2">
+    <div className="mb-4 rounded-xl border border-foreground/10 bg-foreground/5 p-3 space-y-2">
       {/* ── Row 1: Global time range ─────────────────────────────── */}
       <div className="flex flex-wrap gap-1.5 items-center">
-        <span className="text-xs text-gray-500 shrink-0">Range:</span>
+        <span className="text-xs text-muted-foreground shrink-0">Range:</span>
         {WINDOWS.map((w) => (
           <PillBtn
             key={w.value}
@@ -104,20 +104,20 @@ export default function FilterBar({
               value={filters.customFrom}
               max={filters.customTo || dataTo}
               onChange={(e) => set("customFrom", e.target.value)}
-              className="bg-white/10 border border-white/20 rounded px-2 py-1 text-xs text-gray-200 [color-scheme:dark]"
+              className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground [color-scheme:light] dark:[color-scheme:dark]"
             />
-            <span className="text-gray-500 text-xs">→</span>
+            <span className="text-muted-foreground text-xs">→</span>
             <input
               type="date"
               value={filters.customTo}
               max={dataTo}
               onChange={(e) => set("customTo", e.target.value)}
-              className="bg-white/10 border border-white/20 rounded px-2 py-1 text-xs text-gray-200 [color-scheme:dark]"
+              className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground [color-scheme:light] dark:[color-scheme:dark]"
             />
           </>
         )}
 
-        <span className="ml-auto text-xs text-gray-500 shrink-0">
+        <span className="ml-auto text-xs text-muted-foreground shrink-0">
           {recordCount.toLocaleString()} records
         </span>
         <button
@@ -127,7 +127,7 @@ export default function FilterBar({
             customFrom: "",
             customTo: "",
           }))}
-          className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           Reset
         </button>
@@ -135,8 +135,8 @@ export default function FilterBar({
 
       {/* ── Row 2: Granularity (Activity / Heart) ────────────────── */}
       {showGranularity && (
-        <div className="flex flex-wrap gap-1.5 items-center border-t border-white/5 pt-2">
-          <span className="text-xs text-gray-500 shrink-0">View:</span>
+        <div className="flex flex-wrap gap-1.5 items-center border-t border-foreground/5 pt-2">
+          <span className="text-xs text-muted-foreground shrink-0">View:</span>
           {GRAN_OPTIONS.map((g) => (
             <PillBtn
               key={g.value}
@@ -151,17 +151,17 @@ export default function FilterBar({
 
       {/* ── Activity tab filters ──────────────────────────────────── */}
       {activeTab === "Activity" && (
-        <div className="flex flex-wrap gap-3 items-center border-t border-white/5 pt-2">
-          <span className="text-xs text-gray-500">Step goal:</span>
+        <div className="flex flex-wrap gap-3 items-center border-t border-foreground/5 pt-2">
+          <span className="text-xs text-muted-foreground">Step goal:</span>
           <input
             type="number"
             value={filters.stepThreshold}
             min={0}
             step={500}
             onChange={(e) => set("stepThreshold", Number(e.target.value))}
-            className="bg-white/10 border border-white/20 rounded px-2 py-1 text-xs text-gray-200 w-20"
+            className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground w-20"
           />
-          <span className="text-xs text-gray-500">Heatmap year:</span>
+          <span className="text-xs text-muted-foreground">Heatmap year:</span>
           {heatmapYears.map((y) => (
             <PillBtn
               key={y}
@@ -176,8 +176,8 @@ export default function FilterBar({
 
       {/* ── Heart tab filters ─────────────────────────────────────── */}
       {activeTab === "Heart" && (
-        <div className="flex flex-wrap gap-2 items-center border-t border-white/5 pt-2">
-          <span className="text-xs text-gray-500">Show:</span>
+        <div className="flex flex-wrap gap-2 items-center border-t border-foreground/5 pt-2">
+          <span className="text-xs text-muted-foreground">Show:</span>
           {(
             [
               ["avg", "HR Avg"],
@@ -208,8 +208,8 @@ export default function FilterBar({
 
       {/* ── Performance tab filters ───────────────────────────────── */}
       {activeTab === "Performance" && workoutTypes.length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center border-t border-white/5 pt-2">
-          <span className="text-xs text-gray-500 shrink-0">Workout types:</span>
+        <div className="flex flex-wrap gap-2 items-center border-t border-foreground/5 pt-2">
+          <span className="text-xs text-muted-foreground shrink-0">Workout types:</span>
           <PillBtn
             active={filters.workoutTypeFilter.length === 0}
             onClick={() => set("workoutTypeFilter", [])}
@@ -230,17 +230,17 @@ export default function FilterBar({
 
       {/* ── Running tab filters ────────────────────────────────────── */}
       {activeTab === "Running" && (
-        <div className="flex flex-wrap gap-2 items-center border-t border-white/5 pt-2">
-          <span className="text-xs text-gray-500 shrink-0">Distance:</span>
+        <div className="flex flex-wrap gap-2 items-center border-t border-foreground/5 pt-2">
+          <span className="text-xs text-muted-foreground shrink-0">Distance:</span>
           <input
             type="number"
             value={filters.routeMinKm}
             min={0}
             onChange={(e) => set("routeMinKm", Number(e.target.value))}
-            className="bg-white/10 border border-white/20 rounded px-2 py-1 text-xs text-gray-200 w-16"
+            className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground w-16"
             placeholder="min"
           />
-          <span className="text-xs text-gray-500">–</span>
+          <span className="text-xs text-muted-foreground">–</span>
           <input
             type="number"
             value={filters.routeMaxKm === 9999 ? "" : filters.routeMaxKm}
@@ -248,14 +248,14 @@ export default function FilterBar({
             onChange={(e) =>
               set("routeMaxKm", e.target.value ? Number(e.target.value) : 9999)
             }
-            className="bg-white/10 border border-white/20 rounded px-2 py-1 text-xs text-gray-200 w-16"
+            className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground w-16"
             placeholder="max"
           />
-          <span className="text-xs text-gray-500">km</span>
+          <span className="text-xs text-muted-foreground">km</span>
 
           {routeYears.length > 1 && (
             <>
-              <span className="text-xs text-gray-500 ml-2 shrink-0">Year:</span>
+              <span className="text-xs text-muted-foreground ml-2 shrink-0">Year:</span>
               <PillBtn
                 active={filters.routeYear === null}
                 onClick={() => set("routeYear", null)}
@@ -278,8 +278,8 @@ export default function FilterBar({
 
       {/* ── ECG tab filters ───────────────────────────────────────── */}
       {activeTab === "ECG" && ecgClasses.length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center border-t border-white/5 pt-2">
-          <span className="text-xs text-gray-500 shrink-0">Classification:</span>
+        <div className="flex flex-wrap gap-2 items-center border-t border-foreground/5 pt-2">
+          <span className="text-xs text-muted-foreground shrink-0">Classification:</span>
           <PillBtn
             active={filters.ecgClassifications.length === 0}
             onClick={() => set("ecgClassifications", [])}

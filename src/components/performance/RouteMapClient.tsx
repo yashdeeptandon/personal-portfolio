@@ -42,7 +42,7 @@ export default function RouteMapClient({ points }: Props) {
     <MapContainer
       center={center}
       zoom={14}
-      style={{ height: "100%", width: "100%", background: "#0d1117" }}
+      style={{ height: "100%", width: "100%", background: "var(--card)" }}
       zoomControl={true}
     >
       <TileLayer

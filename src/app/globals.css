@@ -21,6 +21,13 @@
   --chart-3: #d97706;
   --chart-4: #16a34a;
   --chart-5: #dc2626;
+
+  /* Chart axis/grid — subtle by design, tuned separately per theme so they
+     read as "faint" against that theme's own background rather than
+     inheriting a dark-mode-tuned gray that goes invisible or too heavy. */
+  --chart-axis: #94a3b8;
+  --chart-tick: #64748b;
+  --chart-grid: #cbd5e1;
 }
 
 /* ── Dark mode ──────────────────────────────────────────────────────────── */
@@ -40,6 +47,10 @@
   --chart-3: #f59e0b;
   --chart-4: #22c55e;
   --chart-5: #ef4444;
+
+  --chart-axis: #374151;
+  --chart-tick: #9ca3af;
+  --chart-grid: #1f2937;
 }
 
 /* ── Reset ──────────────────────────────────────────────────────────────── */

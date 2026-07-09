@@ -51,12 +51,12 @@ export default function ExerciseTimeChart({ data, granularity }: Props) {
           />
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            labelStyle={{ color: "#e5e7eb", fontSize: 12 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            labelStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             labelFormatter={(l: unknown) => fmtDate(l as string, granularity)}
             formatter={(v: unknown) => [`${Number(v)} min`, granularity === "daily" ? "Exercise min" : "Daily avg"]}
           />
-          <ReferenceLine y={30} stroke="#22c55e" strokeDasharray="4 3" strokeWidth={1.5} label={{ value: "WHO 30m", position: "right", fill: "#22c55e", fontSize: 10 }} />
+          <ReferenceLine y={30} stroke={CHART.ACCENT_GREEN} strokeDasharray="4 3" strokeWidth={1.5} label={{ value: "WHO 30m", position: "right", fill: CHART.ACCENT_GREEN, fontSize: 10 }} />
           <Bar
             dataKey="exercise_min"
             name="exercise_min"

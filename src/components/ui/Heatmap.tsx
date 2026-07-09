@@ -98,7 +98,7 @@ export default function Heatmap({
               <div
                 key={`${m.label}-${m.col}`}
                 style={{ marginLeft: i === 0 ? m.col * (CELL + GAP) : (gap - 1) * (CELL + GAP) }}
-                className="text-[10px] text-gray-500 shrink-0"
+                className="text-[10px] text-muted-foreground shrink-0"
               >
                 {m.label}
               </div>
@@ -109,7 +109,7 @@ export default function Heatmap({
         <div className="flex mt-0.5" style={{ gap: GAP }}>
           <div className="flex flex-col shrink-0 mr-1" style={{ gap: GAP }}>
             {DAY_LABELS.map((d, i) => (
-              <div key={d} style={{ height: CELL }} className="text-[10px] text-gray-600 leading-none flex items-center">
+              <div key={d} style={{ height: CELL }} className="text-[10px] text-muted-foreground leading-none flex items-center">
                 {i % 2 === 0 ? d : ""}
               </div>
             ))}
@@ -136,13 +136,13 @@ export default function Heatmap({
 
         {legend && (
           <div className="flex items-center gap-1.5 mt-2">
-            <span className="text-[10px] text-gray-500">{legend.less ?? "Less"}</span>
+            <span className="text-[10px] text-muted-foreground">{legend.less ?? "Less"}</span>
             {legend.steps.map((v) => (
               <div key={v} style={{ width: 10, height: 10, backgroundColor: colorScale(v), borderRadius: 2 }} />
             ))}
-            <span className="text-[10px] text-gray-500">{legend.more ?? "More"}</span>
+            <span className="text-[10px] text-muted-foreground">{legend.more ?? "More"}</span>
             {legend.hint && (
-              <span className="text-[10px] text-gray-500 ml-3">{legend.hint}</span>
+              <span className="text-[10px] text-muted-foreground ml-3">{legend.hint}</span>
             )}
           </div>
         )}

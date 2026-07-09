@@ -9,8 +9,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    // Tech Performance dashboard always renders in dark mode — charts are designed for dark backgrounds
-    <div className="dark bg-gray-950 min-h-screen">
+    <div className="bg-background min-h-screen">
       <TechPerformancePage />
     </div>
   );

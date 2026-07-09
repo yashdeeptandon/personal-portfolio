@@ -40,7 +40,7 @@ export default function DayClassificationPie({ data, stepThreshold = 7500 }: Pro
           </Pie>
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             formatter={(v: unknown) => { const n = Number(v); return [`${n} days (${Math.round(n / data.length * 100)}%)`]; }}
           />
           <Legend

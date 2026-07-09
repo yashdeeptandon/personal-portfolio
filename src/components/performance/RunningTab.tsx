@@ -14,7 +14,7 @@ import { CHART } from "@/lib/chartTheme";
 const RouteMapClient = dynamic(() => import("./RouteMapClient"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full flex items-center justify-center text-gray-500 text-sm bg-white/5 rounded-xl">
+    <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm bg-foreground/5 rounded-xl">
       Loading map…
     </div>
   ),
@@ -34,10 +34,10 @@ function fmtPace(minPerKm: number | null): string {
 
 function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-      <div className="text-xs text-gray-500 mb-1">{label}</div>
-      <div className="text-2xl font-bold text-white">{value}</div>
-      {sub && <div className="text-xs text-gray-500 mt-0.5">{sub}</div>}
+    <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-4">
+      <div className="text-xs text-muted-foreground mb-1">{label}</div>
+      <div className="text-2xl font-bold text-foreground">{value}</div>
+      {sub && <div className="text-xs text-muted-foreground mt-0.5">{sub}</div>}
     </div>
   );
 }
@@ -74,7 +74,7 @@ export default function RunningTab({ analytics, routes }: Props) {
   }, [trendView, weeklyData, monthlyData]);
 
   const pieData = [
-    { name: "Outdoor", value: totals?.outdoor_runs ?? 0, color: "#6366f1" },
+    { name: "Outdoor", value: totals?.outdoor_runs ?? 0, color: CHART.ACCENT_INDIGO },
     { name: "Indoor / Treadmill", value: totals?.indoor_runs ?? 0, color: "#14b8a6" },
   ].filter((d) => d.value > 0);
 
@@ -102,9 +102,9 @@ export default function RunningTab({ analytics, routes }: Props) {
 
   if (!analytics || allRuns.length === 0) {
     return (
-      <div className="rounded-xl border border-white/10 bg-white/5 p-12 text-center">
-        <p className="text-gray-400 text-sm">No running data found</p>
-        <p className="text-gray-500 text-xs mt-1">Upload Apple Health export to populate running analytics.</p>
+      <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-12 text-center">
+        <p className="text-muted-foreground text-sm">No running data found</p>
+        <p className="text-muted-foreground text-xs mt-1">Upload Apple Health export to populate running analytics.</p>
       </div>
     );
   }
@@ -131,7 +131,7 @@ export default function RunningTab({ analytics, routes }: Props) {
             <button
               key={v}
               onClick={() => setTrendView(v)}
-              className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${trendView === v ? "bg-indigo-500 text-white" : "text-gray-400 hover:text-gray-200"}`}
+              className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${trendView === v ? "bg-indigo-500 text-white" : "text-muted-foreground hover:text-foreground"}`}
             >
               {v === "weekly" ? "Weekly" : "Monthly"}
             </button>
@@ -141,8 +141,8 @@ export default function RunningTab({ analytics, routes }: Props) {
           <AreaChart data={trendData} margin={{ top: 6, right: 8, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="runGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0.02} />
+                <stop offset="5%" stopColor={CHART.ACCENT_INDIGO} stopOpacity={0.4} />
+                <stop offset="95%" stopColor={CHART.ACCENT_INDIGO} stopOpacity={0.02} />
               </linearGradient>
             </defs>
             <CartesianGrid stroke={CHART.GRID_STROKE} strokeOpacity={CHART.GRID_OPACITY} vertical={false} />
@@ -163,7 +163,7 @@ export default function RunningTab({ analytics, routes }: Props) {
             />
             <Tooltip
               contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-              itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+              itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
               formatter={(v: unknown, name: unknown) => {
                 const n = String(name);
                 if (n === "distance_km") return [`${Number(v).toFixed(1)} km`, "Distance"] as [string, string];
@@ -172,7 +172,7 @@ export default function RunningTab({ analytics, routes }: Props) {
               }}
               labelFormatter={(l: unknown) => String(l ?? "")}
             />
-            <Area dataKey="distance_km" stroke="#6366f1" fill="url(#runGrad)" strokeWidth={2} dot={false} name="distance_km" />
+            <Area dataKey="distance_km" stroke={CHART.ACCENT_INDIGO} fill="url(#runGrad)" strokeWidth={2} dot={false} name="distance_km" />
           </AreaChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -212,7 +212,7 @@ export default function RunningTab({ analytics, routes }: Props) {
               />
               <Tooltip
                 contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-                itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+                itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
                 formatter={(v: unknown) => [fmtPace(Number(v)), "Pace"]}
                 labelFormatter={(i: unknown) => {
                   const run = paceTrend[Number(i) - 1];
@@ -253,7 +253,7 @@ export default function RunningTab({ analytics, routes }: Props) {
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="text-gray-500 border-b border-white/10">
+              <tr className="text-muted-foreground border-b border-foreground/10">
                 <th className="pb-2 text-left font-medium">Date</th>
                 <th className="pb-2 text-left font-medium">Type</th>
                 <th className="pb-2 text-right font-medium">Distance</th>
@@ -270,24 +270,24 @@ export default function RunningTab({ analytics, routes }: Props) {
                 return (
                   <tr
                     key={run.date + (run.route_id ?? "")}
-                    className={`border-b border-white/5 transition-colors ${run.is_outdoor ? "cursor-pointer" : ""} ${isSelected ? "bg-indigo-500/10" : run.is_outdoor ? "hover:bg-white/5" : ""}`}
+                    className={`border-b border-foreground/5 transition-colors ${run.is_outdoor ? "cursor-pointer" : ""} ${isSelected ? "bg-indigo-500/10" : run.is_outdoor ? "hover:bg-foreground/5" : ""}`}
                     onClick={() => {
                       if (!run.is_outdoor || !run.route_id) return;
                       setSelectedRouteId(isSelected ? null : run.route_id);
                     }}
                   >
-                    <td className="py-1.5 text-gray-300">{run.date}</td>
+                    <td className="py-1.5 text-foreground/80">{run.date}</td>
                     <td className="py-1.5">
-                      <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium ${run.is_outdoor ? "bg-indigo-500/15 text-indigo-400" : "bg-teal-500/15 text-teal-400"}`}>
+                      <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium ${run.is_outdoor ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400" : "bg-teal-500/15 text-teal-600 dark:text-teal-400"}`}>
                         {run.is_outdoor ? "🗺 Outdoor" : "🏃 Indoor"}
                       </span>
                     </td>
-                    <td className="py-1.5 text-right text-gray-300">{run.distance_km != null ? `${run.distance_km.toFixed(2)} km` : "—"}</td>
-                    <td className="py-1.5 text-right text-gray-400">{run.duration_min != null ? `${Math.round(run.duration_min)} min` : "—"}</td>
-                    <td className="py-1.5 text-right text-gray-400">{fmtPace(run.pace_min_per_km)}</td>
-                    <td className="py-1.5 text-right text-gray-400">{run.speed_kmh != null ? `${run.speed_kmh.toFixed(1)} km/h` : "—"}</td>
-                    <td className="py-1.5 text-right text-gray-400">{run.hr_avg != null ? `${run.hr_avg} bpm` : "—"}</td>
-                    <td className="py-1.5 text-right text-gray-400">{run.calories != null ? `${Math.round(run.calories)}` : "—"}</td>
+                    <td className="py-1.5 text-right text-foreground/80">{run.distance_km != null ? `${run.distance_km.toFixed(2)} km` : "—"}</td>
+                    <td className="py-1.5 text-right text-muted-foreground">{run.duration_min != null ? `${Math.round(run.duration_min)} min` : "—"}</td>
+                    <td className="py-1.5 text-right text-muted-foreground">{fmtPace(run.pace_min_per_km)}</td>
+                    <td className="py-1.5 text-right text-muted-foreground">{run.speed_kmh != null ? `${run.speed_kmh.toFixed(1)} km/h` : "—"}</td>
+                    <td className="py-1.5 text-right text-muted-foreground">{run.hr_avg != null ? `${run.hr_avg} bpm` : "—"}</td>
+                    <td className="py-1.5 text-right text-muted-foreground">{run.calories != null ? `${Math.round(run.calories)}` : "—"}</td>
                   </tr>
                 );
               })}
@@ -295,20 +295,20 @@ export default function RunningTab({ analytics, routes }: Props) {
           </table>
         </div>
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/10">
-            <span className="text-xs text-gray-500">{runsPage * PAGE_SIZE + 1}–{Math.min((runsPage + 1) * PAGE_SIZE, allRuns.length)} of {allRuns.length}</span>
+          <div className="flex items-center justify-between mt-3 pt-3 border-t border-foreground/10">
+            <span className="text-xs text-muted-foreground">{runsPage * PAGE_SIZE + 1}–{Math.min((runsPage + 1) * PAGE_SIZE, allRuns.length)} of {allRuns.length}</span>
             <div className="flex gap-2">
               <button
                 onClick={() => setRunsPage((p) => Math.max(0, p - 1))}
                 disabled={runsPage === 0}
-                className="px-3 py-1 text-xs rounded bg-white/5 text-gray-400 disabled:opacity-30 hover:bg-white/10"
+                className="px-3 py-1 text-xs rounded bg-foreground/5 text-muted-foreground disabled:opacity-30 hover:bg-foreground/10"
               >
                 ← Prev
               </button>
               <button
                 onClick={() => setRunsPage((p) => Math.min(totalPages - 1, p + 1))}
                 disabled={runsPage >= totalPages - 1}
-                className="px-3 py-1 text-xs rounded bg-white/5 text-gray-400 disabled:opacity-30 hover:bg-white/10"
+                className="px-3 py-1 text-xs rounded bg-foreground/5 text-muted-foreground disabled:opacity-30 hover:bg-foreground/10"
               >
                 Next →
               </button>
@@ -319,12 +319,12 @@ export default function RunningTab({ analytics, routes }: Props) {
 
       {/* GPS Route viewer — shown when outdoor run selected */}
       {selectedRouteId && (
-        <div className="rounded-xl border border-indigo-500/30 bg-white/3 p-4 space-y-3">
+        <div className="rounded-xl border border-indigo-500/30 bg-foreground/[0.03] p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-white">GPS Route</h3>
+              <h3 className="text-sm font-semibold text-foreground">GPS Route</h3>
               {selectedRoute && (
-                <p className="text-xs text-gray-400 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {selectedRoute.date}
                   {selectedRoute.distance_km ? ` · ${selectedRoute.distance_km.toFixed(2)} km` : ""}
                   {selectedRoute.duration_min ? ` · ${Math.round(selectedRoute.duration_min)} min` : ""}
@@ -334,15 +334,15 @@ export default function RunningTab({ analytics, routes }: Props) {
             </div>
             <button
               onClick={() => setSelectedRouteId(null)}
-              className="text-xs text-gray-500 hover:text-gray-300 px-2 py-1 rounded hover:bg-white/10"
+              className="text-xs text-muted-foreground hover:text-foreground/80 px-2 py-1 rounded hover:bg-foreground/10"
             >
               Close ✕
             </button>
           </div>
 
-          <div className="rounded-xl overflow-hidden border border-white/10" style={{ height: 320 }}>
+          <div className="rounded-xl overflow-hidden border border-foreground/10" style={{ height: 320 }}>
             {loadingTrack && (
-              <div className="w-full h-full flex items-center justify-center text-gray-500 text-sm bg-white/5">
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm bg-foreground/5">
                 Loading track data…
               </div>
             )}
@@ -356,8 +356,8 @@ export default function RunningTab({ analytics, routes }: Props) {
                   <AreaChart data={trackData} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
                     <defs>
                       <linearGradient id="eleGrad2" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#a16207" stopOpacity={0.5} />
-                        <stop offset="95%" stopColor="#a16207" stopOpacity={0.05} />
+                        <stop offset="5%" stopColor={CHART.ACCENT_AMBER} stopOpacity={0.5} />
+                        <stop offset="95%" stopColor={CHART.ACCENT_AMBER} stopOpacity={0.05} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid stroke={CHART.GRID_STROKE} strokeOpacity={CHART.GRID_OPACITY} vertical={false} />
@@ -367,7 +367,7 @@ export default function RunningTab({ analytics, routes }: Props) {
                       contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
                       formatter={(v: unknown) => [`${Number(v).toFixed(1)} m`, "Elevation"]}
                     />
-                    <Area dataKey="ele" stroke="#a16207" fill="url(#eleGrad2)" strokeWidth={1.5} dot={false} />
+                    <Area dataKey="ele" stroke={CHART.ACCENT_AMBER} fill="url(#eleGrad2)" strokeWidth={1.5} dot={false} />
                   </AreaChart>
                 </ResponsiveContainer>
               </ChartCard>

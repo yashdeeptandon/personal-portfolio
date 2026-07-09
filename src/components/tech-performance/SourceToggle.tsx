@@ -23,7 +23,7 @@ export default function SourceToggle<T extends string | number>({
           className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
             value === opt.value
               ? "bg-indigo-500 text-white"
-              : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-200"
+              : "bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
           }`}
         >
           {opt.label}

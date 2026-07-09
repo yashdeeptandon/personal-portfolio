@@ -53,7 +53,7 @@ export default function FullHRChart({ data, granularity, metrics }: Props) {
   if (activeCount === 0) {
     return (
       <ChartCard title="Heart Rate Trends" subtitle="No metrics selected — use filters above">
-        <div className="h-48 flex items-center justify-center text-gray-500 text-sm">
+        <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">
           Enable at least one HR metric in the filter bar
         </div>
       </ChartCard>
@@ -86,14 +86,14 @@ export default function FullHRChart({ data, granularity, metrics }: Props) {
           />
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            labelStyle={{ color: "#e5e7eb", fontSize: 12 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            labelStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             labelFormatter={(l: unknown) => fmtDate(l as string, granularity)}
             formatter={(v: unknown) => [`${Number(v)} bpm`]}
           />
           <Legend wrapperStyle={{ fontSize: 12, color: CHART.TICK_FILL }} />
           {metrics.max && (
-            <Line dataKey="hr_max" name="HR Max" stroke="#ef4444" strokeWidth={1.5} dot={false} connectNulls strokeDasharray="4 2" />
+            <Line dataKey="hr_max" name="HR Max" stroke={CHART.ACCENT_RED} strokeWidth={1.5} dot={false} connectNulls strokeDasharray="4 2" />
           )}
           {metrics.avg && (
             <Line dataKey="hr_avg" name="HR Avg" stroke={CHART.ACCENT_AMBER} strokeWidth={2} dot={false} connectNulls />

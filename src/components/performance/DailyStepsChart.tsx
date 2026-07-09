@@ -56,8 +56,8 @@ export default function DailyStepsChart({ data, granularity, stepThreshold }: Pr
           />
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            labelStyle={{ color: "#e5e7eb", fontSize: 12 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            labelStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             labelFormatter={(l: unknown) => fmtDate(l as string, granularity)}
             formatter={(v: unknown, name: unknown) => {
               const n = Number(v);
@@ -67,10 +67,10 @@ export default function DailyStepsChart({ data, granularity, stepThreshold }: Pr
           />
           <ReferenceLine
             y={stepThreshold}
-            stroke="#22c55e"
+            stroke={CHART.ACCENT_GREEN}
             strokeDasharray="4 3"
             strokeWidth={1.5}
-            label={{ value: stepThreshold.toLocaleString(), position: "right", fill: "#22c55e", fontSize: 10 }}
+            label={{ value: stepThreshold.toLocaleString(), position: "right", fill: CHART.ACCENT_GREEN, fontSize: 10 }}
           />
           <Bar dataKey="steps" fill={CHART.ACCENT_INDIGO} opacity={0.7} radius={[2, 2, 0, 0]} maxBarSize={granularity === "daily" ? 6 : 16} />
           {granularity !== "monthly" && (

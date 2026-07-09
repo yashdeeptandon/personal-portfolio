@@ -32,18 +32,18 @@ export default function OverviewSection({
         <ChartCard title="GitHub profile" subtitle="Public account summary">
           <div className="flex items-center gap-6 text-sm">
             <div>
-              <p className="text-gray-500 text-xs uppercase tracking-wide">Login</p>
-              <p className="text-white font-medium">{overview.githubProfile.login}</p>
+              <p className="text-muted-foreground text-xs uppercase tracking-wide">Login</p>
+              <p className="text-foreground font-medium">{overview.githubProfile.login}</p>
             </div>
             <div>
-              <p className="text-gray-500 text-xs uppercase tracking-wide">Followers</p>
-              <p className="text-white font-medium tabular-nums">
+              <p className="text-muted-foreground text-xs uppercase tracking-wide">Followers</p>
+              <p className="text-foreground font-medium tabular-nums">
                 {overview.githubProfile.followers}
               </p>
             </div>
             <div>
-              <p className="text-gray-500 text-xs uppercase tracking-wide">Public repos</p>
-              <p className="text-white font-medium tabular-nums">
+              <p className="text-muted-foreground text-xs uppercase tracking-wide">Public repos</p>
+              <p className="text-foreground font-medium tabular-nums">
                 {overview.githubProfile.publicRepos}
               </p>
             </div>

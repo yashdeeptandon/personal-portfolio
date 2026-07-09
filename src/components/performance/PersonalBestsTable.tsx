@@ -40,14 +40,14 @@ export default function PersonalBestsTable({ data }: Props) {
           const pb = bests[key as keyof typeof bests]!;
           const fmt = FORMATS[key] ?? ((v: number, u: string) => `${v} ${u}`);
           return (
-            <div key={key} className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+            <div key={key} className="flex items-center gap-3 p-3 rounded-lg bg-foreground/5 border border-foreground/10">
               <span className="text-2xl shrink-0">{ICONS[key]}</span>
               <div className="min-w-0 flex-1">
-                <div className="text-xs text-gray-400">{LABELS[key]}</div>
-                <div className="text-white font-semibold text-sm mt-0.5">
+                <div className="text-xs text-muted-foreground">{LABELS[key]}</div>
+                <div className="text-foreground font-semibold text-sm mt-0.5">
                   {fmt(pb.value, pb.unit)}
                 </div>
-                <div className="text-xs text-gray-500 mt-0.5">
+                <div className="text-xs text-muted-foreground mt-0.5">
                   {pb.type} · {new Date(pb.date + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}
                 </div>
               </div>

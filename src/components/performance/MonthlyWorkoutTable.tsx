@@ -20,7 +20,7 @@ export default function MonthlyWorkoutTable({ data }: Props) {
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
-            <tr className="text-gray-500 border-b border-white/10">
+            <tr className="text-muted-foreground border-b border-foreground/10">
               <th className="pb-2 text-left font-medium">Month</th>
               <th className="pb-2 text-right font-medium">Days</th>
               <th className="pb-2 text-right font-medium">Sessions</th>
@@ -31,13 +31,13 @@ export default function MonthlyWorkoutTable({ data }: Props) {
           </thead>
           <tbody>
             {display.map((row) => (
-              <tr key={row.month} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="py-1.5 text-gray-300 font-medium">{row.month}</td>
-                <td className="py-1.5 text-right text-gray-400">{row.workout_days}</td>
-                <td className="py-1.5 text-right text-gray-400">{row.total_workouts}</td>
-                <td className="py-1.5 text-right text-gray-400">{row.total_min?.toLocaleString() ?? "—"}</td>
-                <td className="py-1.5 text-right text-gray-400">{row.total_cal?.toLocaleString() ?? "—"}</td>
-                <td className="py-1.5 text-right text-gray-400">{row.avg_hr ? `${row.avg_hr} bpm` : "—"}</td>
+              <tr key={row.month} className="border-b border-foreground/5 hover:bg-foreground/5 transition-colors">
+                <td className="py-1.5 text-foreground/80 font-medium">{row.month}</td>
+                <td className="py-1.5 text-right text-muted-foreground">{row.workout_days}</td>
+                <td className="py-1.5 text-right text-muted-foreground">{row.total_workouts}</td>
+                <td className="py-1.5 text-right text-muted-foreground">{row.total_min?.toLocaleString() ?? "—"}</td>
+                <td className="py-1.5 text-right text-muted-foreground">{row.total_cal?.toLocaleString() ?? "—"}</td>
+                <td className="py-1.5 text-right text-muted-foreground">{row.avg_hr ? `${row.avg_hr} bpm` : "—"}</td>
               </tr>
             ))}
           </tbody>
@@ -45,7 +45,7 @@ export default function MonthlyWorkoutTable({ data }: Props) {
         {rows.length > 12 && (
           <button
             onClick={() => setShowAll((s) => !s)}
-            className="mt-3 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="mt-3 text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
           >
             {showAll ? "Show less" : `Show all ${rows.length} months`}
           </button>

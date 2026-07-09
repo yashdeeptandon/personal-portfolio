@@ -40,11 +40,11 @@ export default function RepoCard({
   const technologies = isFeatured ? repo.technologies : repo.primaryLanguage ? [repo.primaryLanguage] : [];
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4 flex flex-col gap-3 hover:bg-white/[0.06] transition-colors">
+    <div className="rounded-lg border border-foreground/10 bg-foreground/[0.03] p-4 flex flex-col gap-3 hover:bg-foreground/[0.06] transition-colors">
       <div className="flex items-start justify-between gap-2">
-        <h4 className="text-sm font-semibold text-white">{title}</h4>
+        <h4 className="text-sm font-semibold text-foreground">{title}</h4>
         {stats && (
-          <div className="flex items-center gap-3 text-xs text-gray-400 shrink-0">
+          <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
             <span className="flex items-center gap-1">
               <StarIcon />
               {stats.stars}
@@ -58,7 +58,7 @@ export default function RepoCard({
       </div>
 
       {description && (
-        <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">{description}</p>
+        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{description}</p>
       )}
 
       {technologies.length > 0 && (
@@ -78,7 +78,7 @@ export default function RepoCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
             >
               GitHub
             </a>
@@ -88,14 +88,14 @@ export default function RepoCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
             >
               Live
             </a>
           )}
         </div>
         {stats && "pushedAt" in stats && (
-          <span className="text-[10px] text-gray-600">{timeAgoShort(stats.pushedAt)}</span>
+          <span className="text-[10px] text-muted-foreground">{timeAgoShort(stats.pushedAt)}</span>
         )}
       </div>
     </div>

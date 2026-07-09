@@ -86,7 +86,7 @@ export default function ECGTab({ recordings }: Props) {
               </Pie>
               <Tooltip
                 contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-                itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+                itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
                 formatter={(v: unknown) => { const n = Number(v); return [`${n} recording${n !== 1 ? "s" : ""}`]; }}
               />
               <Legend
@@ -105,7 +105,7 @@ export default function ECGTab({ recordings }: Props) {
               <YAxis tick={{ fill: CHART.TICK_FILL, fontSize: 11 }} axisLine={false} tickLine={false} width={24} />
               <Tooltip
                 contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-                itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+                itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
               />
               {Object.keys(ECG_COLORS).filter((cls) => classCounts[cls]).map((cls) => (
                 <Bar key={cls} dataKey={cls} stackId="a" fill={classColor(cls)} radius={cls === Object.keys(classCounts).at(-1) ? [2, 2, 0, 0] : undefined} />
@@ -116,13 +116,13 @@ export default function ECGTab({ recordings }: Props) {
       </div>
 
       {/* Waveform viewer */}
-      <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+      <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-          <label className="text-sm text-gray-400 shrink-0">ECG recording:</label>
+          <label className="text-sm text-muted-foreground shrink-0">ECG recording:</label>
           <select
             value={selectedId ?? ""}
             onChange={(e) => setSelectedId(e.target.value)}
-            className="flex-1 bg-gray-900 border border-white/20 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="flex-1 bg-card border border-foreground/20 rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-indigo-500"
           >
             {recordings.map((r, i) => (
               <option key={`${r.id}_${i}`} value={r.id}>
@@ -142,17 +142,17 @@ export default function ECGTab({ recordings }: Props) {
               { label: "Symptoms", value: selected.symptoms || "None" },
             ].map(({ label, value, color }) => (
               <div key={label}>
-                <div className="text-xs text-gray-500">{label}</div>
-                <div className="text-sm font-medium mt-0.5" style={{ color: color ?? "#e5e7eb" }}>{value}</div>
+                <div className="text-xs text-muted-foreground">{label}</div>
+                <div className="text-sm font-medium mt-0.5" style={{ color: color ?? "var(--popover-foreground)" }}>{value}</div>
               </div>
             ))}
           </div>
         )}
 
-        {loadingWave && <div className="h-48 flex items-center justify-center text-gray-500 text-sm">Loading waveform…</div>}
+        {loadingWave && <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">Loading waveform…</div>}
 
         {!loadingWave && !selected?.has_waveform && (
-          <div className="h-48 flex items-center justify-center text-gray-500 text-sm">No waveform data for this recording</div>
+          <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">No waveform data for this recording</div>
         )}
 
         {!loadingWave && waveform && waveChartData.length > 0 && (
@@ -163,7 +163,7 @@ export default function ECGTab({ recordings }: Props) {
                 <YAxis tick={{ fill: CHART.TICK_FILL, fontSize: 10 }} axisLine={false} tickLine={false} width={44} tickFormatter={(v) => `${v.toFixed(0)}μV`} />
                 <Tooltip
                   contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-                  itemStyle={{ color: "#d1d5db", fontSize: 11 }}
+                  itemStyle={{ color: "var(--popover-foreground)", fontSize: 11 }}
                   formatter={(v: unknown) => [`${Number(v).toFixed(1)} μV`, "Voltage"]}
                 />
                 <Line dataKey="v" stroke={classColor(selected?.classification ?? "")} strokeWidth={1.5} dot={false} isAnimationActive={false} />
@@ -173,7 +173,7 @@ export default function ECGTab({ recordings }: Props) {
             {/* Zoom / seek controls */}
             <div className="mt-3 space-y-2">
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500 w-20">Position:</span>
+                <span className="text-xs text-muted-foreground w-20">Position:</span>
                 <input
                   type="range"
                   min={0}
@@ -183,10 +183,10 @@ export default function ECGTab({ recordings }: Props) {
                   onChange={(e) => setZoomStart(Number(e.target.value))}
                   className="flex-1 accent-indigo-500"
                 />
-                <span className="text-xs text-gray-400 w-16 text-right">{zoomStart.toFixed(1)}s</span>
+                <span className="text-xs text-muted-foreground w-16 text-right">{zoomStart.toFixed(1)}s</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500 w-20">Window:</span>
+                <span className="text-xs text-muted-foreground w-20">Window:</span>
                 <input
                   type="range"
                   min={2}
@@ -196,7 +196,7 @@ export default function ECGTab({ recordings }: Props) {
                   onChange={(e) => setZoomSeconds(Number(e.target.value))}
                   className="flex-1 accent-indigo-500"
                 />
-                <span className="text-xs text-gray-400 w-16 text-right">{zoomSeconds}s</span>
+                <span className="text-xs text-muted-foreground w-16 text-right">{zoomSeconds}s</span>
               </div>
             </div>
           </>
@@ -208,7 +208,7 @@ export default function ECGTab({ recordings }: Props) {
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="text-gray-500 border-b border-white/10">
+              <tr className="text-muted-foreground border-b border-foreground/10">
                 <th className="pb-2 text-left font-medium">Date</th>
                 <th className="pb-2 text-left font-medium">Classification</th>
                 <th className="pb-2 text-right font-medium">Duration</th>
@@ -220,13 +220,13 @@ export default function ECGTab({ recordings }: Props) {
               {recordings.map((r, i) => (
                 <tr
                   key={`${r.id}_${i}`}
-                  className={`border-b border-white/5 cursor-pointer transition-colors ${r.id === selectedId ? "bg-indigo-500/10" : "hover:bg-white/5"}`}
+                  className={`border-b border-foreground/5 cursor-pointer transition-colors ${r.id === selectedId ? "bg-indigo-500/10" : "hover:bg-foreground/5"}`}
                   onClick={() => setSelectedId(r.id)}
                 >
-                  <td className="py-1.5 text-gray-300">{r.date}</td>
+                  <td className="py-1.5 text-foreground/80">{r.date}</td>
                   <td className="py-1.5" style={{ color: classColor(r.classification) }}>{r.classification}</td>
-                  <td className="py-1.5 text-right text-gray-400">{r.duration_sec ? `${r.duration_sec.toFixed(0)}s` : "—"}</td>
-                  <td className="py-1.5 text-gray-400">{r.symptoms || "—"}</td>
+                  <td className="py-1.5 text-right text-muted-foreground">{r.duration_sec ? `${r.duration_sec.toFixed(0)}s` : "—"}</td>
+                  <td className="py-1.5 text-muted-foreground">{r.symptoms || "—"}</td>
                   <td className="py-1.5 text-right">{r.has_waveform ? "✓" : "—"}</td>
                 </tr>
               ))}

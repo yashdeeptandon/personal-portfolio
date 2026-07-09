@@ -46,8 +46,8 @@ export default function TrainingLoadChart({ data }: Props) {
           />
           <Tooltip
             contentStyle={{ background: CHART.TOOLTIP_BG, border: `1px solid ${CHART.TOOLTIP_BORDER}`, borderRadius: 8 }}
-            labelStyle={{ color: "#e5e7eb", fontSize: 12 }}
-            itemStyle={{ color: "#d1d5db", fontSize: 12 }}
+            labelStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
+            itemStyle={{ color: "var(--popover-foreground)", fontSize: 12 }}
             labelFormatter={(l: unknown) => fmtDate(l as string)}
             formatter={(v: unknown, name: unknown) => {
               const n = Number(v);
@@ -70,11 +70,11 @@ export default function TrainingLoadChart({ data }: Props) {
       <div className="flex items-center gap-3 mt-1 px-1">
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: CHART.ACCENT_RED }} />
-          <span className="text-xs text-gray-400">Spike week (&gt;20% jump)</span>
+          <span className="text-xs text-muted-foreground">Spike week (&gt;20% jump)</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: CHART.ACCENT_INDIGO, opacity: 0.75 }} />
-          <span className="text-xs text-gray-400">Normal week</span>
+          <span className="text-xs text-muted-foreground">Normal week</span>
         </div>
       </div>
     </ChartCard>
