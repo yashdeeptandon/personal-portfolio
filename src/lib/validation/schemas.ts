@@ -303,3 +303,66 @@ export const fileUploadSchema = Joi.object({
       "number.max": "File size cannot exceed 10MB",
     }),
 });
+
+// Tech Performance Validation
+export const techPerformanceRefreshSchema = Joi.object({
+  provider: Joi.string()
+    .valid("github", "wakatime", "leetcode", "blog", "projects")
+    .optional(),
+});
+
+export const techGoalCreateSchema = Joi.object({
+  key: Joi.string()
+    .pattern(/^[a-z0-9-]+$/)
+    .min(3)
+    .max(60)
+    .required()
+    .messages({
+      "string.pattern.base": "Key must be lowercase letters, numbers, and hyphens only",
+    }),
+  label: Joi.string().min(2).max(100).required(),
+  metric: Joi.string()
+    .valid(
+      "coding_hours",
+      "github_contributions",
+      "prs_merged",
+      "leetcode_solved",
+      "oss_contributions",
+      "blog_posts",
+      "projects_shipped",
+      "custom"
+    )
+    .required(),
+  period: Joi.string().valid("daily", "weekly", "monthly", "yearly", "once").required(),
+  target: Joi.number().min(0).required(),
+  unit: Joi.string().min(1).max(30).required(),
+  startDate: Joi.date().required(),
+  active: Joi.boolean().default(true),
+  order: Joi.number().default(0),
+  description: Joi.string().max(300).allow("").optional(),
+});
+
+export const techGoalUpdateSchema = techGoalCreateSchema.fork(
+  ["key", "label", "metric", "period", "target", "unit", "startDate"],
+  (schema) => schema.optional()
+);
+
+export const techAchievementCreateSchema = Joi.object({
+  type: Joi.string().valid("achievement", "milestone").default("achievement"),
+  timestamp: Joi.date().required(),
+  title: Joi.string().min(2).max(200).required(),
+  description: Joi.string().max(500).allow("").optional(),
+  url: Joi.string().uri().allow("").optional(),
+  metadata: Joi.object({
+    category: Joi.string()
+      .valid("architecture", "security", "performance", "migration", "documentation", "other")
+      .optional(),
+  })
+    .unknown(true)
+    .optional(),
+});
+
+export const techAchievementUpdateSchema = techAchievementCreateSchema.fork(
+  ["timestamp", "title"],
+  (schema) => schema.optional()
+);

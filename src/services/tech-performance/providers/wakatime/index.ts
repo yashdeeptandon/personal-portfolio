@@ -1,0 +1,1 @@
+export { wakatimeProvider } from "./service";

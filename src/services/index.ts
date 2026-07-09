@@ -19,9 +19,9 @@ export {
 
 // Future services will be exported here following the same pattern:
 // export * from './notifications';
-// export * from './analytics';
 // export * from './storage';
 // export * from './cache';
+export * as techPerformance from "./tech-performance";
 
 /**
  * Service Registry
@@ -30,6 +30,11 @@ export {
  * Useful for dependency injection or service discovery patterns.
  */
 import { emailService } from "./email";
+import {
+  syncProvider,
+  syncAllIfStale,
+  getProviderIds,
+} from "./tech-performance";
 
 export const services = {
   email: emailService,
@@ -37,9 +42,13 @@ export const services = {
     sendWelcome: emailService.sendNewsletterWelcome,
     sendBlogNotification: emailService.sendBlogNotification,
   },
+  techPerformance: {
+    syncProvider,
+    syncAllIfStale,
+    getProviderIds,
+  },
   // Future services:
   // notifications: notificationService,
-  // analytics: analyticsService,
   // storage: storageService,
   // cache: cacheService,
 } as const;

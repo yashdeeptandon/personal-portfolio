@@ -32,6 +32,15 @@ const navItems: NavItem[] = [
       </svg>
     ),
   },
+  {
+    href: "/tech-performance", label: "Tech Performance", type: "route",
+    icon: (
+      <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 inline-block mr-1 -mt-0.5" aria-hidden="true">
+        <path d="M2 9.5l3-3 2.5 2.5L12.5 4.5L14 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.8" />
+        <path d="M2 13h12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.35" />
+      </svg>
+    ),
+  },
 ];
 
 const cubicEase: [number, number, number, number] = [0.25, 0.1, 0.25, 1];

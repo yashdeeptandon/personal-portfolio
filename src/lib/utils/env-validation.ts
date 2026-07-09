@@ -23,7 +23,9 @@ interface EnvConfig {
   // External APIs (Optional)
   GITHUB_TOKEN?: string;
   GITHUB_USERNAME?: string;
-  
+  WAKATIME_API_KEY?: string;
+  LEETCODE_USERNAME?: string;
+
   // Analytics (Optional)
   GOOGLE_ANALYTICS_ID?: string;
   
@@ -67,6 +69,8 @@ const OPTIONAL_VARS = {
   BLOB_READ_WRITE_TOKEN: 'File upload functionality',
   GITHUB_TOKEN: 'GitHub integration',
   GITHUB_USERNAME: 'GitHub profile data',
+  WAKATIME_API_KEY: 'WakaTime coding activity (Tech Performance)',
+  LEETCODE_USERNAME: 'LeetCode stats (Tech Performance, not yet active)',
   GOOGLE_ANALYTICS_ID: 'Analytics tracking',
   ADMIN_EMAIL: 'Admin user scripts',
   ADMIN_PASSWORD: 'Admin user scripts',

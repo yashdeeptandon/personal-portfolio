@@ -12,6 +12,7 @@ A modern, full-stack portfolio website built with Next.js 15, featuring a compre
 - 🗄️ **Database** - MongoDB with Mongoose ODM
 - 🔒 **Security** - Rate limiting, CSRF protection, input validation
 - 📱 **Responsive** - Mobile-first design approach
+- ⚡ **Tech Performance Dashboard** - Live developer-activity analytics from GitHub and WakaTime (see [docs/TECH_PERFORMANCE.md](docs/TECH_PERFORMANCE.md))
 
 ## Tech Stack
 
@@ -108,6 +109,10 @@ GOOGLE_ANALYTICS_ID=your-google-analytics-id
 # External APIs (Optional)
 GITHUB_TOKEN=your-github-token
 GITHUB_USERNAME=your-github-username
+
+# Tech Performance dashboard (Optional — see docs/TECH_PERFORMANCE.md)
+WAKATIME_API_KEY=your-wakatime-api-key
+LEETCODE_USERNAME=your-leetcode-username
 ```
 
 ## Scripts

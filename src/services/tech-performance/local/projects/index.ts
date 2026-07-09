@@ -1,0 +1,1 @@
+export { projectsProvider } from "./service";

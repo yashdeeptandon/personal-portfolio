@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "./ui/AnimatedSection";
+import ProgressBar from "./ui/ProgressBar";
 
 const skillCategories = {
   frontend: {
@@ -143,15 +144,7 @@ const Skills = () => {
                       {skill.level}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-100 dark:bg-gray-600 rounded-full h-1.5 overflow-hidden">
-                    <motion.div
-                      className="h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
-                    />
-                  </div>
+                  <ProgressBar value={skill.level} />
                 </div>
               </motion.div>
             ))}
