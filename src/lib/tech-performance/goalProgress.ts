@@ -2,6 +2,7 @@ import dbConnect from "@/lib/db/connection";
 import ActivityEvent from "@/models/ActivityEvent";
 import TechSnapshot from "@/models/TechSnapshot";
 import type { ITechGoal } from "@/models/TechGoal";
+import { sumSince } from "./periodMath";
 import type {
   GitHubContributionsData,
   GitHubOssContributionsData,
@@ -58,18 +59,14 @@ export async function computeGoalProgress(
     case "coding_hours": {
       const doc = await TechSnapshot.findOne({ type: "wakatime:activity" }).lean();
       const days = (doc?.data as WakaTimeActivityData | undefined)?.days ?? [];
-      const seconds = days
-        .filter((d) => !windowStart || d.date >= windowStart.toISOString().slice(0, 10))
-        .reduce((sum, d) => sum + d.totalSeconds, 0);
+      const seconds = sumSince(days, windowStart, (d) => d.totalSeconds);
       current = Math.round((seconds / 3600) * 10) / 10;
       break;
     }
     case "github_contributions": {
       const doc = await TechSnapshot.findOne({ type: "github:contributions" }).lean();
       const calendar = (doc?.data as GitHubContributionsData | undefined)?.calendar ?? [];
-      current = calendar
-        .filter((d) => !windowStart || d.date >= windowStart.toISOString().slice(0, 10))
-        .reduce((sum, d) => sum + d.count, 0);
+      current = sumSince(calendar, windowStart, (d) => d.count);
       break;
     }
     case "prs_merged": {

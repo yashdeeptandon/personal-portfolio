@@ -163,9 +163,9 @@ export interface TechPerformanceStatus {
 
 export interface OverviewSectionData {
   period: TechPeriod;
-  codingHoursThisWeek: number | null;
+  codingHours: number | null;
   codingStreak: number | null;
-  githubContributionsLastYear: number | null;
+  githubContributions: number | null;
   githubCurrentStreak: number | null;
   prsMerged: number | null;
   prsMergedIsAllTime: boolean;

@@ -60,12 +60,12 @@ export default function TechKPIRow({
   const cards = [
     {
       label: "Coding hours",
-      value: overview.codingHoursThisWeek,
+      value: overview.codingHours,
       suffix: "h",
       decimals: 1,
       icon: <ClockIcon />,
       accent: CHART.ACCENT_INDIGO,
-      sub: "this week (WakaTime)",
+      sub: `${PERIOD_LABEL[overview.period]} (WakaTime)`,
     },
     {
       label: "Coding streak",
@@ -78,12 +78,14 @@ export default function TechKPIRow({
     },
     {
       label: "GitHub contributions",
-      value: overview.githubContributionsLastYear,
+      value: overview.githubContributions,
       suffix: "",
       decimals: 0,
       icon: <GitHubIcon />,
       accent: CHART.ACCENT_GREEN,
-      sub: "last 12 months",
+      // GitHub's contribution calendar itself only covers ~365 days, so
+      // "all time" would overclaim — say what the number actually is.
+      sub: overview.period === "all" ? "last 12 months (GitHub limit)" : PERIOD_LABEL[overview.period],
     },
     {
       label: "GitHub streak",
@@ -110,7 +112,7 @@ export default function TechKPIRow({
       decimals: 0,
       icon: <ProjectIcon />,
       accent: CHART.ACCENT_INDIGO,
-      sub: `${overview.projectsShipped ?? 0} shipped`,
+      sub: `${overview.projectsShipped ?? 0} shipped ${PERIOD_LABEL[overview.period]}`,
     },
     {
       label: "OSS impact",
