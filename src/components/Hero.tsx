@@ -84,7 +84,7 @@ const Hero = () => {
 
             <motion.div
               variants={itemVariants}
-              className="text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-6 h-10 sm:h-12 overflow-hidden"
+              className="text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-6 h-16 sm:h-16 overflow-hidden"
             >
               <span>A passionate </span>
               <AnimatePresence mode="wait">
