@@ -217,6 +217,7 @@ function GeneralSettings({
     siteUrl: settings.siteUrl || "",
     siteLogo: settings.siteLogo || "",
     favicon: settings.favicon || "",
+    resumeUrl: settings.resumeUrl || "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -300,6 +301,23 @@ function GeneralSettings({
             onChange={(e) => setFormData({ ...formData, favicon: e.target.value })}
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
+        </div>
+
+        <div>
+          <label htmlFor="resumeUrl" className="block text-sm font-medium text-gray-700">
+            Resume URL
+          </label>
+          <input
+            type="url"
+            id="resumeUrl"
+            value={formData.resumeUrl}
+            onChange={(e) => setFormData({ ...formData, resumeUrl: e.target.value })}
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            placeholder="https://...blob.vercel-storage.com/.../resume.pdf"
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            Upload the PDF in Media Library, then paste its URL here. Powers the &quot;Download Resume&quot; button on the About section.
+          </p>
         </div>
       </div>
 

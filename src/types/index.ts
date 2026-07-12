@@ -221,6 +221,7 @@ export interface ISettings extends Omit<Document, '_id'> {
   siteUrl: string;
   siteLogo?: string;
   favicon?: string;
+  resumeUrl?: string;
 
   // Contact Information
   contactEmail: string;

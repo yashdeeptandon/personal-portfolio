@@ -16,6 +16,7 @@ export const settingsUpdateSchema = Joi.object({
   }),
   siteLogo: Joi.string().uri().allow(null, "").optional(),
   favicon: Joi.string().uri().allow(null, "").optional(),
+  resumeUrl: Joi.string().uri().allow(null, "").optional(),
 
   // Contact Information
   contactEmail: Joi.string().email().optional().messages({

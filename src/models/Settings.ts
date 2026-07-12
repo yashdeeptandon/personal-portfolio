@@ -34,6 +34,10 @@ const SettingsSchema = new Schema<ISettings>({
     type: String,
     default: null
   },
+  resumeUrl: {
+    type: String,
+    default: null
+  },
 
   // Contact Information
   contactEmail: {

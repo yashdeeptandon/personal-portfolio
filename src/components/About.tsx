@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import AnimatedSection from "./ui/AnimatedSection";
 import CountUp from "./ui/CountUp";
@@ -52,6 +53,23 @@ const tagItem = {
 };
 
 const About = () => {
+  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        const url = data?.data?.settings?.resumeUrl;
+        if (url) setResumeUrl(url);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Blob storage serves an inline PDF by default; ?download=1 makes it a real download.
+  const downloadHref = resumeUrl
+    ? resumeUrl + (resumeUrl.includes("?") ? "&" : "?") + "download=1"
+    : null;
+
   return (
     <section id="about" className="py-20 bg-white/8 dark:bg-black/10 backdrop-blur-[2px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -176,11 +194,14 @@ const About = () => {
             {/* Resume */}
             <div className="mt-8">
               <motion.a
-                href="/resume.pdf"
-                download
-                whileHover={{ scale: 1.04, boxShadow: "0 8px 30px rgba(99,102,241,0.35)" }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg gap-2"
+                href={downloadHref ?? undefined}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-disabled={!downloadHref}
+                whileHover={downloadHref ? { scale: 1.04, boxShadow: "0 8px 30px rgba(99,102,241,0.35)" } : undefined}
+                whileTap={downloadHref ? { scale: 0.97 } : undefined}
+                onClick={(e) => { if (!downloadHref) e.preventDefault(); }}
+                className={`inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg gap-2 ${!downloadHref ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
