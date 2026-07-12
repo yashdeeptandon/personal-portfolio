@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { PulseIcon, BarsIcon } from "@/components/ui/AnimatedIcons";
 
 type NavItem =
   | { href: string; label: string; type: "anchor"; icon?: React.ReactNode }
@@ -24,20 +25,11 @@ const navItems: NavItem[] = [
   { href: "#contact", label: "Contact", type: "anchor", icon: <NavIcon d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6" /> },
   {
     href: "/vitals", label: "Vitals", type: "route",
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 inline-block mr-1 -mt-0.5" aria-hidden="true">
-        <path d="M1 8.5h3l1.5-4L8 13l1.8-7 1.2 2.5h3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.8" />
-      </svg>
-    ),
+    icon: <PulseIcon className="w-4 h-4 mr-1 -mt-0.5" />,
   },
   {
     href: "/dev-metrics", label: "Dev Metrics", type: "route",
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 inline-block mr-1 -mt-0.5" aria-hidden="true">
-        <path d="M3 13V7M8 13V3M13 13V9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeOpacity="0.8" />
-        <path d="M1.5 13h13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.35" />
-      </svg>
-    ),
+    icon: <BarsIcon className="w-4 h-4 mr-1 -mt-0.5" />,
   },
 ];
 

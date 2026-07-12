@@ -16,6 +16,7 @@ import {
   type FilterState,
 } from "@/lib/filterUtils";
 import FilterBar from "./FilterBar";
+import VitalsLoading from "./VitalsLoading";
 
 // Overview tab components
 import KPIRow from "./KPIRow";
@@ -59,26 +60,6 @@ export type Tab = typeof TABS[number];
 // ---------------------------------------------------------------------------
 // Skeleton
 // ---------------------------------------------------------------------------
-
-function SkeletonCard({ className = "" }: { className?: string }) {
-  return <div className={`rounded-xl border border-foreground/10 bg-foreground/5 animate-pulse ${className}`} />;
-}
-
-function SkeletonLayout() {
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} className="h-28" />)}
-      </div>
-      <SkeletonCard className="h-80" />
-      <div className="grid md:grid-cols-2 gap-4">
-        <SkeletonCard className="h-64" />
-        <SkeletonCard className="h-64" />
-      </div>
-      <SkeletonCard className="h-72" />
-    </div>
-  );
-}
 
 const TAB_ICONS: Record<Tab, string> = {
   Overview: "◉",
@@ -283,7 +264,7 @@ export default function PerformancePage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {isLoading && <SkeletonLayout />}
+        {isLoading && <VitalsLoading />}
 
         {error && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-center">

@@ -16,6 +16,7 @@ import ActivityTimeline from "./ActivityTimeline";
 import GoalsSection from "./GoalsSection";
 import EngineeringSignals from "./EngineeringSignals";
 import NarrativeSummary from "./NarrativeSummary";
+import DevMetricsLoading from "./DevMetricsLoading";
 
 const TABS = ["Overview", "Activity", "Consistency", "Output", "Skills", "Impact", "Goals"] as const;
 export type Tab = (typeof TABS)[number];
@@ -42,23 +43,6 @@ const tabContent = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: cubicEase } },
   exit: { opacity: 0, y: -8, transition: { duration: 0.15 } },
 };
-
-function SkeletonCard({ className = "" }: { className?: string }) {
-  return <div className={`rounded-xl border border-foreground/10 bg-foreground/5 animate-pulse ${className}`} />;
-}
-
-function SkeletonLayout() {
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <SkeletonCard key={i} className="h-28" />
-        ))}
-      </div>
-      <SkeletonCard className="h-64" />
-    </div>
-  );
-}
 
 function RefreshButton({ onDone }: { onDone: () => void }) {
   const [busy, setBusy] = useState(false);
@@ -161,7 +145,7 @@ export default function TechPerformancePage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {isLoading && <SkeletonLayout />}
+        {isLoading && <DevMetricsLoading />}
 
         {error && !isLoading && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-center">
