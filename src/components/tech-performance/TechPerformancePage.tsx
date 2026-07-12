@@ -142,7 +142,7 @@ export default function TechPerformancePage() {
               Developer Analytics
             </p>
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight">
-              Tech Performance
+              Dev Metrics
             </h1>
             <p className="mt-2 text-muted-foreground text-sm max-w-xl">
               Real coding activity, sourced live from GitHub and WakaTime — not a static skills list.

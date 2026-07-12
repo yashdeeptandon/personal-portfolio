@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import TechPerformancePage from "@/components/tech-performance/TechPerformancePage";
 
 export const metadata: Metadata = {
-  title: "Tech Performance | Yashdeep Tandon",
+  title: "Dev Metrics | Yashdeep Tandon",
   description:
     "A data-driven developer profile — coding activity, GitHub contributions, and engineering output, sourced live from WakaTime, GitHub, and other real tools.",
 };

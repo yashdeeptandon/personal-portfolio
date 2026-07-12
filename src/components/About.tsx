@@ -89,10 +89,10 @@ const About = () => {
                 run, workout, and recovery metric through Apple Watch, and I&apos;ve built a custom
                 Python pipeline to surface the patterns. You can explore that data in the{" "}
                 <a
-                  href="/performance"
+                  href="/vitals"
                   className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2 transition-colors"
                 >
-                  Performance dashboard
+                  Vitals dashboard
                 </a>
                 .
               </p>

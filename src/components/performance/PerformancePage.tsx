@@ -260,7 +260,7 @@ export default function PerformancePage() {
               Personal Analytics
             </p>
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight">
-              Performance Dashboard
+              Vitals
             </h1>
             <p className="mt-2 text-muted-foreground text-sm max-w-xl">
               Apple Health data — steps, heart rate, VO₂ Max, GPS routes, training load,

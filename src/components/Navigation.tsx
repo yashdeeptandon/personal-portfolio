@@ -23,21 +23,19 @@ const navItems: NavItem[] = [
   { href: "#experience", label: "Experience", type: "anchor", icon: <NavIcon d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /> },
   { href: "#contact", label: "Contact", type: "anchor", icon: <NavIcon d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6" /> },
   {
-    href: "/performance", label: "Performance", type: "route",
+    href: "/vitals", label: "Vitals", type: "route",
     icon: (
       <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 inline-block mr-1 -mt-0.5" aria-hidden="true">
-        <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.35" />
-        <circle cx="8" cy="8" r="4" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.6" />
-        <circle cx="8" cy="8" r="1.5" fill="currentColor" fillOpacity="0.8" />
+        <path d="M1 8.5h3l1.5-4L8 13l1.8-7 1.2 2.5h3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.8" />
       </svg>
     ),
   },
   {
-    href: "/tech-performance", label: "Tech Performance", type: "route",
+    href: "/dev-metrics", label: "Dev Metrics", type: "route",
     icon: (
       <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 inline-block mr-1 -mt-0.5" aria-hidden="true">
-        <path d="M2 9.5l3-3 2.5 2.5L12.5 4.5L14 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.8" />
-        <path d="M2 13h12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.35" />
+        <path d="M3 13V7M8 13V3M13 13V9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeOpacity="0.8" />
+        <path d="M1.5 13h13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.35" />
       </svg>
     ),
   },
