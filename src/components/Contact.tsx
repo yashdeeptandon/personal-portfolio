@@ -149,6 +149,21 @@ const Contact = () => {
               </h3>
 
               <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Honeypot: hidden from real users, off-screen (not display:none) so
+                    simple bots that auto-fill every input still populate it. */}
+                <div style={{ position: "absolute", left: "-9999px", top: "-9999px" }} aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    type="text"
+                    id="website"
+                    name="website"
+                    value={formData.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">

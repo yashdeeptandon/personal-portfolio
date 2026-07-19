@@ -36,7 +36,7 @@ export type {
 // Export configuration utilities
 export {
   EMAIL_TEMPLATES,
-  SENDGRID_CONFIG,
+  RESEND_CONFIG,
   BRAND_COLORS,
   getEmailConfig,
   validateEmailConfig,

@@ -142,7 +142,7 @@ export async function testBlogNotification(userEmail: string): Promise<void> {
         author: 'Yashdeep Tandon',
         publishedAt: new Date(),
         readTime: 5,
-        tags: ['Email', 'SendGrid', 'Next.js', 'TypeScript']
+        tags: ['Email', 'Resend', 'Next.js', 'TypeScript']
       },
       subscriber: {
         name: 'Test User',

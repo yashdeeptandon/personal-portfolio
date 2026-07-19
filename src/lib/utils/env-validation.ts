@@ -12,8 +12,8 @@ interface EnvConfig {
   NEXTAUTH_SECRET: string;
   NEXTAUTH_URL: string;
   
-  // Email (SendGrid)
-  SENDGRID_API_KEY?: string;
+  // Email (Resend)
+  RESEND_API_KEY?: string;
   FROM_EMAIL?: string;
   FROM_NAME?: string;
   
@@ -63,7 +63,7 @@ const REQUIRED_VARS = [
  * Optional environment variables with their purposes
  */
 const OPTIONAL_VARS = {
-  SENDGRID_API_KEY: 'Email functionality',
+  RESEND_API_KEY: 'Email functionality',
   FROM_EMAIL: 'Email sender address',
   FROM_NAME: 'Email sender name',
   BLOB_READ_WRITE_TOKEN: 'File upload functionality',
@@ -116,8 +116,8 @@ export function validateEnvironmentVariables(): ValidationResult {
   }
 
   // Additional validations
-  if (config.SENDGRID_API_KEY && !config.FROM_EMAIL) {
-    warnings.push('SENDGRID_API_KEY is set but FROM_EMAIL is missing');
+  if (config.RESEND_API_KEY && !config.FROM_EMAIL) {
+    warnings.push('RESEND_API_KEY is set but FROM_EMAIL is missing');
   }
 
   if (config.GITHUB_TOKEN && !config.GITHUB_USERNAME) {

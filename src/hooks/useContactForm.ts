@@ -24,6 +24,7 @@ const initialFormData: ContactFormData = {
   email: "",
   subject: "",
   message: "",
+  website: "",
 };
 
 export const useContactForm = (): UseContactFormReturn => {

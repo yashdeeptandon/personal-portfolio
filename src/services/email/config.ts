@@ -18,13 +18,10 @@ export const EMAIL_TEMPLATES = {
   GENERIC: 'generic'
 } as const;
 
-// SendGrid API configuration
-export const SENDGRID_CONFIG = {
-  API_URL: 'https://api.sendgrid.com/v3/mail/send',
-  MAX_RECIPIENTS: 1000,
+// Resend API configuration
+export const RESEND_CONFIG = {
+  MAX_RECIPIENTS: 50,
   TIMEOUT: 30000, // 30 seconds
-  RETRY_ATTEMPTS: 3,
-  RETRY_DELAY: 1000, // 1 second
 } as const;
 
 // Email validation patterns
@@ -59,12 +56,12 @@ export const BRAND_COLORS = {
  * Get email configuration from environment variables
  */
 export function getEmailConfig(): EmailConfig {
-  const apiKey = process.env.SENDGRID_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.FROM_EMAIL;
   const fromName = process.env.FROM_NAME;
 
   if (!apiKey) {
-    throw new Error('SENDGRID_API_KEY environment variable is required');
+    throw new Error('RESEND_API_KEY environment variable is required');
   }
 
   if (!fromEmail) {

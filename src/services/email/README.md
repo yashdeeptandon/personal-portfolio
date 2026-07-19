@@ -1,21 +1,24 @@
 # Email Service
 
-A comprehensive, standalone email service for the portfolio project using SendGrid. This service is designed to be dependency-free, type-safe, and easily callable from anywhere in the application.
+A comprehensive, standalone email service for the portfolio project using [Resend](https://resend.com) and [React Email](https://react.email). This service is type-safe and easily callable from anywhere in the application. See `RESEND_SETUP.md` at the repo root for the full account/domain/DNS setup guide.
 
 ## 🏗️ Architecture
 
 ```
 src/services/email/
 ├── index.ts              # Main entry point
-├── service.ts            # Core email service implementation
+├── service.ts            # Core email service implementation (Resend transport)
 ├── types.ts              # TypeScript type definitions
 ├── config.ts             # Configuration and utilities
-├── templates/            # Email templates
-│   ├── index.ts          # Template exports and registry
-│   ├── base.ts           # Base template structure
-│   ├── contact.ts        # Contact form templates
-│   └── newsletter.ts     # Newsletter templates
-└── README.md             # This file
+├── templates/             # React Email templates
+│   ├── index.ts           # Renders components -> {subject, html, text}, registry
+│   ├── EmailLayout.tsx     # Shared header/footer wrapper used by every template
+│   ├── styles.ts           # Shared inline-style tokens (brand colors, cards, buttons)
+│   ├── ContactNotificationEmail.tsx
+│   ├── ContactConfirmationEmail.tsx
+│   ├── NewsletterWelcomeEmail.tsx
+│   └── BlogNotificationEmail.tsx
+└── README.md              # This file
 ```
 
 ## 🚀 Quick Start
@@ -49,7 +52,7 @@ await emailService.sendNewsletterWelcome({
 Ensure these environment variables are set:
 
 ```env
-SENDGRID_API_KEY=your_sendgrid_api_key
+RESEND_API_KEY=your_resend_api_key
 FROM_EMAIL=your_email@domain.com
 FROM_NAME="Your Name"
 ADMIN_EMAIL=admin@domain.com  # Optional, defaults to FROM_EMAIL
@@ -230,7 +233,7 @@ All email functions return a consistent response format:
 ```typescript
 interface EmailResponse {
   success: boolean;
-  messageId?: string;    // SendGrid message ID
+  messageId?: string;    // Resend message ID
   error?: string;        // Error message if failed
   statusCode?: number;   // HTTP status code
 }
@@ -303,7 +306,7 @@ The service is designed to be extensible. Planned features include:
 
 1. **Environment variables not set**: Ensure all required environment variables are configured
 2. **Invalid email addresses**: Check email validation before sending
-3. **SendGrid API errors**: Verify API key and account status
+3. **Resend API errors**: Verify API key, account status, and that the sending domain is verified (run `node scripts/check-resend-domain.mjs`)
 4. **Template rendering errors**: Check template data structure
 
 ### Debug Mode

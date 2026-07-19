@@ -14,6 +14,7 @@ import {
   createdResponse,
   unauthorizedResponse,
   validationErrorResponse,
+  rateLimitResponse,
   withErrorHandling,
   parsePaginationParams,
   createPaginationMeta,
@@ -23,6 +24,8 @@ import {
 } from "@/lib/utils/response";
 import { API_MESSAGES, ANALYTICS_EVENTS } from "@/lib/utils/constants";
 import { emailService } from "@/services/email";
+import { contactFormLimiter } from "@/lib/contact/rateLimiter";
+import { logError, logSecurityEvent } from "@/lib/utils/logger";
 
 // GET /api/contact - Get all contact messages (admin only)
 export const GET = withErrorHandling(async (request: NextRequest | Request) => {
@@ -103,8 +106,33 @@ export const POST = withErrorHandling(
     const nextRequest = request as NextRequest;
     await dbConnect();
 
+    const ipAddress = getClientIP(nextRequest);
+    const userAgent = getUserAgent(nextRequest);
+
+    // Rate limit — keyed by IP, points/duration from RATE_LIMIT_MAX / RATE_LIMIT_WINDOW
+    try {
+      await contactFormLimiter.consume(ipAddress);
+    } catch {
+      logSecurityEvent("contact_rate_limited", "low", { ipAddress });
+      return rateLimitResponse();
+    }
+
     try {
       const body = await nextRequest.json();
+
+      // Honeypot — real users never see/fill this field. A non-empty value
+      // means a bot filled every input; fake a normal success response so
+      // the bot gets no signal it was caught, but skip persisting/emailing.
+      if (typeof body.website === "string" && body.website.trim() !== "") {
+        logSecurityEvent("contact_honeypot_triggered", "medium", {
+          ipAddress,
+          userAgent,
+        });
+        return createdResponse(API_MESSAGES.CONTACT_CREATED, {
+          message:
+            "Your message has been sent successfully. We will get back to you soon!",
+        });
+      }
 
       // Validate request body
       const { error, value } = contactCreateSchema.validate(body);
@@ -115,9 +143,7 @@ export const POST = withErrorHandling(
         );
       }
 
-      // Get client information
-      const ipAddress = getClientIP(nextRequest);
-      const userAgent = getUserAgent(nextRequest);
+      // Get client device information
       const deviceInfo = parseUserAgent(userAgent);
 
       // Create new contact message
@@ -151,7 +177,7 @@ export const POST = withErrorHandling(
         await analytics.save();
       } catch (analyticsError) {
         // Don't fail the request if analytics fails
-        console.error("Analytics error:", analyticsError);
+        logError(analyticsError, { context: "contact_analytics" });
       }
 
       // Send email notifications
@@ -179,10 +205,10 @@ export const POST = withErrorHandling(
             });
 
           if (!adminNotificationResult.success) {
-            console.error(
-              "Failed to send admin notification:",
-              adminNotificationResult.error
-            );
+            logError(new Error(adminNotificationResult.error), {
+              context: "contact_admin_notification",
+              contactId: contact._id.toString(),
+            });
           }
 
           // Send confirmation to user
@@ -202,17 +228,22 @@ export const POST = withErrorHandling(
             });
 
           if (!userConfirmationResult.success) {
-            console.error(
-              "Failed to send user confirmation:",
-              userConfirmationResult.error
-            );
+            logError(new Error(userConfirmationResult.error), {
+              context: "contact_user_confirmation",
+              contactId: contact._id.toString(),
+            });
           }
         } else {
-          console.warn("No admin email configured for contact notifications");
+          logError(new Error("No admin email configured"), {
+            context: "contact_email_config",
+          });
         }
       } catch (emailError) {
         // Don't fail the request if email fails
-        console.error("Email notification error:", emailError);
+        logError(emailError, {
+          context: "contact_email_notification",
+          contactId: contact._id.toString(),
+        });
       }
 
       return createdResponse(API_MESSAGES.CONTACT_CREATED, {
@@ -221,7 +252,7 @@ export const POST = withErrorHandling(
           "Your message has been sent successfully. We will get back to you soon!",
       });
     } catch (error) {
-      console.error("Error creating contact:", error);
+      logError(error, { context: "contact_create" });
       return errorResponse(API_MESSAGES.INTERNAL_ERROR);
     }
   }

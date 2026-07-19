@@ -118,13 +118,13 @@ export async function demoBlogPostNotification() {
   
   // Simulate new blog post
   const blogPost = {
-    title: 'Building a Scalable Email Service with SendGrid and Next.js',
-    excerpt: 'Learn how to create a comprehensive, type-safe email service for your Next.js application using SendGrid. This guide covers everything from basic setup to advanced template management.',
-    slug: 'building-scalable-email-service-sendgrid-nextjs',
+    title: 'Building a Scalable Email Service with Resend and Next.js',
+    excerpt: 'Learn how to create a comprehensive, type-safe email service for your Next.js application using Resend and React Email. This guide covers everything from basic setup to advanced template management.',
+    slug: 'building-scalable-email-service-resend-nextjs',
     author: 'Yashdeep Tandon',
     publishedAt: new Date(),
     readTime: 8,
-    tags: ['Next.js', 'SendGrid', 'TypeScript', 'Email', 'Tutorial']
+    tags: ['Next.js', 'Resend', 'React Email', 'TypeScript', 'Email', 'Tutorial']
   };
 
   // Simulate subscriber list

@@ -15,6 +15,8 @@ export interface ContactFormData {
   message: string;
   phone?: string;
   company?: string;
+  /** Honeypot — must stay empty; real users never see this field. */
+  website?: string;
 }
 
 /**
@@ -188,6 +190,8 @@ export const sanitizeContactForm = (formData: ContactFormData): ContactFormData 
     message: formData.message.trim(),
     phone: formData.phone?.trim() || undefined,
     company: formData.company?.trim() || undefined,
+    // Not trimmed away: the API needs to see the raw value to detect bots.
+    website: formData.website,
   };
 };
 

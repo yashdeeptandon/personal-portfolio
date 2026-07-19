@@ -83,10 +83,10 @@ export function validateDatabaseEnvironment(): { isValid: boolean; error?: strin
 }
 
 /**
- * Validates email environment for SendGrid
+ * Validates email environment for Resend
  */
 export function validateEmailEnvironment(): { isValid: boolean; missing: string[] } {
-  const required = ['SENDGRID_API_KEY', 'FROM_EMAIL', 'FROM_NAME'];
+  const required = ['RESEND_API_KEY', 'FROM_EMAIL', 'FROM_NAME'];
   const missing = required.filter(varName => !process.env[varName]);
   
   return {

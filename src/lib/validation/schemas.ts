@@ -217,6 +217,10 @@ export const contactCreateSchema = Joi.object({
       "string.pattern.base": "Please provide a valid phone number",
     }),
   company: Joi.string().min(2).max(100).allow(""),
+  // Honeypot — invisible to real users, only bots that auto-fill every
+  // input populate it. Must stay empty; checked before this schema runs
+  // so a filled value never even reaches validation in practice.
+  website: Joi.string().allow("").max(0).optional(),
 });
 
 // Newsletter Validation Schemas

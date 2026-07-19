@@ -32,7 +32,7 @@ export async function initializeApplication() {
 
     // Optional environment variables check
     const optionalEnvVars = [
-      'SENDGRID_API_KEY',
+      'RESEND_API_KEY',
       'BLOB_READ_WRITE_TOKEN',
       'GITHUB_TOKEN',
       'GOOGLE_ANALYTICS_ID'

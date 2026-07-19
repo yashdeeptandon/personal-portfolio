@@ -1,10 +1,11 @@
 /**
  * Email Service
  *
- * Standalone, dependency-free email service using SendGrid.
+ * Standalone email service using Resend.
  * This service is completely self-contained and can be called from anywhere in the application.
  */
 
+import { Resend } from "resend";
 import {
   EmailData,
   EmailResponse,
@@ -20,7 +21,6 @@ import {
   validateEmailAddresses,
   sanitizeEmailContent,
   formatEmailAddress,
-  SENDGRID_CONFIG,
 } from "./config";
 import {
   generateContactNotificationTemplate,
@@ -28,9 +28,10 @@ import {
   generateNewsletterWelcomeTemplate,
   generateBlogNotificationTemplate,
 } from "./templates";
+import { logError, logSuccess } from "@/lib/utils/logger";
 
 /**
- * Core email sending function using SendGrid API
+ * Core email sending function using the Resend API
  */
 async function sendEmail(emailData: EmailData): Promise<EmailResponse> {
   try {
@@ -70,91 +71,40 @@ async function sendEmail(emailData: EmailData): Promise<EmailResponse> {
     const sanitizedHtml = sanitizeEmailContent(emailData.html);
     const sanitizedText = sanitizeEmailContent(emailData.text);
 
-    // Prepare recipients
-    const toArray = Array.isArray(emailData.to) ? emailData.to : [emailData.to];
-    const personalizations: any[] = toArray.map((email) => ({
-      to: [{ email }],
-    }));
+    const resend = new Resend(config.apiKey);
 
-    // Add CC and BCC if provided
-    if (emailData.cc) {
-      const ccArray = Array.isArray(emailData.cc)
-        ? emailData.cc
-        : [emailData.cc];
-      personalizations[0].cc = ccArray.map((email) => ({ email }));
-    }
-
-    if (emailData.bcc) {
-      const bccArray = Array.isArray(emailData.bcc)
-        ? emailData.bcc
-        : [emailData.bcc];
-      personalizations[0].bcc = bccArray.map((email) => ({ email }));
-    }
-
-    // Prepare SendGrid payload
-    const payload: any = {
-      personalizations,
-      from: {
-        email: config.fromEmail,
-        name: config.fromName,
-      },
+    const { data, error } = await resend.emails.send({
+      from: formatEmailAddress(config.fromEmail, config.fromName),
+      to: emailData.to,
       subject: emailData.subject,
-      content: [
-        {
-          type: "text/plain",
-          value: sanitizedText,
-        },
-        {
-          type: "text/html",
-          value: sanitizedHtml,
-        },
-      ],
-    };
-
-    // Add reply-to if provided
-    if (emailData.replyTo) {
-      payload.reply_to = { email: emailData.replyTo };
-    }
-
-    // Send email via SendGrid API
-    const response = await fetch(SENDGRID_CONFIG.API_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      html: sanitizedHtml,
+      text: sanitizedText,
+      ...(emailData.replyTo && { replyTo: emailData.replyTo }),
+      ...(emailData.cc && { cc: emailData.cc }),
+      ...(emailData.bcc && { bcc: emailData.bcc }),
     });
 
-    // Handle response
-    if (!response.ok) {
-      const errorText = await response.text();
-      let errorMessage = "Failed to send email";
-
-      try {
-        const errorData = JSON.parse(errorText);
-        errorMessage = errorData.errors?.[0]?.message || errorMessage;
-      } catch {
-        errorMessage = errorText || errorMessage;
-      }
-
+    if (error) {
       throw new EmailServiceError(
-        `SendGrid API error: ${errorMessage}`,
-        response.status,
-        errorText
+        `Resend API error: ${error.message}`,
+        undefined,
+        error
       );
     }
 
-    // Get message ID from response headers
-    const messageId = response.headers.get("x-message-id");
+    logSuccess("Email sent", {
+      messageId: data?.id,
+      to: emailData.to,
+      subject: emailData.subject,
+    });
 
     return {
       success: true,
-      messageId: messageId || undefined,
-      statusCode: response.status,
+      messageId: data?.id,
+      statusCode: 200,
     };
   } catch (error) {
-    console.error("Email service error:", error);
+    logError(error, { context: "sendEmail", to: emailData.to });
 
     if (error instanceof EmailServiceError) {
       return {
@@ -180,7 +130,7 @@ export async function sendContactNotification(
   params: ContactNotificationParams
 ): Promise<EmailResponse> {
   try {
-    const template = generateContactNotificationTemplate(params);
+    const template = await generateContactNotificationTemplate(params);
 
     const emailData: EmailData = {
       to: params.to,
@@ -192,7 +142,7 @@ export async function sendContactNotification(
 
     return await sendEmail(emailData);
   } catch (error) {
-    console.error("Contact notification error:", error);
+    logError(error, { context: "sendContactNotification" });
     throw new EmailServiceError(
       `Failed to send contact notification: ${
         error instanceof Error ? error.message : "Unknown error"
@@ -208,7 +158,7 @@ export async function sendContactConfirmation(
   params: ContactConfirmationParams
 ): Promise<EmailResponse> {
   try {
-    const template = generateContactConfirmationTemplate(params);
+    const template = await generateContactConfirmationTemplate(params);
 
     const emailData: EmailData = {
       to: params.to,
@@ -219,7 +169,7 @@ export async function sendContactConfirmation(
 
     return await sendEmail(emailData);
   } catch (error) {
-    console.error("Contact confirmation error:", error);
+    logError(error, { context: "sendContactConfirmation" });
     throw new EmailServiceError(
       `Failed to send contact confirmation: ${
         error instanceof Error ? error.message : "Unknown error"
@@ -235,7 +185,7 @@ export async function sendNewsletterWelcome(
   params: NewsletterWelcomeParams
 ): Promise<EmailResponse> {
   try {
-    const template = generateNewsletterWelcomeTemplate(params);
+    const template = await generateNewsletterWelcomeTemplate(params);
 
     const emailData: EmailData = {
       to: params.to,
@@ -246,7 +196,7 @@ export async function sendNewsletterWelcome(
 
     return await sendEmail(emailData);
   } catch (error) {
-    console.error("Newsletter welcome error:", error);
+    logError(error, { context: "sendNewsletterWelcome" });
     throw new EmailServiceError(
       `Failed to send newsletter welcome: ${
         error instanceof Error ? error.message : "Unknown error"
@@ -262,7 +212,7 @@ export async function sendBlogNotification(
   params: BlogNotificationParams
 ): Promise<EmailResponse> {
   try {
-    const template = generateBlogNotificationTemplate(params);
+    const template = await generateBlogNotificationTemplate(params);
 
     const emailData: EmailData = {
       to: params.to,
@@ -273,7 +223,7 @@ export async function sendBlogNotification(
 
     return await sendEmail(emailData);
   } catch (error) {
-    console.error("Blog notification error:", error);
+    logError(error, { context: "sendBlogNotification" });
     throw new EmailServiceError(
       `Failed to send blog notification: ${
         error instanceof Error ? error.message : "Unknown error"
@@ -301,7 +251,7 @@ export async function sendGenericEmail(
 
     return await sendEmail(emailData);
   } catch (error) {
-    console.error("Generic email error:", error);
+    logError(error, { context: "sendGenericEmail" });
     throw new EmailServiceError(
       `Failed to send generic email: ${
         error instanceof Error ? error.message : "Unknown error"

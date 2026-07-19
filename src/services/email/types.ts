@@ -120,7 +120,9 @@ export interface EmailTemplate {
 }
 
 // Email template generator function type
-export type EmailTemplateGenerator<T = Record<string, any>> = (data: T) => EmailTemplate;
+export type EmailTemplateGenerator<T = Record<string, any>> = (
+  data: T
+) => Promise<EmailTemplate>;
 
 // Email service error types
 export class EmailServiceError extends Error {
