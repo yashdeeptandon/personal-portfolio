@@ -59,6 +59,15 @@ export interface ContactConfirmationParams {
   expectedResponseTime?: string;
 }
 
+// Contact reply parameters (admin replying to a contact message)
+export interface ContactReplyParams {
+  to: string;
+  name: string;
+  originalSubject: string;
+  originalMessage: string;
+  replyMessage: string;
+}
+
 // Newsletter welcome parameters
 export interface NewsletterWelcomeParams {
   to: string;

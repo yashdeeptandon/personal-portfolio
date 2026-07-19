@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -16,6 +17,12 @@ import {
 } from "@/components/ui/select";
 import Badge, { type BadgeVariant } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
+
+interface ContactReply {
+  message: string;
+  sentAt: string;
+  sentBy?: string;
+}
 
 interface ContactMessage {
   _id: string;
@@ -28,6 +35,7 @@ interface ContactMessage {
   status: "new" | "read" | "replied" | "archived";
   priority: "low" | "medium" | "high";
   source: string;
+  replies?: ContactReply[];
   createdAt: string;
   updatedAt: string;
 }
@@ -70,6 +78,10 @@ export default function ContactManagement() {
   const [pagination, setPagination] = useState<
     ContactListResponse["pagination"] | null
   >(null);
+  const [replyText, setReplyText] = useState("");
+  const [sendingReply, setSendingReply] = useState(false);
+  const [replyError, setReplyError] = useState("");
+  const [replySent, setReplySent] = useState(false);
 
   const fetchContacts = useCallback(async () => {
     try {
@@ -180,6 +192,47 @@ export default function ContactManagement() {
     }
   };
 
+  const handleSendReply = async () => {
+    if (!selectedContact || !replyText.trim()) return;
+
+    try {
+      setSendingReply(true);
+      setReplyError("");
+
+      const response = await fetch(
+        `/api/contact/${selectedContact._id}/reply`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: replyText.trim() }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to send reply");
+      }
+
+      const updatedContact = data.data as ContactMessage;
+      setSelectedContact(updatedContact);
+      setContacts((prev) =>
+        prev.map((contact) =>
+          contact._id === updatedContact._id ? updatedContact : contact
+        )
+      );
+      setReplyText("");
+      setReplySent(true);
+      setTimeout(() => setReplySent(false), 3000);
+    } catch (error) {
+      setReplyError(
+        error instanceof Error ? error.message : "Failed to send reply"
+      );
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
   const PriorityPill = ({ priority }: { priority: string }) =>
     priority === "high" ? (
       <span className="inline-flex items-center gap-1 rounded-md border border-destructive/20 bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive">
@@ -193,6 +246,9 @@ export default function ContactManagement() {
 
   const handleContactClick = async (contact: ContactMessage) => {
     setSelectedContact(contact);
+    setReplyText("");
+    setReplyError("");
+    setReplySent(false);
 
     // Mark as read if it's new
     if (contact.status === "new") {
@@ -490,16 +546,64 @@ export default function ContactManagement() {
                     <p>Source: {selectedContact.source}</p>
                   </div>
 
-                  <div className="border-t border-border pt-4">
-                    <Button
-                      render={
-                        <a
-                          href={`mailto:${selectedContact.email}?subject=Re: ${selectedContact.subject}`}
-                        />
-                      }
-                    >
-                      Reply via Email
-                    </Button>
+                  {selectedContact.replies && selectedContact.replies.length > 0 && (
+                    <div className="space-y-3 border-t border-border pt-4">
+                      <h4 className="text-sm font-medium text-foreground">
+                        Reply History
+                      </h4>
+                      {selectedContact.replies.map((reply, i) => (
+                        <div
+                          key={i}
+                          className="rounded-md border border-border bg-muted/50 p-3"
+                        >
+                          <p className="text-sm whitespace-pre-wrap text-foreground">
+                            {reply.message}
+                          </p>
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            {new Date(reply.sentAt).toLocaleString()}
+                            {reply.sentBy && ` • ${reply.sentBy}`}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="space-y-2 border-t border-border pt-4">
+                    <h4 className="text-sm font-medium text-foreground">
+                      Send Reply
+                    </h4>
+                    <Textarea
+                      rows={5}
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      placeholder={`Write your reply to ${selectedContact.name}...`}
+                    />
+                    {replyError && (
+                      <p className="text-sm text-destructive">{replyError}</p>
+                    )}
+                    {replySent && (
+                      <p className="text-sm text-green-600 dark:text-green-400">
+                        Reply sent to {selectedContact.email}.
+                      </p>
+                    )}
+                    <div className="flex items-center justify-between gap-3">
+                      <Button
+                        variant="outline"
+                        render={
+                          <a
+                            href={`mailto:${selectedContact.email}?subject=Re: ${selectedContact.subject}`}
+                          />
+                        }
+                      >
+                        Open in Email Client
+                      </Button>
+                      <Button
+                        onClick={handleSendReply}
+                        disabled={sendingReply || !replyText.trim()}
+                      >
+                        {sendingReply ? "Sending..." : "Send Reply"}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </>

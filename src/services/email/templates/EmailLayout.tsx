@@ -14,6 +14,7 @@ import {
   Section,
   Text,
   Link,
+  Img,
 } from "@react-email/components";
 import {
   bodyStyle,
@@ -22,10 +23,13 @@ import {
   headerTitleStyle,
   bodyPaddingStyle,
   footerStyle,
+  avatarStyle,
+  roleTagStyle,
   colors,
 } from "./styles";
 
 const SITE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const AVATAR_URL = `${SITE_URL}/avatar.jpg`;
 
 export interface EmailLayoutProps {
   title: string;
@@ -51,7 +55,9 @@ export function EmailLayout({
       <Body style={bodyStyle}>
         <Container style={containerStyle}>
           <Section style={headerStyle}>
+            <Img src={AVATAR_URL} width={64} height={64} alt="Yashdeep Tandon" style={avatarStyle} />
             <Text style={headerTitleStyle}>Yashdeep Tandon</Text>
+            <span style={roleTagStyle}>Sr. Software Engineer</span>
           </Section>
 
           <Section style={bodyPaddingStyle}>{children}</Section>

@@ -7,7 +7,7 @@ import { Heading, Text, Link, Button, Row, Column, Section } from "@react-email/
 import { EmailLayout } from "./EmailLayout";
 import { formatEmailDate, generateUnsubscribeUrl } from "../config";
 import { BlogNotificationParams } from "../types";
-import { h2Style, h3Style, pStyle, cardHighlightStyle, cardStyle, btnStyle, btnSecondaryStyle, tagStyle, colors } from "./styles";
+import { h2Style, h3Style, pStyle, cardHighlightStyle, cardStyle, btnStyle, btnSecondaryStyle, tagStyle, signatureStyle, colors } from "./styles";
 
 const SITE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
@@ -94,6 +94,12 @@ export function BlogNotificationEmail({
       <Text style={{ marginTop: "30px", fontSize: "14px", color: colors.TEXT_SECONDARY }}>
         I hope you find this content valuable! Feel free to reply to this email if you have any
         questions or feedback.
+      </Text>
+
+      <Text style={signatureStyle}>
+        Happy reading,
+        <br />
+        <strong style={{ color: colors.TEXT_PRIMARY }}>Yashdeep</strong>
       </Text>
     </EmailLayout>
   );

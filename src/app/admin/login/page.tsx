@@ -4,15 +4,23 @@ import { useState, useEffect, Suspense } from "react";
 import { signIn, getSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
+
+const cubicEase: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: cubicEase } },
+};
+
+const roles = ["Full-Stack Developer", "Sr. Software Engineer", "Endurance Athlete"];
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -20,11 +28,11 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentRole, setCurrentRole] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Check if user is already logged in as admin
     const checkSession = async () => {
       const session = await getSession();
       if (session?.user?.role === "admin") {
@@ -33,6 +41,13 @@ function LoginForm() {
     };
     checkSession();
   }, [router]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentRole((prev) => (prev + 1) % roles.length);
+    }, 2600);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +67,6 @@ function LoginForm() {
         return;
       }
 
-      // Check if the user has admin role
       const session = await getSession();
       if (session?.user?.role !== "admin") {
         setError("Access denied. Admin privileges required.");
@@ -60,7 +74,6 @@ function LoginForm() {
         return;
       }
 
-      // Redirect to admin dashboard or intended page
       const callbackUrl = searchParams.get("callbackUrl") || "/admin";
       router.push(callbackUrl);
     } catch {
@@ -70,141 +83,171 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-6">
-        <div>
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-            <svg
-              className="h-6 w-6 text-primary"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
-          </div>
-          <h2 className="mt-6 text-center font-display text-3xl font-bold text-foreground">
-            Admin Login
-          </h2>
-          <p className="mt-2 text-center text-sm text-muted-foreground">
-            Sign in to access the admin dashboard
-          </p>
-        </div>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
+      {/* Signature dot-grid, same as the homepage hero */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#6366f1 1px, transparent 1px), linear-gradient(90deg, #6366f1 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-        <Card>
-          <CardHeader className="sr-only">Login</CardHeader>
-          <CardContent className="pt-6">
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              {error && (
-                <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
-                  <div className="flex">
-                    <svg
-                      className="h-5 w-5 shrink-0 text-destructive"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <p className="ml-3 text-sm font-medium text-destructive">
-                      {error}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+      <motion.div
+        className="relative z-10 w-full max-w-sm"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Identity */}
+        <motion.div variants={itemVariants} className="flex flex-col items-center text-center">
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="relative"
+          >
+            <div className="absolute inset-0 rounded-full bg-linear-to-br from-blue-400 via-indigo-500 to-purple-600 opacity-30 blur-md" />
+            <div className="h-20 w-20 rounded-full bg-linear-to-br from-blue-400 via-indigo-500 to-purple-600 p-0.5">
+              <div className="h-full w-full overflow-hidden rounded-full bg-muted">
+                <Image
+                  src="/avatar.jpg"
+                  alt="Yashdeep Tandon"
+                  width={80}
+                  height={80}
+                  className="h-full w-full object-cover"
+                  priority
                 />
               </div>
+            </div>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0"
+            >
+              <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50" />
+            </motion.div>
+          </motion.div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 flex items-center pr-3"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-5 w-5 text-muted-foreground" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5 text-muted-foreground" />
-                    )}
-                  </button>
-                </div>
-              </div>
+          <h1 className="mt-5 font-display text-2xl font-bold text-transparent">
+            <span className="bg-linear-to-r from-blue-600 to-indigo-500 bg-clip-text dark:from-blue-400 dark:to-indigo-400">
+              Yashdeep Tandon
+            </span>
+          </h1>
 
-              <Button type="submit" disabled={isLoading} className="w-full">
-                {isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <svg
-                      className="h-4 w-4 animate-spin"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Signing in...
-                  </span>
+          <div className="mt-1 h-5 text-sm text-muted-foreground">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentRole}
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="inline-block font-medium text-indigo-500 dark:text-indigo-400"
+              >
+                {roles[currentRole]}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+
+          <p className="mt-4 text-xs tracking-widest text-muted-foreground/70 uppercase">
+            Private workshop · admin only
+          </p>
+        </motion.div>
+
+        {/* Form */}
+        <motion.form
+          variants={itemVariants}
+          onSubmit={handleSubmit}
+          className="mt-10 space-y-6"
+        >
+          <AnimatePresence>
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="text-center text-sm text-destructive"
+              >
+                {error}
+              </motion.p>
+            )}
+          </AnimatePresence>
+
+          <div className="space-y-1.5">
+            <label
+              htmlFor="email"
+              className="text-xs tracking-wide text-muted-foreground uppercase"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full border-0 border-b border-border bg-transparent px-0 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-indigo-500 focus:ring-0 focus:outline-none"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label
+              htmlFor="password"
+              className="text-xs tracking-wide text-muted-foreground uppercase"
+            >
+              Password
+            </label>
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full border-0 border-b border-border bg-transparent px-0 py-2 pr-8 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-indigo-500 focus:ring-0 focus:outline-none"
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                className="absolute inset-y-0 right-0 flex items-center text-muted-foreground hover:text-foreground"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-4 w-4" />
                 ) : (
-                  "Sign in"
+                  <EyeIcon className="h-4 w-4" />
                 )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+              </button>
+            </div>
+          </div>
 
-        <div className="text-center">
+          <motion.button
+            type="submit"
+            disabled={isLoading}
+            whileHover={{ scale: isLoading ? 1 : 1.02, boxShadow: "0 8px 30px rgba(99,102,241,0.35)" }}
+            whileTap={{ scale: isLoading ? 1 : 0.98 }}
+            className="w-full rounded-lg bg-linear-to-r from-blue-600 to-indigo-600 py-3 text-sm font-semibold text-white shadow-lg transition-opacity disabled:opacity-60"
+          >
+            {isLoading ? "Signing in…" : "Sign in"}
+          </motion.button>
+        </motion.form>
+
+        <motion.div variants={itemVariants} className="mt-8 text-center">
           <Link
             href="/"
-            className="text-sm text-primary hover:text-primary/80"
+            className="text-xs text-muted-foreground transition-colors hover:text-indigo-500"
           >
-            ← Back to main site
+            ← back to the portfolio
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
@@ -213,8 +256,8 @@ export default function AdminLogin() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-indigo-500" />
         </div>
       }
     >

@@ -16,6 +16,7 @@ import {
   messageBlockStyle,
   btnStyle,
   btnSecondaryStyle,
+  signatureStyle,
   colors,
 } from "./styles";
 
@@ -95,6 +96,12 @@ export function ContactConfirmationEmail({
       <Text style={{ marginTop: "30px", fontSize: "14px", color: colors.TEXT_SECONDARY }}>
         If you have any urgent questions or need to add additional information to your inquiry,
         please reply to this email with your reference ID: <strong>{submissionId}</strong>
+      </Text>
+
+      <Text style={signatureStyle}>
+        Talk soon,
+        <br />
+        <strong style={{ color: colors.TEXT_PRIMARY }}>Yashdeep</strong>
       </Text>
     </EmailLayout>
   );

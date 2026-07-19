@@ -197,7 +197,8 @@ export const logAuthEvent = (
     | "inactive_account_access"
     | "admin_access"
     | "contact_deleted"
-    | "contact_updated",
+    | "contact_updated"
+    | "contact_replied",
   userId?: string,
   email?: string,
   context?: Record<string, any>
@@ -213,6 +214,7 @@ export const logAuthEvent = (
     unauthorized_access: "🚫",
     contact_deleted: "🗑️",
     contact_updated: "✏️",
+    contact_replied: "📧",
     forbidden_access: "⛔️",
     inactive_account_access: "👻",
     admin_access: "👑",

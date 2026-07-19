@@ -39,10 +39,12 @@ export const DEFAULT_EMAIL_SETTINGS = {
   MAX_NAME_LENGTH: 100,
 } as const;
 
-// Brand colors for email templates
+// Brand colors for email templates — matches the site's actual indigo
+// palette (--primary / --ring / --chart-1 in globals.css) rather than a
+// generic blue, so email reads as the same brand as the site and login page.
 export const BRAND_COLORS = {
-  PRIMARY: '#3B82F6',
-  SECONDARY: '#1E40AF',
+  PRIMARY: '#6366F1',
+  SECONDARY: '#4F46E5',
   SUCCESS: '#10B981',
   WARNING: '#F59E0B',
   ERROR: '#EF4444',

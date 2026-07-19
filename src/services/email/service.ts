@@ -12,6 +12,7 @@ import {
   EmailServiceError,
   ContactNotificationParams,
   ContactConfirmationParams,
+  ContactReplyParams,
   NewsletterWelcomeParams,
   BlogNotificationParams,
   GenericEmailParams,
@@ -25,6 +26,7 @@ import {
 import {
   generateContactNotificationTemplate,
   generateContactConfirmationTemplate,
+  generateContactReplyTemplate,
   generateNewsletterWelcomeTemplate,
   generateBlogNotificationTemplate,
 } from "./templates";
@@ -179,6 +181,33 @@ export async function sendContactConfirmation(
 }
 
 /**
+ * Send admin reply to a contact message
+ */
+export async function sendContactReply(
+  params: ContactReplyParams
+): Promise<EmailResponse> {
+  try {
+    const template = await generateContactReplyTemplate(params);
+
+    const emailData: EmailData = {
+      to: params.to,
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+    };
+
+    return await sendEmail(emailData);
+  } catch (error) {
+    logError(error, { context: "sendContactReply" });
+    throw new EmailServiceError(
+      `Failed to send contact reply: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+/**
  * Send newsletter welcome email
  */
 export async function sendNewsletterWelcome(
@@ -267,6 +296,7 @@ export { sendEmail };
 export const emailService = {
   sendContactNotification,
   sendContactConfirmation,
+  sendContactReply,
   sendNewsletterWelcome,
   sendBlogNotification,
   sendGenericEmail,

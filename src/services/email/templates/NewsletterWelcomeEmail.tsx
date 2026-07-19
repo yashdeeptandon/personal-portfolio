@@ -15,6 +15,7 @@ import {
   cardStyle,
   btnStyle,
   btnSecondaryStyle,
+  signatureStyle,
   colors,
 } from "./styles";
 
@@ -118,6 +119,12 @@ export function NewsletterWelcomeEmail({
       <Text style={{ marginTop: "30px", fontSize: "14px", color: colors.TEXT_SECONDARY }}>
         You can update your email preferences or unsubscribe at any time using the link in the
         footer of this email.
+      </Text>
+
+      <Text style={signatureStyle}>
+        Glad to have you here,
+        <br />
+        <strong style={{ color: colors.TEXT_PRIMARY }}>Yashdeep</strong>
       </Text>
     </EmailLayout>
   );

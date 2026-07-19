@@ -70,6 +70,25 @@ const ContactSchema = new Schema<IContact>(
       type: String,
       default: null,
     },
+    replies: {
+      type: [
+        {
+          message: {
+            type: String,
+            required: true,
+            maxlength: [5000, "Reply cannot exceed 5000 characters"],
+          },
+          sentAt: {
+            type: Date,
+            default: Date.now,
+          },
+          sentBy: {
+            type: String,
+          },
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,

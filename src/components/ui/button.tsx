@@ -40,15 +40,28 @@ const buttonVariants = cva(
   }
 )
 
+function isNativeButtonElement(render: ButtonPrimitive.Props["render"]) {
+  return (
+    typeof render === "object" &&
+    render !== null &&
+    "type" in render &&
+    render.type === "button"
+  )
+}
+
 function Button({
   className,
   variant = "default",
   size = "default",
+  nativeButton,
+  render,
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (
     <ButtonPrimitive
       data-slot="button"
+      render={render}
+      nativeButton={nativeButton ?? (render ? isNativeButtonElement(render) : true)}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />

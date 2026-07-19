@@ -279,6 +279,11 @@ export const contactUpdateSchema = Joi.object({
     .optional(),
 });
 
+// Contact Reply Validation (Admin only)
+export const contactReplySchema = Joi.object({
+  message: Joi.string().min(2).max(5000).required(),
+});
+
 // File Upload Validation
 export const fileUploadSchema = Joi.object({
   fieldname: Joi.string().required(),

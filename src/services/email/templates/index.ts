@@ -11,12 +11,14 @@ import * as React from "react";
 import { render } from "@react-email/render";
 import { ContactNotificationEmail } from "./ContactNotificationEmail";
 import { ContactConfirmationEmail } from "./ContactConfirmationEmail";
+import { ContactReplyEmail } from "./ContactReplyEmail";
 import { NewsletterWelcomeEmail } from "./NewsletterWelcomeEmail";
 import { BlogNotificationEmail } from "./BlogNotificationEmail";
 import { truncateText } from "../config";
 import {
   ContactNotificationParams,
   ContactConfirmationParams,
+  ContactReplyParams,
   NewsletterWelcomeParams,
   BlogNotificationParams,
   EmailTemplate,
@@ -27,6 +29,7 @@ import {
 export { EmailLayout } from "./EmailLayout";
 export { ContactNotificationEmail } from "./ContactNotificationEmail";
 export { ContactConfirmationEmail } from "./ContactConfirmationEmail";
+export { ContactReplyEmail } from "./ContactReplyEmail";
 export { NewsletterWelcomeEmail } from "./NewsletterWelcomeEmail";
 export { BlogNotificationEmail } from "./BlogNotificationEmail";
 
@@ -62,6 +65,16 @@ export async function generateContactConfirmationTemplate(
 }
 
 /**
+ * Generate contact reply email (admin replying to a visitor)
+ */
+export async function generateContactReplyTemplate(
+  params: ContactReplyParams
+): Promise<EmailTemplate> {
+  const subject = `Re: ${params.originalSubject}`;
+  return renderTemplate(subject, React.createElement(ContactReplyEmail, params));
+}
+
+/**
  * Generate newsletter welcome email
  */
 export async function generateNewsletterWelcomeTemplate(
@@ -85,6 +98,7 @@ export async function generateBlogNotificationTemplate(
 export type {
   ContactNotificationParams,
   ContactConfirmationParams,
+  ContactReplyParams,
   NewsletterWelcomeParams,
   BlogNotificationParams,
   EmailTemplate,

@@ -27,17 +27,52 @@ export const containerStyle: CSSProperties = {
 };
 
 export const headerStyle: CSSProperties = {
-  background: `linear-gradient(135deg, ${colors.PRIMARY} 0%, ${colors.SECONDARY} 100%)`,
-  padding: "40px 30px",
+  // backgroundColor is the fallback Outlook desktop (Word rendering engine)
+  // actually honors; backgroundImage layers the gradient on top for every
+  // other client. Never rely on the `background` shorthand alone here.
+  backgroundColor: colors.PRIMARY,
+  backgroundImage: `linear-gradient(135deg, ${colors.PRIMARY} 0%, ${colors.SECONDARY} 100%)`,
+  padding: "36px 30px",
   textAlign: "center",
+};
+
+export const avatarStyle: CSSProperties = {
+  width: "64px",
+  height: "64px",
+  borderRadius: "50%",
+  border: "3px solid rgba(255,255,255,0.5)",
+  display: "block",
+  margin: "0 auto 14px auto",
+  objectFit: "cover",
 };
 
 export const headerTitleStyle: CSSProperties = {
   margin: 0,
   color: colors.WHITE,
-  fontSize: "28px",
+  fontSize: "24px",
   fontWeight: 700,
-  letterSpacing: "-0.5px",
+  letterSpacing: "-0.3px",
+};
+
+export const roleTagStyle: CSSProperties = {
+  display: "inline-block",
+  marginTop: "10px",
+  padding: "4px 12px",
+  borderRadius: "999px",
+  backgroundColor: "rgba(255,255,255,0.16)",
+  color: colors.WHITE,
+  fontSize: "11px",
+  fontWeight: 600,
+  letterSpacing: "0.5px",
+  textTransform: "uppercase",
+};
+
+export const signatureStyle: CSSProperties = {
+  marginTop: "32px",
+  paddingTop: "20px",
+  borderTop: "1px solid #E5E7EB",
+  color: colors.TEXT_SECONDARY,
+  fontSize: "14px",
 };
 
 export const bodyPaddingStyle: CSSProperties = {

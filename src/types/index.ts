@@ -99,6 +99,11 @@ export interface IContact extends Omit<Document, '_id'> {
   source: "website" | "linkedin" | "email" | "referral" | "other";
   ipAddress?: string;
   userAgent?: string;
+  replies?: {
+    message: string;
+    sentAt: Date;
+    sentBy?: string;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
