@@ -151,7 +151,7 @@ await emailService.sendGenericEmail({
     html: '<h1>Custom HTML content</h1>',
     text: 'Custom text content'
   },
-  replyTo: 'noreply@example.com', // Optional
+  replyTo: 'hello@example.com', // Optional — avoid "noreply", replies should reach someone
   cc: ['cc@example.com'],         // Optional
   bcc: ['bcc@example.com']        // Optional
 });
