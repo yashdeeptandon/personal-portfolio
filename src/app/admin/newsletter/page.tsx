@@ -1,16 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import {
-  PlusIcon,
   MagnifyingGlassIcon,
   TrashIcon,
-  PencilIcon,
   EnvelopeIcon,
   UserGroupIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import Badge, { type BadgeVariant } from "@/components/ui/Badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Newsletter {
   _id: string;
@@ -37,6 +46,19 @@ interface PaginationMeta {
   hasNext: boolean;
   hasPrev: boolean;
 }
+
+const STATUS_BADGE: Record<string, BadgeVariant> = {
+  active: "success",
+  unsubscribed: "neutral",
+  bounced: "warning",
+};
+
+const SOURCE_BADGE: Record<string, BadgeVariant> = {
+  website: "info",
+  blog: "info",
+  social: "info",
+  referral: "info",
+};
 
 const NewsletterManagement = () => {
   const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
@@ -84,6 +106,7 @@ const NewsletterManagement = () => {
 
   useEffect(() => {
     fetchNewsletters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, statusFilter, sourceFilter]);
 
   const handleDelete = async (id: string) => {
@@ -108,36 +131,6 @@ const NewsletterManagement = () => {
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const baseClasses = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium";
-    switch (status) {
-      case "active":
-        return `${baseClasses} bg-green-100 text-green-800`;
-      case "unsubscribed":
-        return `${baseClasses} bg-gray-100 text-gray-800`;
-      case "bounced":
-        return `${baseClasses} bg-red-100 text-red-800`;
-      default:
-        return `${baseClasses} bg-gray-100 text-gray-800`;
-    }
-  };
-
-  const getSourceBadge = (source: string) => {
-    const baseClasses = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium";
-    switch (source) {
-      case "website":
-        return `${baseClasses} bg-blue-100 text-blue-800`;
-      case "blog":
-        return `${baseClasses} bg-purple-100 text-purple-800`;
-      case "social":
-        return `${baseClasses} bg-pink-100 text-pink-800`;
-      case "referral":
-        return `${baseClasses} bg-yellow-100 text-yellow-800`;
-      default:
-        return `${baseClasses} bg-gray-100 text-gray-800`;
-    }
-  };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -148,124 +141,65 @@ const NewsletterManagement = () => {
 
   const stats = {
     total: newsletters.length,
-    active: newsletters.filter(n => n.status === "active").length,
-    unsubscribed: newsletters.filter(n => n.status === "unsubscribed").length,
-    bounced: newsletters.filter(n => n.status === "bounced").length,
+    active: newsletters.filter((n) => n.status === "active").length,
+    unsubscribed: newsletters.filter((n) => n.status === "unsubscribed").length,
+    bounced: newsletters.filter((n) => n.status === "bounced").length,
   };
+
+  const statCards = [
+    { label: "Total Subscribers", value: pagination.total, icon: UserGroupIcon, color: "text-muted-foreground" },
+    { label: "Active", value: stats.active, icon: ChartBarIcon, color: "text-green-500" },
+    { label: "Unsubscribed", value: stats.unsubscribed, icon: EnvelopeIcon, color: "text-muted-foreground" },
+    { label: "Bounced", value: stats.bounced, icon: ChartBarIcon, color: "text-red-500" },
+  ];
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="sm:flex sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Newsletter Management</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Manage newsletter subscribers and send updates
-          </p>
-        </div>
+      <div>
+        <h1 className="font-display text-2xl font-bold text-foreground">
+          Newsletter Management
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Manage newsletter subscribers and send updates
+        </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <UserGroupIcon className="h-6 w-6 text-gray-400" />
+        {statCards.map((card) => (
+          <Card key={card.label}>
+            <CardContent>
+              <div className="flex items-center">
+                <card.icon className={`h-6 w-6 shrink-0 ${card.color}`} />
+                <div className="ml-5 w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-muted-foreground">
+                    {card.label}
+                  </p>
+                  <p className="text-lg font-medium text-foreground">
+                    {card.value}
+                  </p>
+                </div>
               </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Subscribers
-                  </dt>
-                  <dd className="text-lg font-medium text-gray-900">
-                    {pagination.total}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <ChartBarIcon className="h-6 w-6 text-green-400" />
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Active
-                  </dt>
-                  <dd className="text-lg font-medium text-gray-900">
-                    {stats.active}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <EnvelopeIcon className="h-6 w-6 text-gray-400" />
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Unsubscribed
-                  </dt>
-                  <dd className="text-lg font-medium text-gray-900">
-                    {stats.unsubscribed}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <ChartBarIcon className="h-6 w-6 text-red-400" />
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Bounced
-                  </dt>
-                  <dd className="text-lg font-medium text-gray-900">
-                    {stats.bounced}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Filters */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
+      <Card>
+        <CardContent>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {/* Search */}
-            <div>
-              <label htmlFor="search" className="sr-only">
+            <div className="space-y-2">
+              <Label htmlFor="search" className="sr-only">
                 Search
-              </label>
+              </Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
+                <MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
                   type="text"
-                  name="search"
                   id="search"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-8"
                   placeholder="Search subscribers..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -273,143 +207,134 @@ const NewsletterManagement = () => {
               </div>
             </div>
 
-            {/* Status Filter */}
-            <div>
-              <label htmlFor="status" className="sr-only">
+            <div className="space-y-2">
+              <Label htmlFor="status" className="sr-only">
                 Status
-              </label>
-              <select
-                id="status"
-                name="status"
-                className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
+              </Label>
+              <Select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onValueChange={(value) => setStatusFilter((value as string) ?? "all")}
               >
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="unsubscribed">Unsubscribed</option>
-                <option value="bounced">Bounced</option>
-              </select>
+                <SelectTrigger id="status" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="unsubscribed">Unsubscribed</SelectItem>
+                  <SelectItem value="bounced">Bounced</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* Source Filter */}
-            <div>
-              <label htmlFor="source" className="sr-only">
+            <div className="space-y-2">
+              <Label htmlFor="source" className="sr-only">
                 Source
-              </label>
-              <select
-                id="source"
-                name="source"
-                className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
+              </Label>
+              <Select
                 value={sourceFilter}
-                onChange={(e) => setSourceFilter(e.target.value)}
+                onValueChange={(value) => setSourceFilter((value as string) ?? "all")}
               >
-                <option value="all">All Sources</option>
-                <option value="website">Website</option>
-                <option value="blog">Blog</option>
-                <option value="social">Social</option>
-                <option value="referral">Referral</option>
-              </select>
+                <SelectTrigger id="source" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Sources</SelectItem>
+                  <SelectItem value="website">Website</SelectItem>
+                  <SelectItem value="blog">Blog</SelectItem>
+                  <SelectItem value="social">Social</SelectItem>
+                  <SelectItem value="referral">Referral</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <p className="text-red-800">{error}</p>
+        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
+          <p className="text-destructive">{error}</p>
         </div>
       )}
 
-      {/* Newsletter Table */}
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            Newsletter Subscribers
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            Manage your newsletter subscriber list
-          </p>
-        </div>
+      {/* Newsletter List */}
+      <Card className="overflow-hidden py-0">
+        <CardHeader className="border-b border-border py-5">
+          <CardTitle>Newsletter Subscribers</CardTitle>
+          <CardDescription>Manage your newsletter subscriber list</CardDescription>
+        </CardHeader>
 
         {loading ? (
-          <div className="px-4 py-5 sm:p-6">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-2 text-sm text-gray-500">Loading subscribers...</p>
-            </div>
+          <div className="p-6 text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" />
+            <p className="mt-2 text-sm text-muted-foreground">
+              Loading subscribers...
+            </p>
           </div>
         ) : newsletters.length === 0 ? (
-          <div className="px-4 py-5 sm:p-6">
-            <div className="text-center">
-              <EnvelopeIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">
-                No subscribers found
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                No newsletter subscribers match your current filters.
-              </p>
-            </div>
+          <div className="p-6 text-center">
+            <EnvelopeIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-2 text-sm font-medium text-foreground">
+              No subscribers found
+            </h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              No newsletter subscribers match your current filters.
+            </p>
           </div>
         ) : (
-          <ul className="divide-y divide-gray-200">
+          <ul className="divide-y divide-border">
             {newsletters.map((newsletter) => (
-              <li key={newsletter._id}>
-                <div className="px-4 py-4 sm:px-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-3">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
-                            {newsletter.name || newsletter.email}
-                          </p>
-                          {newsletter.name && (
-                            <p className="text-sm text-gray-500 truncate">
-                              {newsletter.email}
-                            </p>
-                          )}
-                        </div>
-                        <div className="flex space-x-2">
-                          <span className={getStatusBadge(newsletter.status)}>
-                            {newsletter.status}
-                          </span>
-                          <span className={getSourceBadge(newsletter.source)}>
-                            {newsletter.source}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500">
-                        <p>
-                          Subscribed: {formatDate(newsletter.subscribedAt)}
-                          {newsletter.unsubscribedAt && (
-                            <span className="ml-2">
-                              • Unsubscribed: {formatDate(newsletter.unsubscribedAt)}
-                            </span>
-                          )}
+              <li key={newsletter._id} className="px-4 py-4 sm:px-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-foreground">
+                          {newsletter.name || newsletter.email}
                         </p>
+                        {newsletter.name && (
+                          <p className="truncate text-sm text-muted-foreground">
+                            {newsletter.email}
+                          </p>
+                        )}
                       </div>
-                      <div className="mt-1 flex items-center space-x-4 text-xs text-gray-500">
-                        <span>
-                          Blog: {newsletter.preferences.blogUpdates ? "✓" : "✗"}
-                        </span>
-                        <span>
-                          Projects: {newsletter.preferences.projectUpdates ? "✓" : "✗"}
-                        </span>
-                        <span>
-                          Newsletter: {newsletter.preferences.newsletter ? "✓" : "✗"}
-                        </span>
+                      <div className="flex shrink-0 gap-2">
+                        <Badge variant={STATUS_BADGE[newsletter.status] ?? "neutral"}>
+                          {newsletter.status}
+                        </Badge>
+                        <Badge variant={SOURCE_BADGE[newsletter.source] ?? "neutral"}>
+                          {newsletter.source}
+                        </Badge>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        onClick={() => handleDelete(newsletter._id)}
-                        className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </button>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Subscribed: {formatDate(newsletter.subscribedAt)}
+                      {newsletter.unsubscribedAt && (
+                        <span className="ml-2">
+                          • Unsubscribed: {formatDate(newsletter.unsubscribedAt)}
+                        </span>
+                      )}
+                    </p>
+                    <div className="mt-1 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                      <span>
+                        Blog: {newsletter.preferences.blogUpdates ? "✓" : "✗"}
+                      </span>
+                      <span>
+                        Projects: {newsletter.preferences.projectUpdates ? "✓" : "✗"}
+                      </span>
+                      <span>
+                        Newsletter: {newsletter.preferences.newsletter ? "✓" : "✗"}
+                      </span>
                     </div>
                   </div>
+                  <Button
+                    variant="destructive"
+                    size="icon-sm"
+                    onClick={() => handleDelete(newsletter._id)}
+                  >
+                    <TrashIcon className="h-4 w-4" />
+                  </Button>
                 </div>
               </li>
             ))}
@@ -418,59 +343,43 @@ const NewsletterManagement = () => {
 
         {/* Pagination */}
         {pagination.pages > 1 && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-            <div className="flex-1 flex justify-between sm:hidden">
-              <button
+          <div className="flex items-center justify-between border-t border-border px-4 py-3 sm:px-6">
+            <p className="text-sm text-muted-foreground">
+              Showing{" "}
+              <span className="font-medium text-foreground">
+                {(pagination.page - 1) * pagination.limit + 1}
+              </span>{" "}
+              to{" "}
+              <span className="font-medium text-foreground">
+                {Math.min(pagination.page * pagination.limit, pagination.total)}
+              </span>{" "}
+              of{" "}
+              <span className="font-medium text-foreground">
+                {pagination.total}
+              </span>{" "}
+              results
+            </p>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => fetchNewsletters(pagination.page - 1)}
                 disabled={!pagination.hasPrev}
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => fetchNewsletters(pagination.page + 1)}
                 disabled={!pagination.hasNext}
-                className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next
-              </button>
-            </div>
-            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm text-gray-700">
-                  Showing{" "}
-                  <span className="font-medium">
-                    {(pagination.page - 1) * pagination.limit + 1}
-                  </span>{" "}
-                  to{" "}
-                  <span className="font-medium">
-                    {Math.min(pagination.page * pagination.limit, pagination.total)}
-                  </span>{" "}
-                  of <span className="font-medium">{pagination.total}</span> results
-                </p>
-              </div>
-              <div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                  <button
-                    onClick={() => fetchNewsletters(pagination.page - 1)}
-                    disabled={!pagination.hasPrev}
-                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    onClick={() => fetchNewsletters(pagination.page + 1)}
-                    disabled={!pagination.hasNext}
-                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Next
-                  </button>
-                </nav>
-              </div>
+              </Button>
             </div>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 };

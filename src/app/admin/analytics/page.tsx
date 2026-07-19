@@ -8,6 +8,14 @@ import {
   ChartBarIcon,
   CalendarIcon,
 } from "@heroicons/react/24/outline";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface AnalyticsData {
   overview: {
@@ -71,24 +79,24 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-md p-4">
-        <div className="text-sm text-red-600">{error}</div>
+      <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
+        <p className="text-sm text-destructive">{error}</p>
       </div>
     );
   }
 
   if (!analytics) {
     return (
-      <div className="text-center py-12">
-        <div className="text-gray-500">No analytics data available.</div>
+      <div className="py-12 text-center text-muted-foreground">
+        No analytics data available.
       </div>
     );
   }
@@ -124,211 +132,153 @@ export default function AnalyticsPage() {
     },
   ];
 
+  const statTables = [
+    {
+      title: "Top Pages",
+      items: analytics.topPages.slice(0, 5).map((p) => ({
+        label: p.page,
+        value: p.views,
+      })),
+    },
+    {
+      title: "Top Referrers",
+      items: analytics.topReferrers.slice(0, 5).map((r) => ({
+        label: r.referrer || "Direct",
+        value: r.visits,
+      })),
+    },
+    {
+      title: "Devices",
+      items: analytics.deviceStats.slice(0, 5).map((d) => ({
+        label: d.device || "Unknown",
+        value: d.count,
+      })),
+    },
+    {
+      title: "Browsers",
+      items: analytics.browserStats.slice(0, 5).map((b) => ({
+        label: b.browser || "Unknown",
+        value: b.count,
+      })),
+    },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Analytics
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             Track your website performance and visitor behavior.
           </p>
         </div>
-        <div className="mt-4 sm:mt-0">
-          <div className="flex items-center space-x-2">
-            <CalendarIcon className="h-5 w-5 text-gray-400" />
-            <select
-              value={period}
-              onChange={(e) => setPeriod(e.target.value)}
-              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-            >
-              <option value="7d">Last 7 days</option>
-              <option value="30d">Last 30 days</option>
-              <option value="90d">Last 90 days</option>
-              <option value="1y">Last year</option>
-            </select>
-          </div>
+        <div className="mt-4 flex items-center gap-2 sm:mt-0">
+          <CalendarIcon className="h-5 w-5 text-muted-foreground" />
+          <Select
+            value={period}
+            onValueChange={(value) => setPeriod((value as string) ?? "30d")}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="30d">Last 30 days</SelectItem>
+              <SelectItem value="90d">Last 90 days</SelectItem>
+              <SelectItem value="1y">Last year</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <div
-            key={stat.name}
-            className="bg-white overflow-hidden shadow rounded-lg"
-          >
-            <div className="p-5">
+          <Card key={stat.name}>
+            <CardContent>
               <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <stat.icon className="h-6 w-6 text-gray-400" />
-                </div>
+                <stat.icon className="h-6 w-6 shrink-0 text-muted-foreground" />
                 <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      {stat.name}
-                    </dt>
-                    <dd className="flex items-baseline">
-                      <div className="text-2xl font-semibold text-gray-900">
-                        {stat.value}
-                      </div>
-                      <div
-                        className={`ml-2 flex items-baseline text-sm font-semibold ${
-                          stat.changeType === "positive"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {stat.change}
-                      </div>
-                    </dd>
-                  </dl>
+                  <p className="truncate text-sm font-medium text-muted-foreground">
+                    {stat.name}
+                  </p>
+                  <div className="flex items-baseline">
+                    <div className="text-2xl font-semibold text-foreground">
+                      {stat.value}
+                    </div>
+                    <div
+                      className={`ml-2 text-sm font-semibold ${
+                        stat.changeType === "positive"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {stat.change}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       {/* Charts and Tables */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Top Pages */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Top Pages</h3>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {analytics.topPages.slice(0, 5).map((page, index) => (
-                <div
-                  key={page.page}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium text-gray-500">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm text-gray-900 truncate max-w-xs">
-                      {page.page}
-                    </span>
-                  </div>
-                  <span className="text-sm font-medium text-gray-900">
-                    {formatNumber(page.views)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Top Referrers */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Top Referrers</h3>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {analytics.topReferrers.slice(0, 5).map((referrer, index) => (
-                <div
-                  key={referrer.referrer}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium text-gray-500">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm text-gray-900 truncate max-w-xs">
-                      {referrer.referrer || "Direct"}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {statTables.map((table) => (
+          <Card key={table.title} className="overflow-hidden py-0">
+            <CardHeader className="border-b border-border py-4">
+              <CardTitle>{table.title}</CardTitle>
+            </CardHeader>
+            <CardContent className="py-4">
+              <div className="space-y-4">
+                {table.items.map((item, index) => (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between gap-4"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span className="text-sm font-medium text-muted-foreground">
+                        {index + 1}
+                      </span>
+                      <span className="max-w-xs truncate text-sm text-foreground">
+                        {item.label}
+                      </span>
+                    </div>
+                    <span className="shrink-0 text-sm font-medium text-foreground">
+                      {formatNumber(item.value)}
                     </span>
                   </div>
-                  <span className="text-sm font-medium text-gray-900">
-                    {formatNumber(referrer.visits)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Device Stats */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Devices</h3>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {analytics.deviceStats.slice(0, 5).map((device, index) => (
-                <div
-                  key={device.device}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium text-gray-500">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm text-gray-900">
-                      {device.device || "Unknown"}
-                    </span>
-                  </div>
-                  <span className="text-sm font-medium text-gray-900">
-                    {formatNumber(device.count)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Browser Stats */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Browsers</h3>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {analytics.browserStats.slice(0, 5).map((browser, index) => (
-                <div
-                  key={browser.browser}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium text-gray-500">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm text-gray-900">
-                      {browser.browser || "Unknown"}
-                    </span>
-                  </div>
-                  <span className="text-sm font-medium text-gray-900">
-                    {formatNumber(browser.count)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Daily Stats Chart Placeholder */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Daily Activity</h3>
-        </div>
-        <div className="p-6">
-          <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+      <Card className="overflow-hidden py-0">
+        <CardHeader className="border-b border-border py-4">
+          <CardTitle>Daily Activity</CardTitle>
+        </CardHeader>
+        <CardContent className="py-6">
+          <div className="flex h-64 items-center justify-center rounded-lg bg-muted">
             <div className="text-center">
-              <ChartBarIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">
+              <ChartBarIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+              <h3 className="mt-2 text-sm font-medium text-foreground">
                 Chart visualization
               </h3>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Daily analytics chart would be displayed here with a charting
                 library like Chart.js or Recharts.
               </p>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

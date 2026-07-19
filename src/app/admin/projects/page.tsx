@@ -8,9 +8,20 @@ import {
   TrashIcon,
   EyeIcon,
   MagnifyingGlassIcon,
-  FunnelIcon,
 } from "@heroicons/react/24/outline";
 import { IProject } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Badge, { type BadgeVariant } from "@/components/ui/Badge";
 
 interface ProjectsResponse {
   success: boolean;
@@ -27,6 +38,13 @@ interface ProjectsResponse {
     prevPage: number | null;
   };
 }
+
+const STATUS_BADGE: Record<string, BadgeVariant> = {
+  planning: "warning",
+  "in-progress": "info",
+  completed: "success",
+  archived: "neutral",
+};
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<IProject[]>([]);
@@ -76,6 +94,7 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     fetchProjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, searchTerm, statusFilter]);
 
   const handleDelete = async (id: string) => {
@@ -94,30 +113,10 @@ export default function ProjectsPage() {
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusClasses = {
-      planning: "bg-yellow-100 text-yellow-800",
-      "in-progress": "bg-blue-100 text-blue-800",
-      completed: "bg-green-100 text-green-800",
-      archived: "bg-gray-100 text-gray-800",
-    };
-
-    return (
-      <span
-        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-          statusClasses[status as keyof typeof statusClasses] ||
-          "bg-gray-100 text-gray-800"
-        }`}
-      >
-        {status.charAt(0).toUpperCase() + status.slice(1).replace("-", " ")}
-      </span>
-    );
-  };
-
   if (loading && projects.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
@@ -127,205 +126,192 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Projects
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             Manage your portfolio projects and showcase your work.
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
-          <Link
-            href="/admin/projects/new"
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            <PlusIcon className="-ml-1 mr-2 h-5 w-5" />
+          <Button render={<Link href="/admin/projects/new" />}>
+            <PlusIcon className="h-4 w-4" />
             New Project
-          </Link>
+          </Button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white shadow rounded-lg p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label htmlFor="search" className="sr-only">
-              Search projects
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+      <Card>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="space-y-2">
+              <Label htmlFor="search" className="sr-only">
+                Search projects
+              </Label>
+              <div className="relative">
+                <MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="text"
+                  id="search"
+                  className="pl-8"
+                  placeholder="Search projects..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
-              <input
-                type="text"
-                name="search"
-                id="search"
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search projects..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
             </div>
-          </div>
-          <div>
-            <label htmlFor="status" className="sr-only">
-              Filter by status
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FunnelIcon className="h-5 w-5 text-gray-400" />
-              </div>
-              <select
-                id="status"
-                name="status"
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            <div className="space-y-2">
+              <Label htmlFor="status" className="sr-only">
+                Filter by status
+              </Label>
+              <Select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onValueChange={(value) => setStatusFilter((value as string) ?? "all")}
               >
-                <option value="all">All Status</option>
-                <option value="planning">Planning</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
-                <option value="archived">Archived</option>
-              </select>
+                <SelectTrigger id="status" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="planning">Planning</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <div className="text-sm text-red-600">{error}</div>
+        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
+          <p className="text-sm text-destructive">{error}</p>
         </div>
       )}
 
-      {/* Projects Table */}
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul className="divide-y divide-gray-200">
+      {/* Projects List */}
+      <Card className="overflow-hidden py-0">
+        <ul className="divide-y divide-border">
           {projects.length === 0 ? (
-            <li className="px-6 py-12 text-center">
-              <div className="text-gray-500">
-                {searchTerm || statusFilter !== "all"
-                  ? "No projects found matching your criteria."
-                  : "No projects yet. Create your first project!"}
-              </div>
+            <li className="px-6 py-12 text-center text-muted-foreground">
+              {searchTerm || statusFilter !== "all"
+                ? "No projects found matching your criteria."
+                : "No projects yet. Create your first project!"}
             </li>
           ) : (
             projects.map((project) => (
-              <li key={project._id}>
-                <div className="px-6 py-4 flex items-center justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-3">
+              <li key={project._id} className="px-6 py-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-3">
                       {project.featuredImage && (
+                        // eslint-disable-next-line @next/next/no-img-element
                         <img
                           className="h-12 w-12 rounded-lg object-cover"
                           src={project.featuredImage}
                           alt={project.title}
                         />
                       )}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-medium text-gray-900 truncate">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-lg font-medium text-foreground">
                           {project.title}
                         </h3>
-                        <p className="text-sm text-gray-500 truncate">
+                        <p className="truncate text-sm text-muted-foreground">
                           {project.shortDescription}
                         </p>
-                        <div className="mt-2 flex items-center space-x-4">
-                          {getStatusBadge(project.status)}
-                          <span className="text-xs text-gray-500">
+                        <div className="mt-2 flex flex-wrap items-center gap-3">
+                          <Badge variant={STATUS_BADGE[project.status] ?? "neutral"}>
+                            {project.status.charAt(0).toUpperCase() +
+                              project.status.slice(1).replace("-", " ")}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
                             {project.technologies?.slice(0, 3).join(", ") ||
                               "No technologies"}
                             {(project.technologies?.length || 0) > 3 && "..."}
                           </span>
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-muted-foreground">
                             {new Date(project.createdAt).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center gap-1">
                     {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-gray-500"
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        render={
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          />
+                        }
                       >
-                        <EyeIcon className="h-5 w-5" />
-                      </a>
+                        <EyeIcon className="h-4 w-4" />
+                      </Button>
                     )}
-                    <Link
-                      href={`/admin/projects/${project._id}/edit`}
-                      className="text-blue-600 hover:text-blue-900"
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      render={<Link href={`/admin/projects/${project._id}/edit`} />}
                     >
-                      <PencilIcon className="h-5 w-5" />
-                    </Link>
-                    <button
+                      <PencilIcon className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon-sm"
                       onClick={() => handleDelete(project._id)}
-                      className="text-red-600 hover:text-red-900"
                     >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
+                      <TrashIcon className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               </li>
             ))
           )}
         </ul>
-      </div>
+      </Card>
 
       {/* Pagination */}
       {pagination.pages > 1 && (
-        <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-          <div className="flex-1 flex justify-between sm:hidden">
-            <button
+        <div className="flex items-center justify-between border-t border-border pt-4">
+          <p className="text-sm text-muted-foreground">
+            Showing{" "}
+            <span className="font-medium text-foreground">
+              {(currentPage - 1) * pagination.limit + 1}
+            </span>{" "}
+            to{" "}
+            <span className="font-medium text-foreground">
+              {Math.min(currentPage * pagination.limit, pagination.total)}
+            </span>{" "}
+            of{" "}
+            <span className="font-medium text-foreground">
+              {pagination.total}
+            </span>{" "}
+            results
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setCurrentPage(currentPage - 1)}
               disabled={!pagination.hasPrev}
-              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setCurrentPage(currentPage + 1)}
               disabled={!pagination.hasNext}
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
-            </button>
-          </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700">
-                Showing{" "}
-                <span className="font-medium">
-                  {(currentPage - 1) * pagination.limit + 1}
-                </span>{" "}
-                to{" "}
-                <span className="font-medium">
-                  {Math.min(currentPage * pagination.limit, pagination.total)}
-                </span>{" "}
-                of <span className="font-medium">{pagination.total}</span>{" "}
-                results
-              </p>
-            </div>
-            <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                <button
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  disabled={!pagination.hasPrev}
-                  className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  disabled={!pagination.hasNext}
-                  className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </nav>
-            </div>
+            </Button>
           </div>
         </div>
       )}

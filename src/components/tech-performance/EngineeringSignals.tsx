@@ -73,7 +73,7 @@ export default function EngineeringSignals({ data }: { data: SignalsSectionData 
             {highlights.map((h) => (
               <div
                 key={`${h.title}-${h.timestamp}`}
-                className="flex gap-3 items-start rounded-lg border-l-2 border-indigo-500/60 bg-foreground/[0.03] px-3 py-2.5"
+                className="flex gap-3 items-start rounded-lg border-l-2 border-indigo-500/60 bg-foreground/3 px-3 py-2.5"
               >
                 <div className="mt-1.5 w-2 h-2 rounded-full shrink-0 bg-indigo-500 dark:bg-indigo-400" />
                 <div className="min-w-0">

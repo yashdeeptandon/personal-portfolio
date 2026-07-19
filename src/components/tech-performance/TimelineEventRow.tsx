@@ -53,7 +53,7 @@ export default function TimelineEventRow({ event }: { event: TimelineEvent }) {
 
   if (event.url) {
     return (
-      <a href={event.url} target="_blank" rel="noopener noreferrer" className="block hover:bg-foreground/[0.03] rounded-md transition-colors -mx-2 px-2">
+      <a href={event.url} target="_blank" rel="noopener noreferrer" className="block hover:bg-foreground/3 rounded-md transition-colors -mx-2 px-2">
         {content}
       </a>
     );

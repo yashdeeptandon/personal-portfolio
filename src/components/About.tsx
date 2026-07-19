@@ -133,7 +133,7 @@ const About = () => {
                     variants={highlightItem}
                     className="flex items-center text-gray-600 dark:text-gray-300 gap-3"
                   >
-                    <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d={checkPath} clipRule="evenodd" />
                     </svg>
                     {item}
@@ -157,7 +157,7 @@ const About = () => {
                     whileHover={{ scale: 1.05 }}
                     className="text-center p-4 rounded-xl bg-gray-50 dark:bg-gray-600/50"
                   >
-                    <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 mb-1">
+                    <div className="text-3xl font-bold text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 mb-1">
                       <CountUp target={value} suffix={suffix} />
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-300">{label}</div>
@@ -201,7 +201,7 @@ const About = () => {
                 whileHover={downloadHref ? { scale: 1.04, boxShadow: "0 8px 30px rgba(99,102,241,0.35)" } : undefined}
                 whileTap={downloadHref ? { scale: 0.97 } : undefined}
                 onClick={(e) => { if (!downloadHref) e.preventDefault(); }}
-                className={`inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg gap-2 ${!downloadHref ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`inline-flex items-center bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg gap-2 ${!downloadHref ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

@@ -87,12 +87,12 @@ const Navigation = () => {
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            className="flex-shrink-0"
+            className="shrink-0"
           >
             <Link
               href="#home"
               onClick={(e) => { e.preventDefault(); scrollToSection("#home"); }}
-              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent"
+              className="text-2xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent"
             >
               YT
             </Link>
@@ -120,7 +120,7 @@ const Navigation = () => {
                     {item.icon}
                     {item.label}
                     <motion.span
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full origin-left"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-indigo-500 to-cyan-400 rounded-full origin-left"
                       initial={{ scaleX: isActive ? 1 : 0 }}
                       animate={{ scaleX: isActive ? 1 : 0 }}
                       whileHover={{ scaleX: 1 }}
@@ -140,7 +140,7 @@ const Navigation = () => {
                   {item.icon}
                   {item.label}
                   <motion.span
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full origin-left"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-blue-600 to-indigo-500 rounded-full origin-left"
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
                     transition={{ duration: 0.2 }}
@@ -157,7 +157,7 @@ const Navigation = () => {
           <motion.button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             whileTap={{ scale: 0.9 }}
-            className="md:hidden p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            className="md:hidden p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-blue-500"
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait" initial={false}>

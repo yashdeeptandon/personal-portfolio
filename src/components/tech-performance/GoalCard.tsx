@@ -24,7 +24,7 @@ export default function GoalCard({
   const complete = goal.pct >= 100;
 
   return (
-    <div className="rounded-lg border border-foreground/10 bg-foreground/[0.03] p-4 space-y-2">
+    <div className="rounded-lg border border-foreground/10 bg-foreground/3 p-4 space-y-2">
       <div className="flex items-start justify-between gap-2">
         <div>
           <p className="text-sm font-medium text-foreground">{goal.label}</p>

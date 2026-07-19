@@ -148,7 +148,7 @@ const Testimonials = () => {
               </blockquote>
 
               <div className="flex items-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
+                <div className="w-16 h-16 bg-linear-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
                   {testimonials[currentTestimonial].name
                     .split(" ")
                     .map((n) => n[0])
@@ -246,7 +246,7 @@ const Testimonials = () => {
               </blockquote>
 
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
+                <div className="w-12 h-12 bg-linear-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
                   {testimonial.name
                     .split(" ")
                     .map((n) => n[0])
@@ -283,9 +283,9 @@ const Testimonials = () => {
             {companies.map((company, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center p-4 bg-white dark:bg-gray-700 rounded-lg shadow hover:shadow-md transition-shadow duration-300"
+                className="flex items-center justify-center p-4 bg-white dark:bg-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center">
+                <div className="w-16 h-16 bg-linear-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center">
                   <span className="text-gray-600 dark:text-gray-300 font-bold text-xs text-center">
                     {company.name
                       .split(" ")
@@ -300,7 +300,7 @@ const Testimonials = () => {
 
         {/* Call to Action */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg p-8">
+          <div className="bg-linear-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg p-8">
             <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
               Want to Work Together?
             </h3>

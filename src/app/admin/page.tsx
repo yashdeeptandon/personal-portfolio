@@ -12,6 +12,8 @@ import {
   ArrowTrendingUpIcon,
   ClockIcon,
 } from "@heroicons/react/24/outline";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface DashboardStats {
   blogs: {
@@ -66,7 +68,7 @@ export default function AdminDashboard() {
     try {
       setLoading(true);
       const response = await fetch("/api/admin/dashboard");
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch dashboard data");
       }
@@ -84,19 +86,19 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-md p-4">
-        <p className="text-red-800">{error}</p>
+      <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
+        <p className="text-destructive">{error}</p>
         <button
           onClick={fetchDashboardData}
-          className="mt-2 text-red-600 hover:text-red-500 underline"
+          className="mt-2 text-destructive underline hover:text-destructive/80"
         >
           Try again
         </button>
@@ -126,7 +128,7 @@ export default function AdminDashboard() {
       value: stats?.contacts.total || 0,
       subtext: `${stats?.contacts.unread || 0} unread`,
       icon: ChatBubbleLeftRightIcon,
-      color: "bg-yellow-500",
+      color: "bg-amber-500",
       href: "/admin/contact",
     },
     {
@@ -144,74 +146,100 @@ export default function AdminDashboard() {
       name: "Total Views",
       value: stats?.blogs.totalViews || 0,
       icon: EyeIcon,
-      color: "text-blue-600",
+      color: "text-blue-500",
     },
     {
       name: "Total Likes",
       value: stats?.blogs.totalLikes || 0,
       icon: HeartIcon,
-      color: "text-red-600",
+      color: "text-red-500",
     },
     {
       name: "Page Views",
       value: stats?.analytics.totalPageViews || 0,
       icon: ArrowTrendingUpIcon,
-      color: "text-green-600",
+      color: "text-green-500",
     },
     {
       name: "Unique Visitors",
       value: stats?.analytics.uniqueVisitors || 0,
       icon: UsersIcon,
-      color: "text-purple-600",
+      color: "text-purple-500",
+    },
+  ];
+
+  const quickActions = [
+    {
+      label: "New Blog Post",
+      href: "/admin/blog/new",
+      icon: DocumentTextIcon,
+    },
+    {
+      label: "New Project",
+      href: "/admin/projects",
+      icon: FolderIcon,
+    },
+    {
+      label: "View Messages",
+      href: "/admin/contact",
+      icon: ChatBubbleLeftRightIcon,
+    },
+    {
+      label: "View Analytics",
+      href: "/admin/analytics",
+      icon: ArrowTrendingUpIcon,
     },
   ];
 
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-white overflow-hidden shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <h1 className="text-2xl font-bold text-gray-900">Welcome to Admin Dashboard</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Manage your portfolio content, view analytics, and handle user interactions.
+      <Card>
+        <CardContent>
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Welcome to Admin Dashboard
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Manage your portfolio content, view analytics, and handle user
+            interactions.
           </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => (
           <Link key={card.name} href={card.href}>
-            <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow cursor-pointer">
-              <div className="p-5">
+            <Card className="cursor-pointer transition-shadow hover:shadow-md">
+              <CardContent>
                 <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className={`${card.color} rounded-md p-3`}>
-                      <card.icon className="h-6 w-6 text-white" />
-                    </div>
+                  <div className={`shrink-0 rounded-md p-3 ${card.color}`}>
+                    <card.icon className="h-6 w-6 text-white" />
                   </div>
                   <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        {card.name}
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">{card.value}</dd>
-                      <dd className="text-sm text-gray-500">{card.subtext}</dd>
-                    </dl>
+                    <p className="truncate text-sm font-medium text-muted-foreground">
+                      {card.name}
+                    </p>
+                    <p className="text-lg font-medium text-foreground">
+                      {card.value}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {card.subtext}
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </Link>
         ))}
       </div>
 
       {/* Analytics Cards */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-            Analytics Overview
-          </h3>
+      <Card>
+        <CardHeader>
+          <CardTitle>Analytics Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {analyticsCards.map((card) => (
               <div key={card.name} className="text-center">
@@ -219,21 +247,23 @@ export default function AdminDashboard() {
                   <card.icon className={`h-8 w-8 ${card.color}`} />
                 </div>
                 <div className="mt-2">
-                  <p className="text-2xl font-semibold text-gray-900">{card.value}</p>
-                  <p className="text-sm text-gray-500">{card.name}</p>
+                  <p className="text-2xl font-semibold text-foreground">
+                    {card.value}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{card.name}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Recent Activity */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-            Recent Activity
-          </h3>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+        </CardHeader>
+        <CardContent>
           {recentActivity.length > 0 ? (
             <div className="flow-root">
               <ul className="-mb-8">
@@ -242,26 +272,24 @@ export default function AdminDashboard() {
                     <div className="relative pb-8">
                       {index !== recentActivity.length - 1 && index !== 4 && (
                         <span
-                          className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                          className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-border"
                           aria-hidden="true"
                         />
                       )}
                       <div className="relative flex space-x-3">
-                        <div>
-                          <span className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
-                            <ClockIcon className="h-4 w-4 text-white" />
-                          </span>
-                        </div>
-                        <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary ring-8 ring-card">
+                          <ClockIcon className="h-4 w-4 text-primary-foreground" />
+                        </span>
+                        <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                           <div>
-                            <p className="text-sm text-gray-900">
+                            <p className="text-sm text-foreground">
                               {activity.title}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                               {activity.description}
                             </p>
                           </div>
-                          <div className="text-right text-sm whitespace-nowrap text-gray-500">
+                          <div className="text-right text-sm whitespace-nowrap text-muted-foreground">
                             {new Date(activity.timestamp).toLocaleDateString()}
                           </div>
                         </div>
@@ -272,49 +300,33 @@ export default function AdminDashboard() {
               </ul>
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-4">No recent activity</p>
+            <p className="py-4 text-center text-muted-foreground">
+              No recent activity
+            </p>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Quick Actions */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-            Quick Actions
-          </h3>
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Actions</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Link
-              href="/admin/blog/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <DocumentTextIcon className="h-4 w-4 mr-2" />
-              New Blog Post
-            </Link>
-            <Link
-              href="/admin/projects/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              <FolderIcon className="h-4 w-4 mr-2" />
-              New Project
-            </Link>
-            <Link
-              href="/admin/contact"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-            >
-              <ChatBubbleLeftRightIcon className="h-4 w-4 mr-2" />
-              View Messages
-            </Link>
-            <Link
-              href="/admin/analytics"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-            >
-              <ArrowTrendingUpIcon className="h-4 w-4 mr-2" />
-              View Analytics
-            </Link>
+            {quickActions.map((action) => (
+              <Button
+                key={action.label}
+                variant="outline"
+                render={<Link href={action.href} />}
+              >
+                <action.icon className="h-4 w-4" />
+                {action.label}
+              </Button>
+            ))}
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

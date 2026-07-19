@@ -81,7 +81,7 @@ const Contact = () => {
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   className="flex items-center gap-4"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+                  <div className="shrink-0 w-12 h-12 bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-blue-500/20">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={info.iconPath} />
                     </svg>
@@ -112,7 +112,7 @@ const Contact = () => {
                     aria-label={s.name}
                     whileHover={{ scale: 1.15, y: -2 }}
                     whileTap={{ scale: 0.9 }}
-                    className="w-11 h-11 bg-white dark:bg-gray-700 rounded-xl flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-600"
+                    className="w-11 h-11 bg-white dark:bg-gray-700 rounded-xl flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-xs hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-600"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d={s.path} />
@@ -223,7 +223,7 @@ const Contact = () => {
                   disabled={isSubmitting}
                   whileHover={!isSubmitting ? { scale: 1.02, boxShadow: "0 8px 30px rgba(99,102,241,0.35)" } : {}}
                   whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>

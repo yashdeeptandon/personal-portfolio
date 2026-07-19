@@ -104,7 +104,7 @@ export default function FilterBar({
               value={filters.customFrom}
               max={filters.customTo || dataTo}
               onChange={(e) => set("customFrom", e.target.value)}
-              className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground [color-scheme:light] dark:[color-scheme:dark]"
+              className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground scheme-light dark:scheme-dark"
             />
             <span className="text-muted-foreground text-xs">→</span>
             <input
@@ -112,7 +112,7 @@ export default function FilterBar({
               value={filters.customTo}
               max={dataTo}
               onChange={(e) => set("customTo", e.target.value)}
-              className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground [color-scheme:light] dark:[color-scheme:dark]"
+              className="bg-foreground/10 border border-foreground/20 rounded px-2 py-1 text-xs text-foreground scheme-light dark:scheme-dark"
             />
           </>
         )}

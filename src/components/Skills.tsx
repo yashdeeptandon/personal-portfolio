@@ -91,12 +91,12 @@ const Skills = () => {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className="relative px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="relative px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               {activeCategory === category && (
                 <motion.span
                   layoutId="activeTab"
-                  className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/25"
+                  className="absolute inset-0 rounded-lg bg-linear-to-r from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/25"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}

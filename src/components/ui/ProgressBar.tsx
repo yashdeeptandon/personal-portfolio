@@ -21,7 +21,7 @@ export default function ProgressBar({
   value,
   height = 6,
   trackClassName = "bg-gray-100 dark:bg-gray-600",
-  fillClassName = "bg-gradient-to-r from-blue-500 to-indigo-500",
+  fillClassName = "bg-linear-to-r from-blue-500 to-indigo-500",
   fillColor,
   animate = true,
 }: ProgressBarProps) {

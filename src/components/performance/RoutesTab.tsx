@@ -68,7 +68,7 @@ export default function RoutesTab({ routes }: Props) {
           <select
             value={selectedId ?? ""}
             onChange={(e) => setSelectedId(e.target.value)}
-            className="flex-1 bg-gray-900 border border-white/20 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="flex-1 bg-gray-900 border border-white/20 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
           >
             {sorted.map((r) => (
               <option key={r.id} value={r.id}>

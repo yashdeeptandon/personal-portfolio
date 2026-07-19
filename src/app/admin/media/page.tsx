@@ -11,6 +11,9 @@ import {
   FolderIcon,
 } from "@heroicons/react/24/outline";
 import { validateFiles, formatFileSize } from "@/lib/utils/fileValidation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface MediaFile {
   url: string;
@@ -183,14 +186,13 @@ export default function MediaPage() {
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
-    // You could add a toast notification here
   };
 
   const getFileIcon = (file: MediaFile) => {
     if (file.pathname.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
       return <PhotoIcon className="h-6 w-6 text-blue-500" />;
     }
-    return <DocumentIcon className="h-6 w-6 text-gray-500" />;
+    return <DocumentIcon className="h-6 w-6 text-muted-foreground" />;
   };
 
   const getDisplayFiles = () => {
@@ -217,8 +219,8 @@ export default function MediaPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
@@ -228,29 +230,27 @@ export default function MediaPage() {
       {/* Header */}
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Media Library</h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Media Library
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             Upload, organize, and manage your media files.
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 flex space-x-3">
+        <div className="mt-4 flex gap-3 sm:mt-0">
           {selectedFiles.size > 0 && (
-            <button
-              onClick={handleBulkDelete}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            >
-              <TrashIcon className="-ml-1 mr-2 h-5 w-5" />
+            <Button variant="destructive" onClick={handleBulkDelete}>
+              <TrashIcon className="h-4 w-4" />
               Delete Selected ({selectedFiles.size})
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
-            <CloudArrowUpIcon className="-ml-1 mr-2 h-5 w-5" />
+            <CloudArrowUpIcon className="h-4 w-4" />
             {uploading ? "Uploading..." : "Upload Files"}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -266,20 +266,19 @@ export default function MediaPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <div className="text-sm text-red-600">{error}</div>
+        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
+          <p className="text-sm whitespace-pre-line text-destructive">{error}</p>
         </div>
       )}
 
       {/* Upload Area */}
       <div
-        className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer"
+        className="cursor-pointer rounded-lg border-2 border-dashed border-border p-6 text-center transition-colors hover:border-muted-foreground"
         onClick={() => fileInputRef.current?.click()}
         onDrop={(e) => {
           e.preventDefault();
           const files = e.dataTransfer.files;
           if (files) {
-            // Show immediate feedback for drag and drop
             const validation = validateFiles(files, {
               maxFiles: 10,
               allowMultiple: true,
@@ -294,59 +293,54 @@ export default function MediaPage() {
         onDragOver={(e) => e.preventDefault()}
         onDragEnter={(e) => e.preventDefault()}
       >
-        <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
+        <CloudArrowUpIcon className="mx-auto h-12 w-12 text-muted-foreground" />
         <div className="mt-2">
-          <p className="text-sm text-gray-600">
-            <span className="font-medium text-blue-600 hover:text-blue-500">
+          <p className="text-sm text-muted-foreground">
+            <span className="font-medium text-primary hover:text-primary/80">
               Click to upload
             </span>{" "}
             or drag and drop
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             PNG, JPG, GIF, PDF, DOC up to 10MB each
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="mt-1 text-xs text-muted-foreground/70">
             Files are validated before upload to save time
           </p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+      <Tabs
+        value={selectedTab}
+        onValueChange={(value) =>
+          setSelectedTab(value as typeof selectedTab)
+        }
+      >
+        <TabsList variant="line">
           {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedTab(tab.id as any)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                selectedTab === tab.id
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
+            <TabsTrigger key={tab.id} value={tab.id}>
               {tab.name} ({tab.count})
-            </button>
+            </TabsTrigger>
           ))}
-        </nav>
-      </div>
+        </TabsList>
+      </Tabs>
 
       {/* Files Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {getDisplayFiles().map((file) => (
-          <div
-            key={file.url}
-            className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden"
-          >
+          <Card key={file.url} className="overflow-hidden py-0">
             {/* File Preview */}
-            <div className="aspect-w-16 aspect-h-9 bg-gray-100">
+            <div className="bg-muted">
               {file.pathname.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={file.url}
                   alt={file.name || "Image"}
-                  className="w-full h-32 object-cover"
+                  className="h-32 w-full object-cover"
                 />
               ) : (
-                <div className="w-full h-32 flex items-center justify-center">
+                <div className="flex h-32 w-full items-center justify-center">
                   {getFileIcon(file)}
                 </div>
               )}
@@ -354,12 +348,12 @@ export default function MediaPage() {
 
             {/* File Info */}
             <div className="p-4">
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-medium text-gray-900 truncate">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-medium text-foreground">
                     {file.name || file.pathname.split("/").pop()}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {formatFileSize(file.size)}
                   </p>
                 </div>
@@ -375,45 +369,49 @@ export default function MediaPage() {
                     }
                     setSelectedFiles(newSelected);
                   }}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 shrink-0 rounded border-input text-primary accent-primary focus:ring-ring"
                 />
               </div>
 
               {/* Actions */}
-              <div className="mt-3 flex items-center space-x-2">
-                <button
+              <div className="mt-3 flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
                   onClick={() => copyToClipboard(file.url)}
-                  className="flex-1 inline-flex items-center justify-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  <ClipboardDocumentIcon className="h-3 w-3 mr-1" />
+                  <ClipboardDocumentIcon className="h-3 w-3" />
                   Copy URL
-                </button>
-                <a
-                  href={file.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center p-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon-sm"
+                  render={
+                    <a href={file.url} target="_blank" rel="noopener noreferrer" />
+                  }
                 >
                   <EyeIcon className="h-3 w-3" />
-                </a>
-                <button
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="icon-sm"
                   onClick={() => handleDelete(file.url)}
-                  className="inline-flex items-center p-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                 >
                   <TrashIcon className="h-3 w-3" />
-                </button>
+                </Button>
               </div>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
 
       {/* Empty State */}
       {getDisplayFiles().length === 0 && (
-        <div className="text-center py-12">
-          <FolderIcon className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No files</h3>
-          <p className="mt-1 text-sm text-gray-500">
+        <div className="py-12 text-center">
+          <FolderIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+          <h3 className="mt-2 text-sm font-medium text-foreground">No files</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
             Get started by uploading your first file.
           </p>
         </div>

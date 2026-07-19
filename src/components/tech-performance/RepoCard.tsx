@@ -40,7 +40,7 @@ export default function RepoCard({
   const technologies = isFeatured ? repo.technologies : repo.primaryLanguage ? [repo.primaryLanguage] : [];
 
   return (
-    <div className="rounded-lg border border-foreground/10 bg-foreground/[0.03] p-4 flex flex-col gap-3 hover:bg-foreground/[0.06] transition-colors">
+    <div className="rounded-lg border border-foreground/10 bg-foreground/3 p-4 flex flex-col gap-3 hover:bg-foreground/6 transition-colors">
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-sm font-semibold text-foreground">{title}</h4>
         {stats && (

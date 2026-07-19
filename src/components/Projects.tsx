@@ -137,7 +137,7 @@ const Projects = () => {
                 key={project.id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
               >
-                <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500">
+                <div className="relative h-48 bg-linear-to-br from-blue-400 to-purple-500">
                   <div className="absolute inset-0 flex items-center justify-center text-white text-6xl font-bold opacity-20">
                     {project.title.charAt(0)}
                   </div>
@@ -238,7 +238,7 @@ const Projects = () => {
               key={project.id}
               className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
-              <div className="relative h-48 bg-gradient-to-br from-gray-400 to-gray-600">
+              <div className="relative h-48 bg-linear-to-br from-gray-400 to-gray-600">
                 <div className="absolute inset-0 flex items-center justify-center text-white text-6xl font-bold opacity-30">
                   {project.title.charAt(0)}
                 </div>

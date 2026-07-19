@@ -77,7 +77,7 @@ const Hero = () => {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight"
             >
               Hi, I&apos;m{" "}
-              <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400">
+              <span className="relative inline-block text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400">
                 Yashdeep Tandon
               </span>
             </motion.h1>
@@ -94,7 +94,7 @@ const Hero = () => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 font-semibold"
+                  className="inline-block text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400 font-semibold"
                 >
                   {roles[currentRole]}
                 </motion.span>
@@ -119,7 +119,7 @@ const Hero = () => {
                 onClick={() => scrollTo("#contact")}
                 whileHover={{ scale: 1.04, boxShadow: "0 8px 30px rgba(99,102,241,0.4)" }}
                 whileTap={{ scale: 0.97 }}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-all duration-200"
+                className="bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-all duration-200"
               >
                 Get In Touch
               </motion.button>
@@ -187,9 +187,9 @@ const Hero = () => {
                 className="relative"
               >
                 {/* Glow ring */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-600 blur-md opacity-25 scale-110" />
+                <div className="absolute inset-0 rounded-full bg-linear-to-br from-blue-400 via-indigo-500 to-purple-600 blur-md opacity-25 scale-110" />
                 {/* Gradient border */}
-                <div className="w-56 h-56 sm:w-72 sm:h-72 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-600 p-[3px]">
+                <div className="w-56 h-56 sm:w-72 sm:h-72 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full bg-linear-to-br from-blue-400 via-indigo-500 to-purple-600 p-[3px]">
                   <div className="w-full h-full rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
                     <Image
                       src={profileImage}

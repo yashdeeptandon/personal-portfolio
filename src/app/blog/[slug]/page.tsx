@@ -253,7 +253,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-lg">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xs shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <Link
@@ -275,7 +275,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Article Content */}
       <article className="pt-20">
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 py-16">
+        <div className="bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <div className="flex items-center justify-center mb-4">
@@ -324,7 +324,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="bg-gray-50 dark:bg-gray-800 py-12">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xl font-bold mr-6">
+              <div className="w-16 h-16 bg-linear-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xl font-bold mr-6">
                 JD
               </div>
               <div>
@@ -359,7 +359,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     href={`/blog/${relatedPost.slug}`}
                     className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                   >
-                    <div className="relative h-40 bg-gradient-to-br from-gray-400 to-gray-600">
+                    <div className="relative h-40 bg-linear-to-br from-gray-400 to-gray-600">
                       <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold opacity-30">
                         {relatedPost.title.charAt(0)}
                       </div>

@@ -85,7 +85,7 @@ const Experience = () => {
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-8 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-600 via-indigo-500 to-transparent" />
+          <div className="absolute left-8 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-linear-to-b from-blue-600 via-indigo-500 to-transparent" />
 
           <div className="space-y-16">
             {experiences.map((exp, index) => (
@@ -95,7 +95,7 @@ const Experience = () => {
               >
                 {/* Timeline dot */}
                 <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 z-10 mt-6">
-                  <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full border-4 border-white dark:border-gray-900 shadow-lg shadow-blue-500/30">
+                  <div className="w-5 h-5 bg-linear-to-br from-blue-500 to-indigo-600 rounded-full border-4 border-white dark:border-gray-900 shadow-lg shadow-blue-500/30">
                     {exp.current && (
                       <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-75" />
                     )}
@@ -173,7 +173,7 @@ const Experience = () => {
                             variants={achievementItem}
                             className="flex items-start text-sm text-gray-600 dark:text-gray-300 gap-2"
                           >
-                            <svg className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                             {achievement}
@@ -204,7 +204,7 @@ const Experience = () => {
         <AnimatedSection delay={0.1} className="mt-20">
           <motion.div
             whileInView={{ opacity: 1 }}
-            className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl shadow-xl p-8"
+            className="bg-linear-to-br from-blue-600 to-indigo-700 rounded-2xl shadow-xl p-8"
           >
             <h3 className="text-2xl font-bold text-white text-center mb-8">Career Highlights</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

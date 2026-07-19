@@ -5,7 +5,7 @@ export default function NewsletterPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow">
+      <header className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
@@ -102,7 +102,7 @@ export default function NewsletterPage() {
       <Newsletter />
 
       {/* What You'll Get */}
-      <section className="py-16 bg-white/15 dark:bg-gray-800/15 backdrop-blur-sm">
+      <section className="py-16 bg-white/15 dark:bg-gray-800/15 backdrop-blur-xs">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             What You&apos;ll Get
@@ -187,7 +187,7 @@ export default function NewsletterPage() {
       </section>
 
       {/* Recent Posts Preview */}
-      <section className="py-16 bg-gray-50/15 dark:bg-gray-900/15 backdrop-blur-sm">
+      <section className="py-16 bg-gray-50/15 dark:bg-gray-900/15 backdrop-blur-xs">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             Recent Blog Posts

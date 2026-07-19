@@ -319,7 +319,7 @@ export default function RunningTab({ analytics, routes }: Props) {
 
       {/* GPS Route viewer — shown when outdoor run selected */}
       {selectedRouteId && (
-        <div className="rounded-xl border border-indigo-500/30 bg-foreground/[0.03] p-4 space-y-3">
+        <div className="rounded-xl border border-indigo-500/30 bg-foreground/3 p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-foreground">GPS Route</h3>

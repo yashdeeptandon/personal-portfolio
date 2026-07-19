@@ -2,6 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface BlogFormData {
   title: string;
@@ -41,13 +53,13 @@ export default function NewBlogPost() {
   const [keywordInput, setKeywordInput] = useState("");
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    
+
     if (name.startsWith("seo.")) {
       const seoField = name.split(".")[1];
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         seo: {
           ...prev.seo,
@@ -55,7 +67,7 @@ export default function NewBlogPost() {
         },
       }));
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         [name]: value,
       }));
@@ -67,7 +79,7 @@ export default function NewBlogPost() {
       e.preventDefault();
       const newTag = tagInput.trim().toLowerCase();
       if (!formData.tags.includes(newTag)) {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           tags: [...prev.tags, newTag],
         }));
@@ -77,9 +89,9 @@ export default function NewBlogPost() {
   };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove),
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }));
   };
 
@@ -88,7 +100,7 @@ export default function NewBlogPost() {
       e.preventDefault();
       const newKeyword = keywordInput.trim().toLowerCase();
       if (!formData.seo.keywords.includes(newKeyword)) {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           seo: {
             ...prev.seo,
@@ -101,11 +113,13 @@ export default function NewBlogPost() {
   };
 
   const handleRemoveKeyword = (keywordToRemove: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       seo: {
         ...prev.seo,
-        keywords: prev.seo.keywords.filter(keyword => keyword !== keywordToRemove),
+        keywords: prev.seo.keywords.filter(
+          (keyword) => keyword !== keywordToRemove
+        ),
       },
     }));
   };
@@ -133,151 +147,133 @@ export default function NewBlogPost() {
       router.push(`/admin/blog/${result.data._id}`);
     } catch (error) {
       console.error("Error creating blog post:", error);
-      setError(error instanceof Error ? error.message : "Failed to create blog post");
+      setError(
+        error instanceof Error ? error.message : "Failed to create blog post"
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleSaveAsDraft = () => {
-    setFormData(prev => ({ ...prev, status: "draft" }));
-    handleSubmit(new Event("submit") as any);
-  };
-
-  const handlePublish = () => {
-    setFormData(prev => ({ ...prev, status: "published" }));
-    handleSubmit(new Event("submit") as any);
+    setFormData((prev) => ({ ...prev, status: "draft" }));
+    handleSubmit(new Event("submit") as unknown as React.FormEvent);
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Create New Blog Post</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="font-display text-2xl font-bold text-foreground">
+          Create New Blog Post
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Write and publish a new blog post for your portfolio
         </p>
       </div>
 
       {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
-          <p className="text-red-800">{error}</p>
+        <div className="mb-6 rounded-md border border-destructive/20 bg-destructive/10 p-4">
+          <p className="text-destructive">{error}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
-          
-          <div className="grid grid-cols-1 gap-6">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                Title *
-              </label>
-              <input
+        <Card>
+          <CardHeader>
+            <CardTitle>Basic Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title *</Label>
+              <Input
                 type="text"
                 id="title"
                 name="title"
                 required
                 value={formData.title}
                 onChange={handleInputChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter blog post title"
               />
             </div>
 
-            <div>
-              <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700">
-                Excerpt *
-              </label>
-              <textarea
+            <div className="space-y-2">
+              <Label htmlFor="excerpt">Excerpt *</Label>
+              <Textarea
                 id="excerpt"
                 name="excerpt"
                 required
                 rows={3}
                 value={formData.excerpt}
                 onChange={handleInputChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Brief description of the blog post"
               />
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {formData.excerpt.length}/500 characters
               </p>
             </div>
 
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-                Content *
-              </label>
-              <textarea
+            <div className="space-y-2">
+              <Label htmlFor="content">Content *</Label>
+              <Textarea
                 id="content"
                 name="content"
                 required
                 rows={15}
                 value={formData.content}
                 onChange={handleInputChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Write your blog post content here..."
               />
             </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div>
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                  Category *
-                </label>
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="category">Category *</Label>
+                <Input
                   type="text"
                   id="category"
                   name="category"
                   required
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="e.g., Technology, Tutorial, Opinion"
                 />
               </div>
 
-              <div>
-                <label htmlFor="featuredImage" className="block text-sm font-medium text-gray-700">
-                  Featured Image URL
-                </label>
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="featuredImage">Featured Image URL</Label>
+                <Input
                   type="url"
                   id="featuredImage"
                   name="featuredImage"
                   value={formData.featuredImage}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
             </div>
 
-            <div>
-              <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-                Tags
-              </label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="tags">Tags</Label>
+              <Input
                 type="text"
                 id="tags"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleAddTag}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Type a tag and press Enter"
               />
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
                 {formData.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                    className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => handleRemoveTag(tag)}
-                      className="ml-1 text-blue-600 hover:text-blue-500"
+                      className="text-primary hover:text-primary/70"
                     >
                       ×
                     </button>
@@ -285,74 +281,66 @@ export default function NewBlogPost() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* SEO Settings */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">SEO Settings</h3>
-          
-          <div className="grid grid-cols-1 gap-6">
-            <div>
-              <label htmlFor="seo.metaTitle" className="block text-sm font-medium text-gray-700">
-                Meta Title
-              </label>
-              <input
+        <Card>
+          <CardHeader>
+            <CardTitle>SEO Settings</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="seo.metaTitle">Meta Title</Label>
+              <Input
                 type="text"
                 id="seo.metaTitle"
                 name="seo.metaTitle"
                 value={formData.seo.metaTitle}
                 onChange={handleInputChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="SEO title (leave empty to use post title)"
               />
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {formData.seo.metaTitle.length}/60 characters
               </p>
             </div>
 
-            <div>
-              <label htmlFor="seo.metaDescription" className="block text-sm font-medium text-gray-700">
-                Meta Description
-              </label>
-              <textarea
+            <div className="space-y-2">
+              <Label htmlFor="seo.metaDescription">Meta Description</Label>
+              <Textarea
                 id="seo.metaDescription"
                 name="seo.metaDescription"
                 rows={3}
                 value={formData.seo.metaDescription}
                 onChange={handleInputChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="SEO description (leave empty to use excerpt)"
               />
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {formData.seo.metaDescription.length}/160 characters
               </p>
             </div>
 
-            <div>
-              <label htmlFor="keywords" className="block text-sm font-medium text-gray-700">
-                SEO Keywords
-              </label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="keywords">SEO Keywords</Label>
+              <Input
                 type="text"
                 id="keywords"
                 value={keywordInput}
                 onChange={(e) => setKeywordInput(e.target.value)}
                 onKeyDown={handleAddKeyword}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Type a keyword and press Enter"
               />
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
                 {formData.seo.keywords.map((keyword) => (
                   <span
                     key={keyword}
-                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                    className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2.5 py-0.5 text-xs font-medium text-green-600 dark:text-green-400"
                   >
                     {keyword}
                     <button
                       type="button"
                       onClick={() => handleRemoveKeyword(keyword)}
-                      className="ml-1 text-green-600 hover:text-green-500"
+                      className="text-green-600 hover:text-green-500 dark:text-green-400"
                     >
                       ×
                     </button>
@@ -360,55 +348,62 @@ export default function NewBlogPost() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Actions */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-                Status
-              </label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-              >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
-                <option value="archived">Archived</option>
-              </select>
-            </div>
+        <Card>
+          <CardContent>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div className="w-full space-y-2 sm:w-48">
+                <Label htmlFor="status">Status</Label>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      status: (value as BlogFormData["status"]) ?? "draft",
+                    }))
+                  }
+                >
+                  <SelectTrigger id="status" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="draft">Draft</SelectItem>
+                    <SelectItem value="published">Published</SelectItem>
+                    <SelectItem value="archived">Archived</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="flex space-x-3">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleSaveAsDraft}
-                disabled={loading}
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                Save as Draft
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {loading ? "Saving..." : formData.status === "published" ? "Publish" : "Save"}
-              </button>
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleSaveAsDraft}
+                  disabled={loading}
+                >
+                  Save as Draft
+                </Button>
+                <Button type="submit" disabled={loading}>
+                  {loading
+                    ? "Saving..."
+                    : formData.status === "published"
+                      ? "Publish"
+                      : "Save"}
+                </Button>
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </form>
     </div>
   );

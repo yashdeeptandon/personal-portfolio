@@ -1,6 +1,6 @@
 "use client";
 
-export type BadgeVariant = "neutral" | "success" | "warning" | "info";
+export type BadgeVariant = "neutral" | "success" | "warning" | "info" | "destructive";
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -13,6 +13,7 @@ const VARIANT_CLASSES: Record<BadgeVariant, string> = {
   success: "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20",
   warning: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
   info: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
+  destructive: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
 };
 
 export default function Badge({ children, variant = "neutral", className = "" }: BadgeProps) {

@@ -80,12 +80,12 @@ function AddGoalForm({ onCreated }: { onCreated: () => void }) {
   }
 
   return (
-    <div className="rounded-lg border border-foreground/10 bg-foreground/[0.03] p-3 space-y-2">
+    <div className="rounded-lg border border-foreground/10 bg-foreground/3 p-3 space-y-2">
       <input
         value={label}
         onChange={(e) => setLabel(e.target.value)}
         placeholder="Goal label, e.g. Weekly coding hours"
-        className="w-full bg-foreground/5 border border-foreground/10 rounded-md px-2 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-indigo-500"
+        className="w-full bg-foreground/5 border border-foreground/10 rounded-md px-2 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:border-indigo-500"
       />
       <div className="flex flex-wrap gap-2">
         <select

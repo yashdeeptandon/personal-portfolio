@@ -102,7 +102,7 @@ export default function InsightsPanel({ kpis }: Props) {
   const insights = buildInsights(kpis);
 
   return (
-    <div className="rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-sm p-5">
+    <div className="rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-xs p-5">
       <h3 className="text-sm font-semibold text-foreground tracking-wide mb-4">
         Automated Insights
       </h3>
@@ -110,7 +110,7 @@ export default function InsightsPanel({ kpis }: Props) {
         {insights.map((ins, i) => (
           <div
             key={i}
-            className={`flex gap-3 items-start rounded-lg border-l-2 ${borderColor[ins.color]} bg-foreground/[0.03] px-3 py-2.5`}
+            className={`flex gap-3 items-start rounded-lg border-l-2 ${borderColor[ins.color]} bg-foreground/3 px-3 py-2.5`}
           >
             <div className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${dotColor[ins.color]}`} />
             <p className="text-sm text-foreground/80 leading-snug">{ins.text}</p>

@@ -10,6 +10,18 @@ import {
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 import { ISettings } from "@/types";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+interface SettingsSectionProps {
+  settings: ISettings;
+  onSave: (data: Partial<ISettings>) => void;
+  saving: boolean;
+}
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<ISettings | null>(null);
@@ -60,7 +72,7 @@ export default function SettingsPage() {
       const data = await response.json();
       setSettings(data.data.settings);
       setSuccess("Settings saved successfully!");
-      
+
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
@@ -81,16 +93,16 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
 
   if (!settings) {
     return (
-      <div className="text-center py-12">
-        <div className="text-gray-500">Failed to load settings.</div>
+      <div className="py-12 text-center text-muted-foreground">
+        Failed to load settings.
       </div>
     );
   }
@@ -99,37 +111,38 @@ export default function SettingsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="mt-2 text-sm text-gray-700">
+        <h1 className="font-display text-2xl font-bold text-foreground">Settings</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Configure your portfolio website settings and preferences.
         </p>
       </div>
 
       {/* Success/Error Messages */}
       {success && (
-        <div className="bg-green-50 border border-green-200 rounded-md p-4">
-          <div className="text-sm text-green-600">{success}</div>
+        <div className="rounded-md border border-green-500/20 bg-green-500/10 p-4">
+          <p className="text-sm text-green-600 dark:text-green-400">{success}</p>
         </div>
       )}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <div className="text-sm text-red-600">{error}</div>
+        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
+          <p className="text-sm text-destructive">{error}</p>
         </div>
       )}
 
       <div className="flex flex-col lg:flex-row lg:space-x-8">
         {/* Sidebar Navigation */}
-        <div className="lg:w-64 lg:flex-shrink-0">
+        <div className="lg:w-64 lg:shrink-0">
           <nav className="space-y-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                className={cn(
+                  "flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   activeTab === tab.id
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                }`}
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                )}
               >
                 <tab.icon className="mr-3 h-5 w-5" />
                 {tab.name}
@@ -139,62 +152,27 @@ export default function SettingsPage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 mt-6 lg:mt-0">
-          <div className="bg-white shadow rounded-lg">
-            {/* General Settings */}
+        <div className="mt-6 flex-1 lg:mt-0">
+          <Card className="py-0">
             {activeTab === "general" && (
-              <GeneralSettings
-                settings={settings}
-                onSave={handleSave}
-                saving={saving}
-              />
+              <GeneralSettings settings={settings} onSave={handleSave} saving={saving} />
             )}
-
-            {/* Contact Settings */}
             {activeTab === "contact" && (
-              <ContactSettings
-                settings={settings}
-                onSave={handleSave}
-                saving={saving}
-              />
+              <ContactSettings settings={settings} onSave={handleSave} saving={saving} />
             )}
-
-            {/* Analytics Settings */}
             {activeTab === "analytics" && (
-              <AnalyticsSettings
-                settings={settings}
-                onSave={handleSave}
-                saving={saving}
-              />
+              <AnalyticsSettings settings={settings} onSave={handleSave} saving={saving} />
             )}
-
-            {/* Appearance Settings */}
             {activeTab === "appearance" && (
-              <AppearanceSettings
-                settings={settings}
-                onSave={handleSave}
-                saving={saving}
-              />
+              <AppearanceSettings settings={settings} onSave={handleSave} saving={saving} />
             )}
-
-            {/* Features Settings */}
             {activeTab === "features" && (
-              <FeaturesSettings
-                settings={settings}
-                onSave={handleSave}
-                saving={saving}
-              />
+              <FeaturesSettings settings={settings} onSave={handleSave} saving={saving} />
             )}
-
-            {/* Security Settings */}
             {activeTab === "security" && (
-              <SecuritySettings
-                settings={settings}
-                onSave={handleSave}
-                saving={saving}
-              />
+              <SecuritySettings settings={settings} onSave={handleSave} saving={saving} />
             )}
-          </div>
+          </Card>
         </div>
       </div>
     </div>
@@ -202,15 +180,7 @@ export default function SettingsPage() {
 }
 
 // Component for General Settings
-function GeneralSettings({
-  settings,
-  onSave,
-  saving,
-}: {
-  settings: ISettings;
-  onSave: (data: Partial<ISettings>) => void;
-  saving: boolean;
-}) {
+function GeneralSettings({ settings, onSave, saving }: SettingsSectionProps) {
   const [formData, setFormData] = useState({
     siteName: settings.siteName || "",
     siteDescription: settings.siteDescription || "",
@@ -226,161 +196,160 @@ function GeneralSettings({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 p-6">
       <div>
-        <h3 className="text-lg font-medium text-gray-900">General Information</h3>
-        <p className="mt-1 text-sm text-gray-500">
+        <h3 className="text-lg font-medium text-foreground">General Information</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
           Basic information about your website.
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <div>
-          <label htmlFor="siteName" className="block text-sm font-medium text-gray-700">
-            Site Name
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="siteName">Site Name</Label>
+          <Input
             type="text"
             id="siteName"
             value={formData.siteName}
             onChange={(e) => setFormData({ ...formData, siteName: e.target.value })}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
 
-        <div>
-          <label htmlFor="siteDescription" className="block text-sm font-medium text-gray-700">
-            Site Description
-          </label>
-          <textarea
+        <div className="space-y-2">
+          <Label htmlFor="siteDescription">Site Description</Label>
+          <Textarea
             id="siteDescription"
             rows={3}
             value={formData.siteDescription}
             onChange={(e) => setFormData({ ...formData, siteDescription: e.target.value })}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
 
-        <div>
-          <label htmlFor="siteUrl" className="block text-sm font-medium text-gray-700">
-            Site URL
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="siteUrl">Site URL</Label>
+          <Input
             type="url"
             id="siteUrl"
             value={formData.siteUrl}
             onChange={(e) => setFormData({ ...formData, siteUrl: e.target.value })}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
 
-        <div>
-          <label htmlFor="siteLogo" className="block text-sm font-medium text-gray-700">
-            Site Logo URL
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="siteLogo">Site Logo URL</Label>
+          <Input
             type="url"
             id="siteLogo"
             value={formData.siteLogo}
             onChange={(e) => setFormData({ ...formData, siteLogo: e.target.value })}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
-        <div>
-          <label htmlFor="favicon" className="block text-sm font-medium text-gray-700">
-            Favicon URL
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="favicon">Favicon URL</Label>
+          <Input
             type="url"
             id="favicon"
             value={formData.favicon}
             onChange={(e) => setFormData({ ...formData, favicon: e.target.value })}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
-        <div>
-          <label htmlFor="resumeUrl" className="block text-sm font-medium text-gray-700">
-            Resume URL
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="resumeUrl">Resume URL</Label>
+          <Input
             type="url"
             id="resumeUrl"
             value={formData.resumeUrl}
             onChange={(e) => setFormData({ ...formData, resumeUrl: e.target.value })}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             placeholder="https://...blob.vercel-storage.com/.../resume.pdf"
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Upload the PDF in Media Library, then paste its URL here. Powers the &quot;Download Resume&quot; button on the About section.
+          <p className="text-xs text-muted-foreground">
+            Upload the PDF in Media Library, then paste its URL here. Powers the
+            &quot;Download Resume&quot; button on the About section.
           </p>
         </div>
       </div>
 
       <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={saving}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-        >
+        <Button type="submit" disabled={saving}>
           {saving ? "Saving..." : "Save Changes"}
-        </button>
+        </Button>
       </div>
     </form>
   );
 }
 
 // Placeholder components for other settings sections
-function ContactSettings({ settings, onSave, saving }: any) {
+function ContactSettings({}: SettingsSectionProps) {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-medium text-gray-900">Contact Settings</h3>
-      <p className="mt-1 text-sm text-gray-500">Contact information and social media links.</p>
-      <div className="mt-6 text-sm text-gray-500">Contact settings form would go here...</div>
+      <h3 className="text-lg font-medium text-foreground">Contact Settings</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Contact information and social media links.
+      </p>
+      <div className="mt-6 text-sm text-muted-foreground">
+        Contact settings form would go here...
+      </div>
     </div>
   );
 }
 
-function AnalyticsSettings({ settings, onSave, saving }: any) {
+function AnalyticsSettings({}: SettingsSectionProps) {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-medium text-gray-900">Analytics Settings</h3>
-      <p className="mt-1 text-sm text-gray-500">Configure analytics and tracking.</p>
-      <div className="mt-6 text-sm text-gray-500">Analytics settings form would go here...</div>
+      <h3 className="text-lg font-medium text-foreground">Analytics Settings</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Configure analytics and tracking.
+      </p>
+      <div className="mt-6 text-sm text-muted-foreground">
+        Analytics settings form would go here...
+      </div>
     </div>
   );
 }
 
-function AppearanceSettings({ settings, onSave, saving }: any) {
+function AppearanceSettings({}: SettingsSectionProps) {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-medium text-gray-900">Appearance Settings</h3>
-      <p className="mt-1 text-sm text-gray-500">Customize the look and feel of your site.</p>
-      <div className="mt-6 text-sm text-gray-500">Appearance settings form would go here...</div>
+      <h3 className="text-lg font-medium text-foreground">Appearance Settings</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Customize the look and feel of your site.
+      </p>
+      <div className="mt-6 text-sm text-muted-foreground">
+        Appearance settings form would go here...
+      </div>
     </div>
   );
 }
 
-function FeaturesSettings({ settings, onSave, saving }: any) {
+function FeaturesSettings({}: SettingsSectionProps) {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-medium text-gray-900">Feature Settings</h3>
-      <p className="mt-1 text-sm text-gray-500">Enable or disable site features.</p>
-      <div className="mt-6 text-sm text-gray-500">Feature settings form would go here...</div>
+      <h3 className="text-lg font-medium text-foreground">Feature Settings</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Enable or disable site features.
+      </p>
+      <div className="mt-6 text-sm text-muted-foreground">
+        Feature settings form would go here...
+      </div>
     </div>
   );
 }
 
-function SecuritySettings({ settings, onSave, saving }: any) {
+function SecuritySettings({}: SettingsSectionProps) {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-medium text-gray-900">Security Settings</h3>
-      <p className="mt-1 text-sm text-gray-500">Manage security and maintenance settings.</p>
-      <div className="mt-6 text-sm text-gray-500">Security settings form would go here...</div>
+      <h3 className="text-lg font-medium text-foreground">Security Settings</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Manage security and maintenance settings.
+      </p>
+      <div className="mt-6 text-sm text-muted-foreground">
+        Security settings form would go here...
+      </div>
     </div>
   );
 }

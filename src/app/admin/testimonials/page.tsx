@@ -8,10 +8,21 @@ import {
   CheckIcon,
   XMarkIcon,
   MagnifyingGlassIcon,
-  FunnelIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
 import { ITestimonial } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Badge, { type BadgeVariant } from "@/components/ui/Badge";
 
 interface TestimonialsResponse {
   success: boolean;
@@ -28,6 +39,12 @@ interface TestimonialsResponse {
     prevPage: number | null;
   };
 }
+
+const STATUS_BADGE: Record<string, BadgeVariant> = {
+  pending: "warning",
+  approved: "success",
+  rejected: "neutral",
+};
 
 export default function TestimonialsPage() {
   const [testimonials, setTestimonials] = useState<ITestimonial[]>([]);
@@ -117,25 +134,6 @@ export default function TestimonialsPage() {
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusClasses = {
-      pending: "bg-yellow-100 text-yellow-800",
-      approved: "bg-green-100 text-green-800",
-      rejected: "bg-red-100 text-red-800",
-    };
-
-    return (
-      <span
-        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-          statusClasses[status as keyof typeof statusClasses] ||
-          "bg-gray-100 text-gray-800"
-        }`}
-      >
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </span>
-    );
-  };
-
   const renderStars = (rating: number) => {
     return (
       <div className="flex items-center">
@@ -143,7 +141,9 @@ export default function TestimonialsPage() {
           <StarIcon
             key={star}
             className={`h-4 w-4 ${
-              star <= rating ? "text-yellow-400 fill-current" : "text-gray-300"
+              star <= rating
+                ? "fill-current text-amber-400"
+                : "text-muted-foreground/40"
             }`}
           />
         ))}
@@ -153,8 +153,8 @@ export default function TestimonialsPage() {
 
   if (loading && testimonials.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
@@ -164,237 +164,215 @@ export default function TestimonialsPage() {
       {/* Header */}
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Testimonials</h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Testimonials
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             Manage client testimonials and reviews for your portfolio.
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
-          <button
-            onClick={() => {
-              // You can implement a modal or redirect to a form
-              alert("Add testimonial form would open here");
-            }}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          <Button
+            onClick={() => alert("Add testimonial form would open here")}
           >
-            <PlusIcon className="-ml-1 mr-2 h-5 w-5" />
+            <PlusIcon className="h-4 w-4" />
             Add Testimonial
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white shadow rounded-lg p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label htmlFor="search" className="sr-only">
-              Search testimonials
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+      <Card>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="space-y-2">
+              <Label htmlFor="search" className="sr-only">
+                Search testimonials
+              </Label>
+              <div className="relative">
+                <MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="text"
+                  id="search"
+                  className="pl-8"
+                  placeholder="Search testimonials..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
-              <input
-                type="text"
-                name="search"
-                id="search"
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search testimonials..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
             </div>
-          </div>
-          <div>
-            <label htmlFor="status" className="sr-only">
-              Filter by status
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FunnelIcon className="h-5 w-5 text-gray-400" />
-              </div>
-              <select
-                id="status"
-                name="status"
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            <div className="space-y-2">
+              <Label htmlFor="status" className="sr-only">
+                Filter by status
+              </Label>
+              <Select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onValueChange={(value) => setStatusFilter((value as string) ?? "all")}
               >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-              </select>
+                <SelectTrigger id="status" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <div className="text-sm text-red-600">{error}</div>
+        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-4">
+          <p className="text-sm text-destructive">{error}</p>
         </div>
       )}
 
       {/* Testimonials Grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {testimonials.length === 0 ? (
-          <div className="col-span-full text-center py-12">
-            <div className="text-gray-500">
-              {searchTerm || statusFilter !== "all"
-                ? "No testimonials found matching your criteria."
-                : "No testimonials yet. Add your first testimonial!"}
-            </div>
+          <div className="col-span-full py-12 text-center text-muted-foreground">
+            {searchTerm || statusFilter !== "all"
+              ? "No testimonials found matching your criteria."
+              : "No testimonials yet. Add your first testimonial!"}
           </div>
         ) : (
           testimonials.map((testimonial) => (
-            <div
-              key={testimonial._id}
-              className="bg-white shadow rounded-lg p-6 space-y-4"
-            >
-              {/* Header */}
-              <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                  {testimonial.avatar ? (
-                    <img
-                      className="h-12 w-12 rounded-full object-cover"
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
-                    />
-                  ) : (
-                    <div className="h-12 w-12 rounded-full bg-gray-300 flex items-center justify-center">
-                      <span className="text-lg font-medium text-gray-700">
-                        {testimonial.name.charAt(0)}
-                      </span>
-                    </div>
-                  )}
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">
-                      {testimonial.name}
-                    </h3>
-                    {testimonial.position && testimonial.company && (
-                      <p className="text-sm text-gray-500">
-                        {testimonial.position} at {testimonial.company}
-                      </p>
+            <Card key={testimonial._id}>
+              <CardContent className="space-y-4">
+                {/* Header */}
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    {testimonial.avatar ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        className="h-12 w-12 rounded-full object-cover"
+                        src={testimonial.avatar}
+                        alt={testimonial.name}
+                      />
+                    ) : (
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                        <span className="text-lg font-medium text-foreground">
+                          {testimonial.name.charAt(0)}
+                        </span>
+                      </div>
                     )}
-                    {renderStars(testimonial.rating)}
+                    <div>
+                      <h3 className="text-lg font-medium text-foreground">
+                        {testimonial.name}
+                      </h3>
+                      {testimonial.position && testimonial.company && (
+                        <p className="text-sm text-muted-foreground">
+                          {testimonial.position} at {testimonial.company}
+                        </p>
+                      )}
+                      {renderStars(testimonial.rating)}
+                    </div>
                   </div>
+                  <Badge variant={STATUS_BADGE[testimonial.status] ?? "neutral"}>
+                    {testimonial.status.charAt(0).toUpperCase() +
+                      testimonial.status.slice(1)}
+                  </Badge>
                 </div>
-                <div className="flex items-center space-x-2">
-                  {getStatusBadge(testimonial.status)}
-                </div>
-              </div>
 
-              {/* Content */}
-              <div>
-                <p className="text-gray-700 text-sm leading-relaxed">
+                {/* Content */}
+                <p className="text-sm leading-relaxed text-muted-foreground">
                   &ldquo;{testimonial.content}&rdquo;
                 </p>
-              </div>
 
-              {/* Footer */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                <div className="text-xs text-gray-500">
-                  {new Date(testimonial.createdAt).toLocaleDateString()}
+                {/* Footer */}
+                <div className="flex items-center justify-between border-t border-border pt-4">
+                  <div className="text-xs text-muted-foreground">
+                    {new Date(testimonial.createdAt).toLocaleDateString()}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {testimonial.status === "pending" && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-green-600 hover:bg-green-500/10 hover:text-green-600 dark:text-green-400"
+                          onClick={() =>
+                            handleStatusUpdate(testimonial._id, "approved")
+                          }
+                        >
+                          <CheckIcon className="h-4 w-4" />
+                          Approve
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                          onClick={() =>
+                            handleStatusUpdate(testimonial._id, "rejected")
+                          }
+                        >
+                          <XMarkIcon className="h-4 w-4" />
+                          Reject
+                        </Button>
+                      </>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => alert("Edit testimonial form would open here")}
+                    >
+                      <PencilIcon className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => handleDelete(testimonial._id)}
+                    >
+                      <TrashIcon className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  {testimonial.status === "pending" && (
-                    <>
-                      <button
-                        onClick={() =>
-                          handleStatusUpdate(testimonial._id, "approved")
-                        }
-                        className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                      >
-                        <CheckIcon className="h-4 w-4 mr-1" />
-                        Approve
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleStatusUpdate(testimonial._id, "rejected")
-                        }
-                        className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                      >
-                        <XMarkIcon className="h-4 w-4 mr-1" />
-                        Reject
-                      </button>
-                    </>
-                  )}
-                  <button
-                    onClick={() => {
-                      // Implement edit functionality
-                      alert("Edit testimonial form would open here");
-                    }}
-                    className="text-blue-600 hover:text-blue-900"
-                  >
-                    <PencilIcon className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(testimonial._id)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    <TrashIcon className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))
         )}
       </div>
 
       {/* Pagination */}
       {pagination.pages > 1 && (
-        <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-          <div className="flex-1 flex justify-between sm:hidden">
-            <button
+        <div className="flex items-center justify-between border-t border-border pt-4">
+          <p className="text-sm text-muted-foreground">
+            Showing{" "}
+            <span className="font-medium text-foreground">
+              {(currentPage - 1) * pagination.limit + 1}
+            </span>{" "}
+            to{" "}
+            <span className="font-medium text-foreground">
+              {Math.min(currentPage * pagination.limit, pagination.total)}
+            </span>{" "}
+            of{" "}
+            <span className="font-medium text-foreground">
+              {pagination.total}
+            </span>{" "}
+            results
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setCurrentPage(currentPage - 1)}
               disabled={!pagination.hasPrev}
-              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setCurrentPage(currentPage + 1)}
               disabled={!pagination.hasNext}
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
-            </button>
-          </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700">
-                Showing{" "}
-                <span className="font-medium">
-                  {(currentPage - 1) * pagination.limit + 1}
-                </span>{" "}
-                to{" "}
-                <span className="font-medium">
-                  {Math.min(currentPage * pagination.limit, pagination.total)}
-                </span>{" "}
-                of <span className="font-medium">{pagination.total}</span>{" "}
-                results
-              </p>
-            </div>
-            <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                <button
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  disabled={!pagination.hasPrev}
-                  className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  disabled={!pagination.hasNext}
-                  className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </nav>
-            </div>
+            </Button>
           </div>
         </div>
       )}

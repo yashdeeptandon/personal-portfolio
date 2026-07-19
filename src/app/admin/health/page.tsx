@@ -8,6 +8,9 @@ import {
   ArrowPathIcon,
   ClockIcon,
 } from "@heroicons/react/24/outline";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Badge, { type BadgeVariant } from "@/components/ui/Badge";
+import { cn } from "@/lib/utils";
 
 interface HealthStatus {
   hasData: boolean;
@@ -147,66 +150,71 @@ export default function HealthDataPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Health Data</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="font-display text-2xl font-bold text-foreground">Health Data</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Upload your Apple Health export ZIP to refresh the performance dashboard.
         </p>
       </div>
 
       {/* Status card */}
-      <div className="bg-white rounded-lg shadow p-5 border border-gray-200">
-        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">
-          Current Data
-        </h2>
-        {loadingStatus ? (
-          <div className="flex items-center gap-2 text-gray-400">
-            <ArrowPathIcon className="h-4 w-4 animate-spin" />
-            <span className="text-sm">Loading...</span>
-          </div>
-        ) : status?.hasData ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <StatusField label="Data from" value={status.dataFrom ?? "—"} />
-            <StatusField label="Data to" value={status.dataTo ?? "—"} />
-            <StatusField
-              label="Generated at"
-              value={status.generatedAt ? new Date(status.generatedAt).toLocaleString() : "—"}
-            />
-            <StatusField
-              label="DB updated"
-              value={status.dbUpdatedAt ? new Date(status.dbUpdatedAt).toLocaleString() : "—"}
-            />
-          </div>
-        ) : (
-          <p className="text-sm text-gray-400">No health data loaded yet.</p>
-        )}
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+            Current Data
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loadingStatus ? (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <ArrowPathIcon className="h-4 w-4 animate-spin" />
+              <span className="text-sm">Loading...</span>
+            </div>
+          ) : status?.hasData ? (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              <StatusField label="Data from" value={status.dataFrom ?? "—"} />
+              <StatusField label="Data to" value={status.dataTo ?? "—"} />
+              <StatusField
+                label="Generated at"
+                value={status.generatedAt ? new Date(status.generatedAt).toLocaleString() : "—"}
+              />
+              <StatusField
+                label="DB updated"
+                value={status.dbUpdatedAt ? new Date(status.dbUpdatedAt).toLocaleString() : "—"}
+              />
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">No health data loaded yet.</p>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Upload area */}
-      <div className="bg-white rounded-lg shadow border border-gray-200">
-        <div className="p-5 border-b border-gray-200">
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+      <Card className="overflow-hidden py-0">
+        <CardHeader className="border-b border-border py-4">
+          <CardTitle className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
             Upload New Export
-          </h2>
-        </div>
-        <div className="p-5">
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="py-5">
           <div
-            className={`border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition-colors ${
+            className={cn(
+              "cursor-pointer rounded-lg border-2 border-dashed p-10 text-center transition-colors",
               dragging
-                ? "border-blue-500 bg-blue-50"
+                ? "border-primary bg-primary/5"
                 : isRunning
-                ? "border-gray-200 bg-gray-50 cursor-not-allowed"
-                : "border-gray-300 hover:border-blue-400 hover:bg-blue-50"
-            }`}
+                ? "cursor-not-allowed border-border bg-muted"
+                : "border-border hover:border-primary/50 hover:bg-primary/5"
+            )}
             onDragOver={isRunning ? undefined : onDragOver}
             onDragLeave={onDragLeave}
             onDrop={isRunning ? undefined : onDrop}
             onClick={() => !isRunning && fileInputRef.current?.click()}
           >
-            <CloudArrowUpIcon className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-sm font-medium text-gray-700">
+            <CloudArrowUpIcon className="mx-auto mb-3 h-12 w-12 text-muted-foreground" />
+            <p className="text-sm font-medium text-foreground">
               {isRunning ? "Processing in progress..." : "Drop Apple Health export.zip here"}
             </p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="mt-1 text-xs text-muted-foreground">
               {isRunning ? "Please wait" : "or click to select file"}
             </p>
             <input
@@ -221,70 +229,73 @@ export default function HealthDataPage() {
               }}
             />
           </div>
-          <p className="text-xs text-gray-400 mt-2">
+          <p className="mt-2 text-xs text-muted-foreground">
             Export from iPhone: Health app → Profile → Export All Health Data → Share .zip
           </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Progress panel */}
       {job && (
-        <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
-          <div className="p-5 border-b border-gray-200 flex items-center justify-between">
-            <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+        <Card className="overflow-hidden py-0">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border py-4">
+            <CardTitle className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
               Pipeline Progress
-            </h2>
+            </CardTitle>
             <JobStatusBadge status={job.status} />
-          </div>
-          <div className="p-5 space-y-4">
+          </CardHeader>
+          <CardContent className="space-y-4 py-5">
             {/* Current step label */}
-            <p className="text-sm text-gray-700 font-medium">{job.step}</p>
+            <p className="text-sm font-medium text-foreground">{job.step}</p>
 
             {/* Progress bar */}
-            <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+            <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className={`h-3 rounded-full transition-all duration-500 ${
+                className={cn(
+                  "h-3 rounded-full transition-all duration-500",
                   job.status === "error"
-                    ? "bg-red-500"
+                    ? "bg-destructive"
                     : job.status === "complete" || job.status === "skipped"
                     ? "bg-green-500"
-                    : "bg-blue-500"
-                }`}
+                    : "bg-primary"
+                )}
                 style={{ width: `${job.progress}%` }}
               />
             </div>
-            <p className="text-xs text-gray-400 text-right">{job.progress}%</p>
+            <p className="text-right text-xs text-muted-foreground">{job.progress}%</p>
 
             {/* Step list */}
-            <ol className="space-y-2 mt-4">
+            <ol className="mt-4 space-y-2">
               {PIPELINE_STEPS.map((step, i) => {
                 const isDone = job.progress >= step.to;
                 const isActive = i === activeStep && isRunning;
                 return (
                   <li key={step.label} className="flex items-center gap-3">
                     <span
-                      className={`flex-shrink-0 h-5 w-5 rounded-full flex items-center justify-center text-xs font-bold ${
+                      className={cn(
+                        "flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold",
                         isDone
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-500/10 text-green-600 dark:text-green-400"
                           : isActive
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-gray-100 text-gray-400"
-                      }`}
+                          ? "bg-primary/10 text-primary"
+                          : "bg-muted text-muted-foreground"
+                      )}
                     >
                       {isDone ? "✓" : i + 1}
                     </span>
                     <span
-                      className={`text-sm ${
+                      className={cn(
+                        "text-sm",
                         isDone
-                          ? "text-green-700"
+                          ? "text-green-600 dark:text-green-400"
                           : isActive
-                          ? "text-blue-700 font-medium"
-                          : "text-gray-400"
-                      }`}
+                          ? "font-medium text-primary"
+                          : "text-muted-foreground"
+                      )}
                     >
                       {step.label}
                       {isActive && (
-                        <ArrowPathIcon className="inline h-3 w-3 ml-1 animate-spin" />
+                        <ArrowPathIcon className="ml-1 inline h-3 w-3 animate-spin" />
                       )}
                     </span>
                   </li>
@@ -294,7 +305,7 @@ export default function HealthDataPage() {
 
             {/* Error message */}
             {job.status === "error" && job.error && (
-              <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-700">
+              <div className="mt-3 rounded border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive">
                 <span className="font-medium">Error: </span>
                 {job.error}
               </div>
@@ -302,13 +313,13 @@ export default function HealthDataPage() {
 
             {/* Skipped message */}
             {job.status === "skipped" && (
-              <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-700">
+              <div className="mt-3 rounded border border-amber-500/20 bg-amber-500/10 p-3 text-sm text-amber-600 dark:text-amber-400">
                 No new data found — the uploaded export has the same or older data than what is
                 already in the database.
               </div>
             )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   );
@@ -317,8 +328,8 @@ export default function HealthDataPage() {
 function StatusField({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-gray-400">{label}</p>
-      <p className="text-sm font-medium text-gray-800 mt-0.5">{value}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="mt-0.5 text-sm font-medium text-foreground">{value}</p>
     </div>
   );
 }
@@ -326,39 +337,39 @@ function StatusField({ label, value }: { label: string; value: string }) {
 function JobStatusBadge({ status }: { status: JobState["status"] }) {
   const map: Record<
     JobState["status"],
-    { label: string; className: string; icon: React.ReactNode }
+    { label: string; variant: BadgeVariant; icon: React.ReactNode }
   > = {
     pending: {
       label: "Queued",
-      className: "bg-gray-100 text-gray-600",
+      variant: "neutral",
       icon: <ClockIcon className="h-3.5 w-3.5" />,
     },
     processing: {
       label: "Running",
-      className: "bg-blue-100 text-blue-700",
+      variant: "info",
       icon: <ArrowPathIcon className="h-3.5 w-3.5 animate-spin" />,
     },
     complete: {
       label: "Complete",
-      className: "bg-green-100 text-green-700",
+      variant: "success",
       icon: <CheckCircleIcon className="h-3.5 w-3.5" />,
     },
     skipped: {
       label: "Skipped",
-      className: "bg-yellow-100 text-yellow-700",
+      variant: "warning",
       icon: <ClockIcon className="h-3.5 w-3.5" />,
     },
     error: {
       label: "Failed",
-      className: "bg-red-100 text-red-700",
+      variant: "destructive",
       icon: <ExclamationCircleIcon className="h-3.5 w-3.5" />,
     },
   };
-  const { label, className, icon } = map[status];
+  const { label, variant, icon } = map[status];
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${className}`}>
+    <Badge variant={variant}>
       {icon}
       {label}
-    </span>
+    </Badge>
   );
 }

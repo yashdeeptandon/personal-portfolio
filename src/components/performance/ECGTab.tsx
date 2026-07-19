@@ -122,7 +122,7 @@ export default function ECGTab({ recordings }: Props) {
           <select
             value={selectedId ?? ""}
             onChange={(e) => setSelectedId(e.target.value)}
-            className="flex-1 bg-card border border-foreground/20 rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="flex-1 bg-card border border-foreground/20 rounded-lg px-3 py-2 text-sm text-foreground focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
           >
             {recordings.map((r, i) => (
               <option key={`${r.id}_${i}`} value={r.id}>

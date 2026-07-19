@@ -28,7 +28,7 @@ export default function StatCard({
     <motion.div
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.2 }}
-      className="relative overflow-hidden rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-sm p-4 flex flex-col gap-2"
+      className="relative overflow-hidden rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-xs p-4 flex flex-col gap-2"
     >
       {accent && (
         <div

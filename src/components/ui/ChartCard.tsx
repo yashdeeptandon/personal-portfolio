@@ -21,7 +21,7 @@ export default function ChartCard({
 }: ChartCardProps) {
   return (
     <AnimatedSection
-      className={`rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-sm p-5 ${fullWidth ? "col-span-full" : ""} ${className}`}
+      className={`rounded-xl border border-foreground/10 bg-foreground/5 backdrop-blur-xs p-5 ${fullWidth ? "col-span-full" : ""} ${className}`}
     >
       <div className="flex items-start justify-between mb-4">
         <div>

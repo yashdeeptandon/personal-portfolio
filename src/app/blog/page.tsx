@@ -153,7 +153,7 @@ export default function BlogPage() {
       </div>
 
       {/* Featured Posts */}
-      <section className="py-16 bg-white/15 dark:bg-gray-900/15 backdrop-blur-sm">
+      <section className="py-16 bg-white/15 dark:bg-gray-900/15 backdrop-blur-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             Featured Articles
@@ -164,7 +164,7 @@ export default function BlogPage() {
                 key={post.id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
               >
-                <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500">
+                <div className="relative h-48 bg-linear-to-br from-blue-400 to-purple-500">
                   <div className="absolute inset-0 flex items-center justify-center text-white text-6xl font-bold opacity-20">
                     {post.title.charAt(0)}
                   </div>
@@ -232,7 +232,7 @@ export default function BlogPage() {
       </section>
 
       {/* All Posts */}
-      <section className="py-16 bg-gray-50/15 dark:bg-gray-800/15 backdrop-blur-sm">
+      <section className="py-16 bg-gray-50/15 dark:bg-gray-800/15 backdrop-blur-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
             All Articles
@@ -243,7 +243,7 @@ export default function BlogPage() {
                 key={post.id}
                 className="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
-                <div className="relative h-40 bg-gradient-to-br from-gray-400 to-gray-600">
+                <div className="relative h-40 bg-linear-to-br from-gray-400 to-gray-600">
                   <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold opacity-30">
                     {post.title.charAt(0)}
                   </div>

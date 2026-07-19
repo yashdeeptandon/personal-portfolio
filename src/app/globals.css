@@ -1,6 +1,76 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: var(--font-jetbrains-mono), monospace;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+  --font-display: var(--font-space-grotesk), sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-shimmer: shimmer 1.6s infinite;
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
 
 /* ── Light mode (default) ───────────────────────────────────────────────── */
 :root {
@@ -8,12 +78,24 @@
   --foreground: #0f172a;
 
   --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #6366f1;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
   --card: #ffffff;
+  --card-foreground: #0f172a;
   --popover: #ffffff;
   --popover-foreground: #0f172a;
   --radius: 0.5rem;
+
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --accent: #eef2ff;
+  --accent-foreground: #4338ca;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
 
   /* Chart colours — vibrant, work on both themes */
   --chart-1: #6366f1;
@@ -36,11 +118,23 @@
   --foreground: #ededed;
 
   --border: #1f2937;
+  --input: #1f2937;
+  --ring: #6366f1;
   --muted: #111827;
   --muted-foreground: #9ca3af;
   --card: #0d1117;
+  --card-foreground: #ededed;
   --popover: #0d1117;
   --popover-foreground: #ededed;
+
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: #111827;
+  --secondary-foreground: #ededed;
+  --accent: #1e1b4b;
+  --accent-foreground: #c7d2fe;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
 
   --chart-1: #6366f1;
   --chart-2: #22d3ee;
@@ -53,56 +147,65 @@
   --chart-grid: #1f2937;
 }
 
-/* ── Reset ──────────────────────────────────────────────────────────────── */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-jetbrains-mono), monospace;
-  line-height: 1.6;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-space-grotesk), sans-serif;
-}
-
-/* ── Scrollbar ───────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 8px; }
-
-::-webkit-scrollbar-track { background: #f1f5f9; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-.dark ::-webkit-scrollbar-track { background: #1e293b; }
-.dark ::-webkit-scrollbar-thumb { background: #475569; }
-.dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-
-/* ── Focus ──────────────────────────────────────────────────────────────── */
-.focus-visible:focus {
-  outline: 2px solid #6366f1;
-  outline-offset: 2px;
-}
-
-/* ── Theme transitions (skip transform/opacity — Framer Motion owns those) */
-*, *::before, *::after {
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-/* ── Reduced-motion ─────────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
+/*
+  Everything below must live in @layer base — Tailwind v4 wraps its own
+  utilities in @layer utilities, and per the CSS Cascade Layers spec any
+  unlayered rule beats every layered rule regardless of specificity. Left
+  unlayered, `* { margin: 0; padding: 0; }` would silently override every
+  margin/padding utility (mr-1, px-4, space-x-*, ...) site-wide.
+*/
+@layer base {
+  /* ── Reset ─────────────────────────────────────────────────────────────── */
   * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: var(--font-jetbrains-mono), monospace;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-space-grotesk), sans-serif;
+  }
+
+  /* ── Scrollbar ─────────────────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 8px; }
+
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  .dark ::-webkit-scrollbar-track { background: #1e293b; }
+  .dark ::-webkit-scrollbar-thumb { background: #475569; }
+  .dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+  /* ── Focus ─────────────────────────────────────────────────────────────── */
+  .focus-visible:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+  }
+
+  /* ── Theme transitions (skip transform/opacity — Framer Motion owns those) */
+  *, *::before, *::after {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  /* ── Reduced-motion ────────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

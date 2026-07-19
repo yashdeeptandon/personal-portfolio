@@ -155,7 +155,7 @@ const Blog = () => {
                 key={post.id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
-                <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500">
+                <div className="relative h-48 bg-linear-to-br from-blue-400 to-purple-500">
                   <div className="absolute inset-0 flex items-center justify-center text-white text-6xl font-bold opacity-20">
                     {post.title.charAt(0)}
                   </div>
@@ -245,7 +245,7 @@ const Blog = () => {
               key={post.id}
               className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
-              <div className="relative h-40 bg-gradient-to-br from-gray-400 to-gray-600">
+              <div className="relative h-40 bg-linear-to-br from-gray-400 to-gray-600">
                 <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold opacity-30">
                   {post.title.charAt(0)}
                 </div>
@@ -309,7 +309,7 @@ const Blog = () => {
 
         {/* Blog CTA */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg p-8">
+          <div className="bg-linear-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg p-8">
             <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
               Want to Read More?
             </h3>
